@@ -1,1 +1,1 @@
-# react-resting-component
+# react-stillness-component

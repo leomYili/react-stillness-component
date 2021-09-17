@@ -1,0 +1,75 @@
+{
+  "name": "react-resting-component",
+  "private": true,
+  "version": "0.1.0",
+  "description": "This package makes react-component static, with all dom operations disabled and invisible, and supports hook as well as class-component",
+  "main": "index.js",
+  "browser": "dist/index.ts",
+  "files": [
+    "dist"
+  ],
+  "workspaces": [
+    "examples"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install",
+    "changelog": "conventional-changelog -p atom -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "cm": "git-cz",
+    "release": "bash ./scripts/release.sh",
+    "lint:staged": "lint-staged",
+    "start:demo": "cross-env APP_ROOT=examples umi dev",
+    "build": "rollup --config"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*./src/**/*.{js,ts,json,css,less,md}": [
+      "prettier --write",
+      "yarn lint"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leomYili/react-resting-component.git"
+  },
+  "keywords": [
+    "react-component"
+  ],
+  "author": "leomyili",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leomYili/react-resting-component/issues"
+  },
+  "homepage": "https://github.com/leomYili/react-resting-component#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "commitizen": "^4.2.4",
+    "conventional-changelog": "^3.1.24",
+    "conventional-changelog-cli": "^2.1.1",
+    "cross-env": "^7.0.3",
+    "cz-conventional-changelog": "^3.2.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.4.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.56.3",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-uglify": "^6.0.4",
+    "standard-version": "^9.3.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.3"
+  },
+  "peerDependencies": {
+    "react": ">=16"
+  }
+}

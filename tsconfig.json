@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "declaration": true,
+    "preserveSymlinks": true
+  },
+  "include": ["src/*", "typings.d.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "example",
+    "jest.config.js",
+    "**/*.spec.ts",
+    "fixtures",
+    "**/lib",
+    "**/scripts"
+  ]
+}
