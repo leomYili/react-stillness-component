@@ -3,6 +3,7 @@
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "jsx": "preserve",
     "allowJs": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,

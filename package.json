@@ -1,5 +1,5 @@
 {
-  "name": "react-resting-component",
+  "name": "react-stillness-component",
   "private": true,
   "version": "0.1.0",
   "description": "This package makes react-component static, with all dom operations disabled and invisible, and supports hook as well as class-component",
@@ -9,7 +9,7 @@
     "dist"
   ],
   "workspaces": [
-    "examples"
+    "examples/*"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,8 +18,9 @@
     "cm": "git-cz",
     "release": "bash ./scripts/release.sh",
     "lint:staged": "lint-staged",
-    "start:demo": "cross-env APP_ROOT=examples umi dev",
-    "build": "rollup --config"
+    "build": "rollup --config",
+    "start:cra": "cd ./examples/cra && yarn start",
+    "start:umi": "cross-env APP_ROOT=examples/umi umi dev"
   },
   "config": {
     "commitizen": {
@@ -34,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leomYili/react-resting-component.git"
+    "url": "git+https://github.com/leomYili/react-stillness-component.git"
   },
   "keywords": [
     "react-component"
@@ -42,9 +43,9 @@
   "author": "leomyili",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/leomYili/react-resting-component/issues"
+    "url": "https://github.com/leomYili/react-stillness-component/issues"
   },
-  "homepage": "https://github.com/leomYili/react-resting-component#readme",
+  "homepage": "https://github.com/leomYili/react-stillness-component#readme",
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",

@@ -12,3 +12,4 @@ package-lock.json*
 /build
 /dll
 /dist
+/lib
