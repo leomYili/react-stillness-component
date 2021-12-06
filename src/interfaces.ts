@@ -1,3 +1,1 @@
-export interface StillnessContextType {
-  stillnessManager: object | undefined;
-}
+export * from './types';

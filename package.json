@@ -46,9 +46,15 @@
     "url": "https://github.com/leomYili/react-stillness-component/issues"
   },
   "homepage": "https://github.com/leomYili/react-stillness-component#readme",
+  "dependencies": {
+    "hoist-non-react-statics": "^3.3.2",
+    "invariant": "^2.2.4"
+  },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
+    "@types/hoist-non-react-statics": "^3.3.1",
+    "@types/invariant": "^2.2.35",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "commitizen": "^4.2.4",
