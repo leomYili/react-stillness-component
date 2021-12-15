@@ -9,6 +9,7 @@ export interface DecorateHandlerArgs<Props, ItemId> {
   DecoratedComponent: any;
   createHandler: (monitor: any, ref: RefObject<any>) => any;
   getId: (props: Props) => ItemId;
+  getGroupId: (props: Props) => ItemId;
   containerDisplayName: string;
   collect: any;
   options: any;
@@ -23,11 +24,12 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
   DecoratedComponent,
   createHandler,
   getId,
+  getGroupId,
   containerDisplayName,
   collect,
   options,
 }: DecorateHandlerArgs<Props, ItemId>): StillComponent<Props> {
-  const { forcedStillness = false } = options;
+  const { forced = false } = options;
   const Decorated: any = DecoratedComponent;
 
   const displayName =

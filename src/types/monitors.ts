@@ -9,11 +9,11 @@ export interface StillnessMonitor<ResObject = unknown> {
    */
   isStillness(): boolean;
 
-  getStillnessId(): Identifier | null;
+  getStillnessId(): UniqueId | null;
 
-  getStillnessGroupById(): Identifier | null;
+  getStillnessGroupById(): UniqueId | null;
 
-  didMountStillness(): void;
+  unset(obj: { id?: UniqueId; groupId?: UniqueId }): void;
 
-  willUnMountStillness(): void;
+  clear(): void;
 }
