@@ -11,5 +11,6 @@ package-lock.json*
 # production
 /build
 /dll
-/dist
+**/dist
+**/es
 /lib

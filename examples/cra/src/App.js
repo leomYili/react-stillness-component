@@ -6,26 +6,30 @@ import Detail from './pages/detail';
 import logo from './logo.svg';
 import './App.css';
 
+import { StillnessProvider } from 'react-stillness-component';
+
 function App() {
   return (
-    <BrowserRouter>
-      <div className="App">
-        <header className="App-header">
-          <p>
-            <img src={logo} className="App-logo" alt="logo" />
-          </p>
-          <Link to={'/list'} className="App-link">
-            去列表页
-          </Link>
-        </header>
+    <StillnessProvider>
+      <BrowserRouter>
+        <div className="App">
+          <header className="App-header">
+            <p>
+              <img src={logo} className="App-logo" alt="logo" />
+            </p>
+            <Link to={'/list'} className="App-link">
+              去列表页
+            </Link>
+          </header>
 
-        <Switch>
-          <Route path="/list" component={List} />
-          <Route path="/detail" component={Detail} />
-          <Route path="/about" component={About} />
-        </Switch>
-      </div>
-    </BrowserRouter>
+          <Switch>
+            <Route path="/list" component={List} />
+            <Route path="/detail" component={Detail} />
+            <Route path="/about" component={About} />
+          </Switch>
+        </div>
+      </BrowserRouter>
+    </StillnessProvider>
   );
 }
 
