@@ -33,8 +33,8 @@ export interface StillnessSpec<Props, ResObject = any> {
 }
 
 export type StillnessCollector<CollectedProps, TargetProps = any> = (
-  monitor: StillnessMonitor,
-  props: TargetProps
+  props: TargetProps,
+  monitor: StillnessMonitor
 ) => CollectedProps;
 
 export interface StillnessOptions<Props> {

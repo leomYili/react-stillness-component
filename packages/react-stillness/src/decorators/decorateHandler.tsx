@@ -1,7 +1,7 @@
 import React, { Component, RefObject, createRef } from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
-
+import { StillnessContext } from '../core';
 import { shallowEqual } from '../utils';
 import { StillComponent } from '../types';
 
@@ -12,7 +12,7 @@ export interface DecorateHandlerArgs<Props, ItemId> {
   getGroupId: (props: Props) => ItemId;
   containerDisplayName: string;
   collect: any;
-  options: any;
+  options?: any;
 }
 
 /**
@@ -41,7 +41,7 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
   {
     private decoratedRef = createRef();
 
-    public constructor(props:Props){
+    public constructor(props: Props) {
       super(props);
     }
 
@@ -62,7 +62,15 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
     }
 
     public render() {
-      return <div>这是decorate组合内容,之后替换为静止组件本体</div>;
+      return (
+        <StillnessContext.Consumer>
+          {(stillnessManager) => {
+            console.log(stillnessManager);
+
+            return <Decorated {...this.props} />;
+          }}
+        </StillnessContext.Consumer>
+      );
     }
   }
 

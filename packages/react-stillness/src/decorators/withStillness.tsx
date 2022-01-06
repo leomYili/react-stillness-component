@@ -29,7 +29,7 @@ export function withStillness<
   groupId?: UniqueId | ((props: RequiredProps) => UniqueId);
   spec: StillnessSpec<RequiredProps, ResObject>;
   collect: StillnessCollector<CollectedProps, RequiredProps>;
-  options: StillnessOptions<RequiredProps>;
+  options?: StillnessOptions<RequiredProps>;
 }) {
   checkDecoratorArguments(
     'withStillness',

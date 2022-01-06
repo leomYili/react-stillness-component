@@ -7,7 +7,6 @@ import {
 export class StillnessManagerImpl implements StillnessManager {
   private store: any;
   private monitor: StillnessMonitor;
-  private isInit = false;
 
   public constructor(store: any, monitor: StillnessMonitor) {
     this.store = store;

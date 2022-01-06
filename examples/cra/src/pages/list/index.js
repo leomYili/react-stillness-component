@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { withStillness } from 'react-stillness-component';
+
 const List = () => {
   const [info, setInfo] = useState('');
 
@@ -18,4 +20,19 @@ const List = () => {
   );
 };
 
-export default List;
+const spec = {
+  didStillness: (props, monitor) => {
+    console.log('开始进入静止状态', props, monitor);
+  },
+  willUnStillness: (props, monitor) => {
+    console.log('退出静止状态', props, monitor);
+  },
+};
+
+const collect = (props,monitor) => {
+  return {
+    isStillness: monitor.isStillness()
+  }
+};
+
+export default withStillness({ id: 'list', spec, collect })(List);
