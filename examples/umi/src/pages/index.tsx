@@ -43,7 +43,7 @@ export default class IndexPage extends Component {
                 ref={this.outSideRef}
               >
                 <h1 className={styles.title}>Page index</h1>
-                <Offscreen>sdsd</Offscreen>
+                <Offscreen></Offscreen>
                 <Button
                   onClick={() => {
                     context.actions.drop('count1');

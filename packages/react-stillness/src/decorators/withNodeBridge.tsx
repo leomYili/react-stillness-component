@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, ComponentType } from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
 
-import { OffscreenProps } from '../components/Offscreen';
+import { OffscreenProps } from '../components';
 import { StillnessContext, StillnessNodeContext } from '../core';
 import { isUndefined, shallowEqual, getNextUniqueId } from '../utils';
 import {
@@ -18,8 +18,8 @@ interface DecoratedComponentState {
 }
 
 export function withNodeBridge(
-  DecoratedComponent: any
-): Component<OffscreenProps> {
+  DecoratedComponent: ComponentType
+): ComponentType<OffscreenProps> {
   const Decorated: any = DecoratedComponent;
 
   const displayName = Decorated.displayName || Decorated.name || 'Component';
@@ -42,9 +42,12 @@ export function withNodeBridge(
       super(props);
 
       this.state = {
-        uniqueId: props?.id ?? `__stillnessNode-${getNextUniqueId()}__`,
-        uniqueGroupId:
-          props?.groupId ?? `__stillnessGroup-${getNextUniqueId()}__`,
+        uniqueId: this.getStillnessUniqueId(props.id, undefined, 'node'),
+        uniqueGroupId: this.getStillnessUniqueId(
+          props.groupId,
+          undefined,
+          'group'
+        ),
       };
     }
 
@@ -68,6 +71,10 @@ export function withNodeBridge(
       this.stillnessParentId = stillnessParentId ?? `__root__`;
     }
 
+    private getStillnessUniqueId = (id, originalId, prefix) => {
+      return id ? id : originalId || `__stillness${prefix}-${getNextUniqueId()}__`;
+    };
+
     private init(props: OffscreenProps) {
       if (isUndefined(this.stillnessManager)) {
         return;
@@ -79,8 +86,6 @@ export function withNodeBridge(
         parentId: this.stillnessParentId,
         visible: props.visible,
       });
-
-      console.log(this.stillnessManager.getStore());
     }
 
     public componentDidMount() {
@@ -95,19 +100,19 @@ export function withNodeBridge(
         const oldId = this.state.uniqueId;
         this.setState(
           {
-            uniqueId: this.props.id ?? `__stillnessNode-${getNextUniqueId()}__`,
-            uniqueGroupId:
-              this.props.groupId ?? `__stillnessGroup-${getNextUniqueId()}__`,
+            uniqueId: this.getStillnessUniqueId(this.props.id,this.state.uniqueId, 'node'),
+            uniqueGroupId: this.getStillnessUniqueId(
+              this.props.groupId,
+              this.state.uniqueGroupId
+              'group'
+            ),
           },
           () => {
             this.stillnessManager.getActions().updateStillnessVNode({
               oldId,
-              id: this.state.uniqueId,
-              groupId: this.state.uniqueGroupId,
+              ...this.state,
               visible: this.props.visible,
             });
-
-            console.log(JSON.stringify(this.stillnessManager.getStore()));
           }
         );
       }

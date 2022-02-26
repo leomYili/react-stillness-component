@@ -34,7 +34,7 @@ export interface OffscreenProps {
   [key: string]: any;
 }
 
-class Offscreen extends Component<OffscreenProps> {
+class OffscreenComponent extends Component<OffscreenProps> {
   static defaultProps = {
     scrollReset: true,
   };
@@ -56,7 +56,7 @@ class Offscreen extends Component<OffscreenProps> {
   }
 
   private mount = () => {
-    // this.manager.triggerMountQueue(this.uniqueId);
+    // this.manager.getMonitor().triggerMountQueue(this.uniqueId);
     // dispatch({type: 'update', payload:{id: this.uniqueId, visible: true}});
     // dom节点操作以及消息通知,执行所有对应的生命周期函数
 
@@ -68,6 +68,9 @@ class Offscreen extends Component<OffscreenProps> {
 
   private unMount = () => {
     try {
+      // this.manager.getMonitor().triggerUnMountQueue(this.uniqueId);
+      // dispatch({type: 'update', payload:{id: this.uniqueId, visible: true}});
+
       if (this.helpRef?.current?.parentNode !== null) {
         this.helpRef?.current?.parentNode.removeChild(this.targetElement);
       }
@@ -75,12 +78,6 @@ class Offscreen extends Component<OffscreenProps> {
       invariant(this.helpRef?.current, 'Offscreen.unMount: parentNode is null');
     }
   };
-
-  /* public componentDidMount() {
-    if (this.helpRef?.current?.parentNode !== null) {
-      this.helpRef?.current?.parentNode.removeChild(this.helpRef?.current);
-    }
-  } */
 
   public shouldComponentUpdate(
     nextProps: Readonly<OffscreenProps>,
@@ -126,4 +123,4 @@ class Offscreen extends Component<OffscreenProps> {
   }
 }
 
-export default withNodeBridge(Offscreen);
+export const Offscreen = withNodeBridge(OffscreenComponent);

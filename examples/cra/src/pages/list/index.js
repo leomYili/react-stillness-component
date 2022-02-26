@@ -19,7 +19,7 @@ const List = (props) => {
         <Link to={'/detail'}>进入详情页</Link>
       </button>
 
-      <Offscreen visible id={'sdsd'}>
+      <Offscreen visible={visible} id="list2">
         <div className="count">
           <p>count: {count}</p>
           <button
