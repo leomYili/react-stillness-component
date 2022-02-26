@@ -2,7 +2,7 @@ import { useReducer } from 'react';
 import invariant from 'invariant';
 
 import { Store } from './reducers';
-import { Action, StillnessManager } from '../types';
+import { Action, StillnessManager,UniqueId } from '../types';
 import { isUndefined } from '../utils';
 import { addVNode, removeVNode, updateVNode } from './actions';
 
@@ -40,7 +40,14 @@ export function createStillnessManager(
       };
     },
     getMonitor: () => {
-      return {} as any;
+      return {
+        triggerMountQueue:(id:UniqueId) =>{
+
+        },
+        triggerUnmountQueue:(id:UniqueId) =>{
+          
+        }
+      } as any;
     },
     dispatch: (action: Action<any>): void => {
       store.dispatch(action);

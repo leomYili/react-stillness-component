@@ -1,5 +1,11 @@
+import {
+  ADD_V_NODE,
+  REMOVE_V_NODE,
+  UPDATE_V_NODE,
+  REGISTER_V_HANDLE,
+} from '../actions';
+import { isFunction } from '../../utils';
 import { UniqueId, Action } from '../../types';
-import { ADD_V_NODE, REMOVE_V_NODE, UPDATE_V_NODE } from '../actions';
 
 export interface State {
   id: UniqueId;
@@ -53,6 +59,18 @@ export function reduce(
         }
       }
 
+      return { ...state };
+    case REGISTER_V_HANDLE:
+      if (state[payload.id]) {
+        state[payload.id].handleUnique.push({
+          mount: isFunction(payload.collect?.mount)
+            ? payload.collect?.mount
+            : undefined,
+          unmount: isFunction(payload.collect?.unmount)
+            ? payload.collect?.unmount
+            : undefined,
+        });
+      }
       return { ...state };
     case REMOVE_V_NODE:
       delete state[payload.id];

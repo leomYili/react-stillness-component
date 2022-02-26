@@ -25,6 +25,10 @@ export function isValidType(type: unknown, allowArray?: boolean): boolean {
   );
 }
 
+export function isFunction(input: unknown): boolean {
+	return typeof input === 'function'
+}
+
 export function isSymbol(value) {
   const type = typeof value;
   return (

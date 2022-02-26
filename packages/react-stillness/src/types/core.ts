@@ -52,6 +52,7 @@ export interface Action<Payload> {
 
 export interface VNodePayload {
   oldId?: UniqueId;
+  collect?: any;
   id: UniqueId;
   groupId: Symbol | UniqueId;
 }

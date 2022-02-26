@@ -39,8 +39,6 @@ export const Provider: FC<StillnessProviderProps<unknown>> = memo(
 
         return () => {
           if (--refCount === 0) {
-            console.log('销毁全局实例');
-
             context[INSTANCE_SYM] = null;
           }
         };

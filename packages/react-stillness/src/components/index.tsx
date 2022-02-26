@@ -1,3 +1,1 @@
-import Offscreen from './Offscreen';
-
-export { Offscreen };
+export * from './Offscreen';
