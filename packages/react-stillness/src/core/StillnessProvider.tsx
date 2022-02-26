@@ -1,20 +1,32 @@
-import React, { FC, useEffect, memo } from 'react';
+/* @refresh reset */
+
+import React, { FC, useEffect, memo, useReducer } from 'react';
 import { StillnessProviderProps } from '../types';
 import { StillnessContext } from './StillnessContext';
 import { createStillnessManager } from './createStillnessManager';
+import { stillnessReducers, Store } from './reducers';
 
 let refCount = 0;
 const INSTANCE_SYM = Symbol.for('__REACT_STILLNESS_CONTEXT_INSTANCE__');
 
 /**
- * stillness Component 的上下文,用于缓存所有静止实例
+ * stillness Components 的上下文,用于缓存所有静止实例
  * @param param0
  * @returns
  */
-export const StillnessProvider: FC<StillnessProviderProps<unknown>> = memo(
+export const Provider: FC<StillnessProviderProps<unknown>> = memo(
   function ({ children, ...props }) {
-    const [stillnessManager, isGlobalInstance] =
-      getStillnessContextValue(props);
+    const [state, dispatch] = useReducer(stillnessReducers, {
+      vNodes: {},
+      max: -1,
+    } as Store);
+    const [stillnessManager, isGlobalInstance] = getStillnessContextValue(
+      props,
+      {
+        state,
+        dispatch,
+      }
+    );
 
     /**
      * 保持全局的实例统一
@@ -27,6 +39,8 @@ export const StillnessProvider: FC<StillnessProviderProps<unknown>> = memo(
 
         return () => {
           if (--refCount === 0) {
+            console.log('销毁全局实例');
+
             context[INSTANCE_SYM] = null;
           }
         };
@@ -41,20 +55,30 @@ export const StillnessProvider: FC<StillnessProviderProps<unknown>> = memo(
   }
 );
 
-function getStillnessContextValue(props: StillnessProviderProps<unknown>) {
-  const manager = createSingletonDndContext(props.context, props.options);
+function getStillnessContextValue(
+  props: StillnessProviderProps<unknown>,
+  store: any
+) {
+  const manager = createSingletonDndContext(
+    store,
+    props.context,
+    props.options
+  );
 
-  return [manager, true];
+  const isGlobalInstance = !props.context
+
+  return [manager, isGlobalInstance];
 }
 
 function createSingletonDndContext<Context, Options>(
+  store: any,
   context: Context = getGlobalContext(),
   options: Options
 ) {
   const ctx = context as any;
   if (!ctx[INSTANCE_SYM]) {
     ctx[INSTANCE_SYM] = {
-      stillnessManager: createStillnessManager(context, options),
+      stillnessManager: createStillnessManager(store, context, options),
     };
   }
   return ctx[INSTANCE_SYM];

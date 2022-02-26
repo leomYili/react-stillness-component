@@ -2,6 +2,7 @@ import { ComponentType } from 'react';
 import invariant from 'invariant';
 
 import { decorateHandler } from './decorateHandler';
+import { StillnessSingeMonitorImpl } from '../internals';
 import {
   checkDecoratorArguments,
   getNextUniqueId,
@@ -12,6 +13,9 @@ import {
   StillnessSpec,
   StillnessCollector,
   StillnessOptions,
+  StillnessMonitor,
+  StillnessManager,
+  Identifier,
 } from '../types';
 
 export function withStillness<
@@ -45,7 +49,7 @@ export function withStillness<
   if (typeof id !== 'function') {
     invariant(
       isValidType(id),
-      'Expected "type" provided as the first argument to Stillness to be ' +
+      'Expected "id" provided as the first argument to Stillness to be ' +
         'a string, or a function that returns a string given the current props. ' +
         'Instead, received %s. ' +
         'Read more: http://react-dnd.github.io/react-dnd/docs/api/drag-source',
@@ -54,25 +58,12 @@ export function withStillness<
     getId = () => id;
   }
 
-  // If no unique identifier is written, automatic assignment is performed
-  let _groupId = groupId || getNextUniqueId().toString();
-
-  let getGroupId: (props: RequiredProps) => UniqueId = _groupId as (
+  let getGroupId: (props: RequiredProps) => UniqueId = groupId as (
     props: RequiredProps
   ) => UniqueId;
-  if (typeof _groupId !== 'function') {
-    invariant(
-      isValidType(_groupId),
-      'Expected "type" provided as the first argument to Stillness to be ' +
-        'a string, or a function that returns a string given the current props. ' +
-        'Instead, received %s. ' +
-        'Read more: http://react-dnd.github.io/react-dnd/docs/api/drag-source',
-      _groupId
-    );
-    getGroupId = () => _groupId as UniqueId;
+  if (typeof groupId !== 'function') {
+    getGroupId = () => groupId as UniqueId;
   }
-
-  // 缺少create逻辑,进行初始化静止存储
 
   return function decorateStillness<
     RComponentType extends ComponentType<RequiredProps & CollectedProps>
@@ -80,7 +71,8 @@ export function withStillness<
     return decorateHandler<RequiredProps, CollectedProps, UniqueId>({
       DecoratedComponent,
       containerDisplayName: 'Stillness',
-      createHandler: () => {},
+      createMonitor: (manager: StillnessManager, groupId: Identifier) =>
+        new StillnessSingeMonitorImpl(manager, groupId),
       getId,
       getGroupId,
       collect,

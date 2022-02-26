@@ -1,22 +1,22 @@
-import { Action } from '../../types';
+import { UniqueId, Action } from '../../types';
 import { reduce as vNode, State as vNodeState } from './vNode';
 import { reduce as max, State as maxState } from './max';
 
-export interface State {
+export interface Store {
   /**
    * Record all stationary component base data
    */
-  vNodes: vNodeState[];
+  vNodes: { [key: UniqueId]: vNodeState };
   /**
    * Maximum number of components that can be stillness
    */
   max: maxState;
 }
 
-export function useStillnessReducers(
-  state: State = {} as State,
+export function stillnessReducers(
+  state: Store = {} as Store,
   action: Action<any>
-): State {
+): Store {
   return {
     vNodes: vNode(state.vNodes, action),
     max: max(state.max, action),

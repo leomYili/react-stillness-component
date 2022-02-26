@@ -1,20 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { withStillness } from 'react-stillness-component';
+import { Offscreen } from 'react-stillness-component';
 
-const List = () => {
+const List = (props) => {
   const [info, setInfo] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     setTimeout(() => setInfo('模拟请求列表真实数据'), 1500);
   }, []);
 
   return (
-    <div>
+    <div className="list">
       <h3>这是列表页 && 数据为{info}</h3>
       <button>
         <Link to={'/detail'}>进入详情页</Link>
+      </button>
+
+      <Offscreen visible id={'sdsd'}>
+        <div className="count">
+          <p>count: {count}</p>
+          <button
+            onClick={() => {
+              console.log('点击??????');
+              setCount((count) => count + 1);
+            }}
+          >
+            Add
+          </button>
+        </div>
+      </Offscreen>
+
+      <button
+        onClick={() => {
+          setVisible(!visible);
+        }}
+      >
+        切换显隐状态
       </button>
     </div>
   );
@@ -29,10 +53,13 @@ const spec = {
   },
 };
 
-const collect = (props,monitor) => {
+const collect = (props, monitor) => {
+  console.log(props, monitor.getStillnessId());
+
   return {
-    isStillness: monitor.isStillness()
-  }
+    isActive: monitor.isActive(),
+  };
 };
 
-export default withStillness({ id: 'list', spec, collect })(List);
+export default List;
+//export default withStillness({ id: 'list', spec, collect })(List);

@@ -6,11 +6,11 @@ import Detail from './pages/detail';
 import logo from './logo.svg';
 import './App.css';
 
-import { StillnessProvider } from 'react-stillness-component';
+import { Provider } from 'react-stillness-component';
 
 function App() {
   return (
-    <StillnessProvider>
+    <Provider>
       <BrowserRouter>
         <div className="App">
           <header className="App-header">
@@ -23,13 +23,25 @@ function App() {
           </header>
 
           <Switch>
-            <Route path="/list" component={List} />
+            <Route path="/list" render={() => <List active />} />
             <Route path="/detail" component={Detail} />
             <Route path="/about" component={About} />
           </Switch>
+          <div
+            style={{
+              height: 1,
+              width: '100%',
+              backgroundColor: '#ccc',
+              marginTop: 10,
+            }}
+          ></div>
+          <div style={{ marginTop: 10 }}>
+            <button onClick={() => {}}>清除所有缓存</button>
+            <button onClick={() => {}}>清除List组件缓存</button>
+          </div>
         </div>
       </BrowserRouter>
-    </StillnessProvider>
+    </Provider>
   );
 }
 

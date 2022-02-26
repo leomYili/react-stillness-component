@@ -1,17 +1,49 @@
-import { StillnessManager } from '../types';
+import { useReducer } from 'react';
+import invariant from 'invariant';
+
+import { Store } from './reducers';
+import { Action, StillnessManager } from '../types';
+import { isUndefined } from '../utils';
+import { addVNode, removeVNode, updateVNode } from './actions';
 
 export function createStillnessManager(
+  store: {
+    state: Store;
+    dispatch: React.Dispatch<Action<any>>;
+  },
   globalContext: unknown = undefined,
   options: unknown = {}
 ): StillnessManager {
   return {
-    getStore: () => {},
+    getStore: () => {
+      return store.state;
+    },
     getActions: () => {
-      return {} as any;
+      return {
+        createStillnessVNode: (payload) => {
+          invariant(
+            isUndefined(store.state.vNodes[payload?.id]),
+            'The id must be unique.please check if the component id is duplicated'
+          );
+          if (store.state.vNodes[payload?.id]) {
+            return false;
+          }
+
+          store.dispatch(addVNode(payload));
+        },
+        updateStillnessVNode: (payload) => {
+          store.dispatch(updateVNode(payload));
+        },
+        deleteStillnessVNode: (payload) => {
+          store.dispatch(removeVNode(payload));
+        },
+      };
     },
     getMonitor: () => {
       return {} as any;
     },
-    dispatch: () => {},
+    dispatch: (action: Action<any>): void => {
+      store.dispatch(action);
+    },
   };
 }

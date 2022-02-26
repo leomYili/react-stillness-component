@@ -17,7 +17,7 @@ export interface StillnessSpec<Props, ResObject = any> {
    * @param props
    * @param monitor
    */
-  didStillness?: (
+  mount?: (
     props: Props,
     monitor: StillnessMonitor<ResObject>
   ) => ResObject | void;
@@ -26,7 +26,7 @@ export interface StillnessSpec<Props, ResObject = any> {
    * This event will be triggered after the component leaves the resting state
    * and if there is any return value, it will be returned in monitor.getItem()
    */
-  willUnStillness?: (
+  unMount?: (
     props: Props,
     monitor: StillnessMonitor<ResObject>
   ) => ResObject | void;

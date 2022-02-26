@@ -1,9 +1,15 @@
 import { StillnessMonitor, Identifier } from '../../types';
 
+/**
+ * 这里是真实调用
+ */
 export class StillnessMonitorImpl implements StillnessMonitor {
   private store: any;
 
   public constructor(store) {}
+  isActive(): boolean {
+    throw new Error('Method not implemented.');
+  }
 
   public canStillness(): boolean {
     return false;
@@ -13,11 +19,11 @@ export class StillnessMonitorImpl implements StillnessMonitor {
     return false;
   }
 
-  public getStillnessId(): Identifier {
-    return 'xxx';
+  public unset(obj: { id?: Identifier; groupId?: Identifier }): void {
+    throw new Error('Method not implemented.');
   }
 
-  public getStillnessGroupById(): Identifier {
-    return 'XXX';
+  public clear(): void {
+    throw new Error('Method not implemented.');
   }
 }
