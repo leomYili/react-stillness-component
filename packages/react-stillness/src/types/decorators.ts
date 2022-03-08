@@ -1,42 +1,29 @@
-import { StillnessMonitor } from './monitors';
+import { StillnessContract } from './contract';
 
 export interface StillnessSpec<Props, ResObject = any> {
   /**
-   * Optional
-   * When the component is ready to start stillness, here you can set the condition of stillness
-   * only return boolean:true, can be stilled, otherwise ignore all the stillness related events afterwards
-   */
-  canStillness?: (
-    props: Props,
-    monitor: StillnessMonitor<ResObject>
-  ) => boolean;
-  /**
    * optional
    * This event will be triggered after the component goes to rest
-   * and if there is any return value, it will be returned in monitor.getItem()
+   * and if there is any return value, it will be returned in contract.getItem()
    * @param props
-   * @param monitor
+   * @param contract
    */
-  mount?: (
+  mounted?: (
     props: Props,
-    monitor: StillnessMonitor<ResObject>
+    contract: StillnessContract<ResObject>
   ) => ResObject | void;
   /**
    * optional
    * This event will be triggered after the component leaves the resting state
-   * and if there is any return value, it will be returned in monitor.getItem()
+   * and if there is any return value, it will be returned in contract.getItem()
    */
-  unMount?: (
+  unmounted?: (
     props: Props,
-    monitor: StillnessMonitor<ResObject>
+    contract: StillnessContract<ResObject>
   ) => ResObject | void;
 }
 
 export type StillnessCollector<CollectedProps, TargetProps = any> = (
   props: TargetProps,
-  monitor: StillnessMonitor
+  contract: StillnessContract
 ) => CollectedProps;
-
-export interface StillnessOptions<Props> {
-  forcedStillness?: (props: Props) => boolean;
-}

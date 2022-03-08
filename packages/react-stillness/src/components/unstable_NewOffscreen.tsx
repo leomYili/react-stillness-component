@@ -4,13 +4,8 @@ import invariant from 'invariant';
 
 import { StillnessContext, StillnessNodeContext } from '../core';
 import { withNodeBridge } from '../decorators';
-import {
-  UniqueId,
-  StillnessContextType,
-  StillnessManager,
-  StillnessActions,
-  StillnessMonitor,
-} from '../types';
+import { UniqueId, StillnessContextType } from '../types';
+import { OffscreenProps } from './Offscreen';
 import {
   getNextUniqueId,
   shallowEqual,
@@ -19,87 +14,85 @@ import {
   createWrapperElement,
 } from '../utils';
 
-export interface OffscreenProps {
-  /**
-   * Components are only rendered realistically when visible is turned on
-   */
-  visible: boolean;
-  /**
-   * Optionally, even without this prop, the component itself will automatically generate a unique identifier
-   */
-  id?: UniqueId;
-  /**
-   * Optional, for grouping stillness components
-   * Components of the same group can be stationary at the same time
-   */
-  groupId?: UniqueId;
-  /**
-   * Optional,When the presence of a scrolling element is detected,
-   * the scroll position will be automatically saved by default, if this feature is not needed, set to false
-   */
-  scrollReset?: boolean;
-  children: React.ReactNode;
-  stillnessManager?: StillnessManager
+interface OffscreenState {
+  init: boolean;
 }
 
-class OffscreenComponent extends Component<OffscreenProps> {
+class OffscreenComponent extends Component<OffscreenProps, OffscreenState> {
   static displayName = 'Offscreen';
   static defaultProps = {
     scrollReset: true,
   };
 
-  private actions: StillnessActions;
-  private monitor: StillnessMonitor;
+  public static contextType?: React.Context<StillnessContextType> =
+    StillnessContext;
   private helpRef: any = createRef();
   private targetElement: HTMLElement = createWrapperElement();
   private cacheNodes: any[] = [];
   private uniqueId: UniqueId;
   private uniqueGroupId: UniqueId;
+  private nestId = `__stillness-child-${getNextUniqueId()}__`;
 
   constructor(props: OffscreenProps) {
     super(props);
 
     this.uniqueId = props?.id;
     this.uniqueGroupId = props?.groupId;
-    this.actions = props.stillnessManager.getActions();
-    this.monitor = props.stillnessManager.getMonitor();
+    this.state = {
+      init: false,
+    };
   }
 
-  private mount = (init: boolean = false) => {
+  private mount = () => {
     // this.manager.getMonitor().triggerMountQueue(this.uniqueId);
     // dispatch({type: 'update', payload:{id: this.uniqueId, visible: true}});
     // dom节点操作以及消息通知,执行所有对应的生命周期函数
-
-    this.helpRef?.current?.insertAdjacentElement(
+    /* this.helpRef?.current?.insertAdjacentElement(
       'afterend',
       this.targetElement
+    ); */
+    // this.helpRef.current?.parentNode?.insertBefore(,this.helpRef.current);
+
+    let fragment = document.createDocumentFragment();
+
+    let firstChild;
+
+    for (let i = 0; i < this.targetElement.childNodes.length; i++) {
+      const child = this.targetElement.childNodes[i].cloneNode(true);
+      fragment.appendChild(child);
+      this.cacheNodes.push(child);
+    }
+
+    console.log(this.cacheNodes, fragment, this.targetElement);
+
+    this.helpRef.current?.parentNode?.insertBefore(
+      fragment,
+      this.helpRef.current
     );
-
-    if (this.props.scrollReset) {
-      // 恢复该节点下可滚动元素的滚动位置
-    }
-
-    if (!init) {
-      // 初始化时不会触发对应的生命周期函数
-      // dispatch({type: 'update', payload:{id: this.uniqueId, visible: true}});
-    }
   };
 
   private unmount = () => {
-    try {
+    /* try {
       // this.manager.getMonitor().triggerUnMountQueue(this.uniqueId);
       // dispatch({type: 'update', payload:{id: this.uniqueId, visible: true}});
 
       if (this.helpRef?.current?.parentNode !== null) {
         this.helpRef?.current?.parentNode.removeChild(this.targetElement);
       }
-
-      if (this.props.scrollReset) {
-        // 保存该节点下可滚动元素的滚动位置
-      }
     } catch (error) {
       // console.error(error, 'Offscreen.unMount: parentNode is null')
-    }
+    } */
+  };
+
+  private childrenWithProps = (children) => {
+    return React.Children.map(children, (child) => {
+      console.log(child);
+      if (React.isValidElement(child)) {
+        return React.cloneElement(child, {});
+      }
+
+      return child;
+    });
   };
 
   public shouldComponentUpdate(
@@ -137,7 +130,12 @@ class OffscreenComponent extends Component<OffscreenProps> {
           ref={this.helpRef}
           style={{ display: 'none' }}
         >
-          {ReactDOM.createPortal(this.props.children, this.targetElement)}
+          {this.helpRef.current !== null &&
+            this.state.init &&
+            ReactDOM.createPortal(
+              this.childrenWithProps(this.props.children),
+              this.targetElement
+            )}
         </div>
       </StillnessNodeContext.Provider>
     );
@@ -145,9 +143,21 @@ class OffscreenComponent extends Component<OffscreenProps> {
 
   public componentDidMount() {
     if (this.props.visible) {
-      this.mount(true);
+      this.setState(
+        {
+          init: true,
+        },
+        () => {
+          this.helpRef.current.parentNode.insertBefore(
+            this.targetElement,
+            this.helpRef.current
+          );
+
+          this.mount();
+        }
+      );
     }
   }
 }
 
-export const Offscreen = withNodeBridge(OffscreenComponent);
+export const NewOffscreen = withNodeBridge(OffscreenComponent);

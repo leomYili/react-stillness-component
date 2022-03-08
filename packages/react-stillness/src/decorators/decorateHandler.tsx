@@ -3,42 +3,37 @@ import ReactDOM from 'react-dom';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
 import { StillnessContext, StillnessNodeContext } from '../core';
-import { shallowEqual, isPlainObject, isRefAble } from '../utils';
+import { shallowEqual, isPlainObject, isRefAble, isUndefined } from '../utils';
+import { Handle } from '../internals';
 import {
   UniqueId,
   Identifier,
   StillComponent,
   StillnessManager,
   StillnessMonitor,
+  StillnessContextType,
+  StillnessContract,
 } from '../types';
 
 export interface DecorateHandlerArgs<Props, ItemId> {
   DecoratedComponent: any;
-  createMonitor: (
-    manager: StillnessManager,
-    groupId: Identifier
-  ) => HandleReceiverMonitor;
-  getId: (props: Props) => ItemId;
-  getGroupId: (props: Props) => ItemId;
+  createHandle: (manager: StillnessManager, contract: StillnessContract) => any;
+  createContract: (manager: StillnessManager) => any;
   containerDisplayName: string;
   collect: any;
   options?: any;
 }
 
-interface HandleReceiverMonitor {
+interface HandleReceiverContract extends StillnessContract {
   receiveId: (id: UniqueId) => void;
-  receiveGroupId: (groupId: UniqueId) => void;
+  receiveIndex: (index: number) => void;
 }
 
-interface StillnessComponentState {
-  stillnessParentId: Identifier;
-  activated: boolean;
-  setStillnessParentId: (id: Identifier) => any;
+interface HandleReceiver {
+  receiveProps: (props: any) => void;
 }
 
-interface StillnessComponentProps {
-  active: boolean;
-}
+interface StillnessComponentProps {}
 
 /**
  * hoc函数,用于封装class组件,
@@ -47,14 +42,11 @@ interface StillnessComponentProps {
  */
 export function decorateHandler<Props, CollectedProps, ItemId>({
   DecoratedComponent,
-  createMonitor,
-  getId,
-  getGroupId,
+  createHandle,
+  createContract,
   containerDisplayName,
   collect,
-  options,
 }: DecorateHandlerArgs<Props, ItemId>): StillComponent<Props> {
-  const { forced = false } = options;
   const Decorated: any = DecoratedComponent;
 
   const displayName =
@@ -63,28 +55,24 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
     'StillnessComponent';
 
   class StillnessComponent
-    extends Component<StillnessComponentProps, StillnessComponentState>
-    implements StillComponent<StillnessComponentProps>
+    extends Component<Props>
+    implements StillComponent<Props>
   {
-    private decoratedRef: any = createRef();
-    private containerRef: any = createRef();
-    private manager: StillnessManager | undefined;
-    private handleMonitor: HandleReceiverMonitor | undefined;
-    private targetElement: HTMLElement = document.createElement('div');
+    public static contextType?: React.Context<StillnessContextType> =
+      StillnessContext;
 
-    public constructor(props: StillnessComponentProps) {
+    private decoratedRef: any = createRef();
+    private manager: StillnessManager | undefined;
+    private handleContract: HandleReceiverContract | undefined;
+    private handle: HandleReceiver | undefined;
+    private handleIndex: number;
+    private stillnessParentId: Identifier;
+
+    public constructor(props: Props) {
       super(props);
 
-      this.state = {
-        stillnessParentId: null,
-        activated: props?.active || true,
-        setStillnessParentId: this.setStillnessParentId,
-      };
+      console.log('初始化');
     }
-
-    public setStillnessParentId = (parentId) => {
-      this.setState({ stillnessParentId: parentId });
-    };
 
     public getDecoratedComponentInstance() {
       invariant(
@@ -97,11 +85,7 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
 
     public componentDidMount() {
       this.receiveProps(this.props);
-      this.handleChange(() => {
-        if (this.state.activated) {
-          this.activate();
-        }
-      });
+      this.handleChange();
     }
 
     public componentDidUpdate(
@@ -109,13 +93,7 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
     ): void {
       if (!shallowEqual(this.props, prevProps)) {
         this.receiveProps(this.props);
-        this.handleChange(() => {
-          if (!this.state.activated) {
-            this.unActivate();
-          } else {
-            this.activate();
-          }
-        });
+        this.handleChange();
       }
     }
 
@@ -126,46 +104,48 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
       );
     }
 
-    public activate() {
-      this.containerRef?.current?.insertAdjacentElement(
-        'afterend',
-        this.targetElement
-      );
-    }
-
-    public unActivate() {
-      if (this.containerRef?.current?.parentNode !== null) {
-        this.containerRef?.current?.parentNode.removeChild(this.targetElement);
-      }
-
-      this.containerRef?.current?.removeChild(this.targetElement);
-    }
-
     public receiveProps(props: any) {
-      if (!this.manager || !this.handleMonitor) {
+      if (!this.manager || !this.handleContract || !this.handle) {
         return;
       }
 
+      this.handle.receiveProps(props);
+      if (this.handleContract.getStillnessId() !== this.stillnessParentId) {
+        this.registerHandle(this.stillnessParentId, props);
+      }
+
+      this.handleContract.receiveId(this.stillnessParentId);
       
-      this.handleMonitor.receiveId(getId(props) as unknown as UniqueId);
-      this.handleMonitor.receiveGroupId(getGroupId(props) as unknown as UniqueId);
     }
 
-    public handleChange = (callback?: Function) => {
+    public registerHandle(id, props: any) {
+      if (!this.manager) {
+        return;
+      }
+
+      this.handleIndex = this.manager.getActions().registerVNodeHandle({
+        id,
+        handle: this.handle,
+        index: this.handleIndex,
+      });
+      this.handleContract.receiveIndex(this.handleIndex);
+    }
+
+    public handleChange = () => {
       const nextState = this.getCurrentState();
       if (!shallowEqual(nextState, this.state as unknown as CollectedProps)) {
-        this.setState({ ...nextState }, () => callback());
+        this.setState({ ...nextState });
       }
     };
 
     public getCurrentState(): CollectedProps {
-      if (!this.handleMonitor) {
+      if (!this.handleContract) {
         return {} as CollectedProps;
       }
 
       const nextState = collect(
         this.props,
-        this.handleMonitor
+        this.handleContract
       ) as CollectedProps;
 
       if (process.env.NODE_ENV !== 'production') {
@@ -187,46 +167,29 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
       return (
         <StillnessNodeContext.Consumer>
           {({ stillnessParentId }) => {
-            return (
-              <StillnessContext.Consumer>
-                {({ stillnessManager }) => {
-                  this.receiveStillnessManager(
-                    stillnessManager as unknown as StillnessManager,
-                    stillnessParentId
-                  );
+            if (isUndefined(this.context?.stillnessManager)) {
+              return null;
+            }
 
-                  return (
-                    <StillnessNodeContext.Provider
-                      value={{
-                        stillnessParentId: getId(this.props as any) as any,
-                      }}
-                    >
-                      <div ref={this.containerRef} />
-                      {this.state.activated &&
-                        ReactDOM.createPortal(
-                          <Decorated
-                            {...this.props}
-                            {...this.getCurrentState()}
-                            ref={
-                              isRefAble(Decorated) ? this.decoratedRef : null
-                            }
-                          />,
-                          this.targetElement
-                        )}
-                    </StillnessNodeContext.Provider>
-                  );
-                }}
-              </StillnessContext.Consumer>
+            this.stillnessParentId = stillnessParentId;
+
+            this.receiveStillnessManager(
+              this.context.stillnessManager as unknown as StillnessManager
+            );
+
+            return (
+              <Decorated
+                {...this.props}
+                {...this.getCurrentState()}
+                ref={isRefAble(Decorated) ? this.decoratedRef : null}
+              />
             );
           }}
         </StillnessNodeContext.Consumer>
       );
     }
 
-    public receiveStillnessManager(
-      stillnessManager: StillnessManager,
-      stillnessParentId
-    ) {
+    public receiveStillnessManager(stillnessManager: StillnessManager) {
       if (this.manager !== undefined) {
         return;
       }
@@ -238,7 +201,11 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
       this.manager = stillnessManager;
 
       // 这里需要对parentId进行初始化处理
-      this.handleMonitor = createMonitor(stillnessManager, stillnessParentId);
+      this.handleContract = createContract(stillnessManager);
+      this.handle = createHandle(
+        this.manager,
+        this.handleContract as unknown as StillnessContract
+      );
     }
   }
 
