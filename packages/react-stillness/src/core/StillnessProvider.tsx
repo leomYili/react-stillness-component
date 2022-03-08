@@ -1,7 +1,7 @@
 /* @refresh reset */
 
 import React, { FC, useEffect, memo, useReducer } from 'react';
-import { StillnessProviderProps } from '../types';
+import { StillnessProviderProps, StillnessManager } from '../types';
 import { StillnessContext } from './StillnessContext';
 import { createStillnessManager } from './createStillnessManager';
 import { stillnessReducers, Store } from './reducers';
@@ -14,72 +14,60 @@ const INSTANCE_SYM = Symbol.for('__REACT_STILLNESS_CONTEXT_INSTANCE__');
  * @param param0
  * @returns
  */
-export const Provider: FC<StillnessProviderProps<unknown>> = memo(
-  function ({ children, ...props }) {
-    const [state, dispatch] = useReducer(stillnessReducers, {
-      vNodes: {},
-      max: -1,
-    } as Store);
-    const [stillnessManager, isGlobalInstance] = getStillnessContextValue(
-      props,
-      {
-        state,
-        dispatch,
-      }
-    );
+export const Provider: FC<StillnessProviderProps<unknown>> = memo(function ({
+  children,
+  ...props
+}) {
+  const [state, dispatch] = useReducer(stillnessReducers, {
+    vNodes: {},
+    max: -1,
+  } as Store);
+  const [stillnessManager, isGlobalInstance] = getStillnessContextValue(props, {
+    state,
+    dispatch,
+  });
 
-    /**
-     * 保持全局的实例统一
-     * 并且保持退出即销毁实例,释放内存
-     */
-    useEffect(() => {
-      if (isGlobalInstance) {
-        const context = getGlobalContext();
-        ++refCount;
+  /*
+   * 保持全局的实例统一
+   * 并且保持退出即销毁实例,释放内存
+   */
+  useEffect(() => {
+    if (isGlobalInstance) {
+      const context = getGlobalContext();
+      ++refCount;
 
-        return () => {
-          if (--refCount === 0) {
-            context[INSTANCE_SYM] = null;
-          }
-        };
-      }
-    }, []);
+      context[INSTANCE_SYM] = {
+        stillnessManager,
+      };
 
-    return (
-      <StillnessContext.Provider value={stillnessManager}>
-        {children}
-      </StillnessContext.Provider>
-    );
-  }
-);
+      return () => {
+        if (--refCount === 0) {
+          context[INSTANCE_SYM] = null;
+        }
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log('change', state, JSON.stringify(state));
+  }, [state]);
+
+  return (
+    <StillnessContext.Provider value={{ stillnessManager }}>
+      {children}
+    </StillnessContext.Provider>
+  );
+});
 
 function getStillnessContextValue(
   props: StillnessProviderProps<unknown>,
   store: any
-) {
-  const manager = createSingletonDndContext(
-    store,
-    props.context,
-    props.options
-  );
+): any {
+  const manager = createStillnessManager(store, props.context, props.options);
 
-  const isGlobalInstance = !props.context
+  const isGlobalInstance = !props.context;
 
   return [manager, isGlobalInstance];
-}
-
-function createSingletonDndContext<Context, Options>(
-  store: any,
-  context: Context = getGlobalContext(),
-  options: Options
-) {
-  const ctx = context as any;
-  if (!ctx[INSTANCE_SYM]) {
-    ctx[INSTANCE_SYM] = {
-      stillnessManager: createStillnessManager(store, context, options),
-    };
-  }
-  return ctx[INSTANCE_SYM];
 }
 
 declare const global: any;

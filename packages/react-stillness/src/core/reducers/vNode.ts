@@ -2,7 +2,7 @@ import {
   ADD_V_NODE,
   REMOVE_V_NODE,
   UPDATE_V_NODE,
-  REGISTER_V_HANDLE,
+  REGISTER_V_NODE_HANDLE,
 } from '../actions';
 import { isFunction } from '../../utils';
 import { UniqueId, Action } from '../../types';
@@ -26,6 +26,7 @@ export function reduce(
     groupId: UniqueId;
     visible: boolean;
     handleUnique: any[];
+    handle: any;
   }>
 ): { [key: string]: State } {
   const { payload } = action;
@@ -60,18 +61,13 @@ export function reduce(
       }
 
       return { ...state };
-    case REGISTER_V_HANDLE:
+    case REGISTER_V_NODE_HANDLE:
       if (state[payload.id]) {
-        state[payload.id].handleUnique.push({
-          mount: isFunction(payload.collect?.mount)
-            ? payload.collect?.mount
-            : undefined,
-          unmount: isFunction(payload.collect?.unmount)
-            ? payload.collect?.unmount
-            : undefined,
-        });
+        state[payload.id].handleUnique[0] = 'A';
+
+        console.log(state[payload.id]);
       }
-      return { ...state };
+      return {...state};
     case REMOVE_V_NODE:
       delete state[payload.id];
 

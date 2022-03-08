@@ -1,2 +1,2 @@
-export * from './withStillness';
+export * from './connectStillness';
 export * from './withNodeBridge';

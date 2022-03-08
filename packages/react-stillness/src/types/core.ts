@@ -6,14 +6,14 @@ export type Identifier = string | number;
 export type UniqueId = Identifier;
 
 export interface StillnessActions {
-  createStillnessVNode({ id, parentId, groupId, visible }): any;
-
-  updateStillnessVNode({ oldId, id, groupId, visible }): any;
-
-  /**
-   * This function will be triggered after the component has been uncached
-   */
-  deleteStillnessVNode(id): any;
+  createStillnessVNode: (payload) => void;
+  updateStillnessVNode: (payload) => void;
+  deleteStillnessVNode: (payload) => void;
+  triggerMountQueue: (payload) => void;
+  triggerUnmountQueue: (payload) => void;
+  registerVNodeHandle: (payload) => number;
+  unset: (payload) => void;
+  clear: () => void;
 }
 
 export interface StillnessManager {
@@ -52,7 +52,7 @@ export interface Action<Payload> {
 
 export interface VNodePayload {
   oldId?: UniqueId;
-  collect?: any;
   id: UniqueId;
-  groupId: Symbol | UniqueId;
+  groupId?: Symbol | UniqueId;
+  handle?: any;
 }

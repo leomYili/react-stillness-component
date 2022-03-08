@@ -15,10 +15,11 @@ import {
 interface DecoratedComponentState {
   uniqueId: UniqueId;
   uniqueGroupId: UniqueId;
+  isCurrentlyMounted: boolean;
 }
 
 export function withNodeBridge(
-  DecoratedComponent: ComponentType
+  DecoratedComponent: ComponentType<OffscreenProps>
 ): ComponentType<OffscreenProps> {
   const Decorated: any = DecoratedComponent;
 
@@ -28,15 +29,13 @@ export function withNodeBridge(
     OffscreenProps,
     DecoratedComponentState
   > {
-    public static displayName = `WithNodeBridge(${displayName})`;
-
+    public static displayName = 'WithNodeBridge';
     public static DecoratedComponent = DecoratedComponent;
     public static contextType?: React.Context<StillnessContextType> =
       StillnessContext;
 
     private stillnessManager: StillnessManager | undefined;
     private stillnessParentId: Identifier;
-    private isCurrentlyMounted = false;
 
     constructor(props: OffscreenProps) {
       super(props);
@@ -48,13 +47,11 @@ export function withNodeBridge(
           undefined,
           'group'
         ),
+        isCurrentlyMounted: false,
       };
     }
 
-    private receiveManager(
-      stillnessManager: StillnessManager,
-      stillnessParentId: Identifier
-    ) {
+    private receiveManager = (stillnessManager: StillnessManager) => {
       if (!isUndefined(this.stillnessManager)) {
         return;
       }
@@ -67,50 +64,38 @@ export function withNodeBridge(
           displayName,
         displayName
       );
-
-      this.stillnessParentId = stillnessParentId ?? `__root__`;
-    }
-
-    private getStillnessUniqueId = (id, originalId, prefix) => {
-      return id ? id : originalId || `__stillness${prefix}-${getNextUniqueId()}__`;
     };
 
-    private init(props: OffscreenProps) {
-      if (isUndefined(this.stillnessManager)) {
-        return;
-      }
-
-      this.stillnessManager.getActions().createStillnessVNode({
-        id: this.state.uniqueId,
-        groupId: this.state.uniqueGroupId,
-        parentId: this.stillnessParentId,
-        visible: props.visible,
-      });
-    }
-
-    public componentDidMount() {
-      // 初始化操作,检测是否已存在相同id的缓存,如果存在,则更新缓存,并提醒用户
-      // 初始化完毕,开启预览
-      this.isCurrentlyMounted = true;
-      this.init(this.props);
-    }
+    private getStillnessUniqueId = (id, originalId, prefix) => {
+      return id
+        ? id
+        : originalId || `__stillness${prefix}-${getNextUniqueId()}__`;
+    };
 
     public componentDidUpdate(prevProps: OffscreenProps) {
-      if (!shallowEqual(this.props, prevProps)) {
+      const { children, ...next } = this.props;
+      const { children: prevChildren, ...prev } = prevProps;
+
+      if (!shallowEqual(next, prev)) {
         const oldId = this.state.uniqueId;
         this.setState(
           {
-            uniqueId: this.getStillnessUniqueId(this.props.id,this.state.uniqueId, 'node'),
+            uniqueId: this.getStillnessUniqueId(
+              this.props.id,
+              this.state.uniqueId,
+              'node'
+            ),
             uniqueGroupId: this.getStillnessUniqueId(
               this.props.groupId,
-              this.state.uniqueGroupId
+              this.state.uniqueGroupId,
               'group'
             ),
           },
           () => {
             this.stillnessManager.getActions().updateStillnessVNode({
               oldId,
-              ...this.state,
+              id: this.state.uniqueId,
+              groupId: this.state.uniqueGroupId,
               visible: this.props.visible,
             });
           }
@@ -122,40 +107,51 @@ export function withNodeBridge(
       return (
         <StillnessNodeContext.Consumer>
           {({ stillnessParentId }) => {
-            if (isUndefined(this.context?.stillnessManager)) {
+            if (isUndefined(this.context.stillnessManager)) {
               return null;
             }
-            this.receiveManager(
-              this.context?.stillnessManager,
-              stillnessParentId
-            );
-            if (!this.isCurrentlyMounted) {
-              return null;
-            }
+
+            this.stillnessParentId = stillnessParentId ?? `__root__`;
+            this.receiveManager(this.context.stillnessManager);
+
+            if (!this.state.isCurrentlyMounted) return null;
+
             return (
               <DecoratedComponent
                 {...this.props}
                 id={this.state.uniqueId}
                 groupId={this.state.uniqueGroupId}
-              ></DecoratedComponent>
+                stillnessManager={this.context.stillnessManager}
+              />
             );
           }}
         </StillnessNodeContext.Consumer>
       );
     }
 
-    public componentWillUnmount() {
-      // 卸载组件下的所有缓存
-      this.isCurrentlyMounted = false;
-
-      this.stillnessManager.getActions().deleteStillnessVNode({
+    public componentDidMount() {
+      this.stillnessManager.getActions().createStillnessVNode({
         id: this.state.uniqueId,
+        groupId: this.state.uniqueGroupId,
+        parentId: this.stillnessParentId,
+        visible: this.props.visible,
       });
+      this.setState({
+        isCurrentlyMounted: true,
+      });
+    }
+
+    public componentWillUnmount() {
+      if (!isUndefined(this.stillnessManager)) {
+        this.stillnessManager.getActions().deleteStillnessVNode({
+          id: this.state.uniqueId,
+        });
+      }
     }
   }
 
   return hoistNonReactStatics(
     WrapperComponent,
     DecoratedComponent
-  ) as any as Component<OffscreenProps>;
+  ) as any as ComponentType<OffscreenProps>;
 }

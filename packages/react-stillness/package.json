@@ -22,7 +22,8 @@
   ],
   "dependencies": {
     "hoist-non-react-statics": "^3.3.2",
-    "invariant": "^2.2.4"
+    "invariant": "^2.2.4",
+    "redux": "^4.1.2"
   },
   "devDependencies": {
     "@types/react": "^17.0.38",
