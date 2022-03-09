@@ -5,16 +5,12 @@ import { decorateHandler } from './decorateHandler';
 import { StillnessContractImpl, StillnessHandleImpl } from '../internals';
 import {
   checkDecoratorArguments,
-  getNextUniqueId,
-  isValidType,
 } from '../utils';
 import {
   UniqueId,
   StillnessSpec,
   StillnessCollector,
-  StillnessMonitor,
   StillnessManager,
-  Identifier,
 } from '../types';
 
 export function connectStillness<

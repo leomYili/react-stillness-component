@@ -10,7 +10,7 @@ import { Provider } from 'react-stillness-component';
 
 function App() {
   return (
-    <Provider>
+    <Provider debugMode>
       <BrowserRouter>
         <div className="App">
           <header className="App-header">

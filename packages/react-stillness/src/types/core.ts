@@ -4,16 +4,18 @@ import { StillnessMonitor } from './monitors';
 
 export type Identifier = string | number;
 export type UniqueId = Identifier;
+export type Unsubscribe = () => void;
+export type Listener = () => void;
 
-export interface StillnessActions {
-  createStillnessVNode: (payload) => void;
-  updateStillnessVNode: (payload) => void;
-  deleteStillnessVNode: (payload) => void;
-  triggerMountQueue: (payload) => void;
-  triggerUnmountQueue: (payload) => void;
-  registerVNodeHandle: (payload) => number;
-  unset: (payload) => void;
-  clear: () => void;
+export type ActionCreator<Payload> = (args: any[]) => Action<Payload>;
+
+export type StillnessActions = VNodeActions;
+
+export interface VNodeActions {
+  createVNode: (payload) => void;
+  deleteVNode: (payload) => void;
+  updateVNodeIsStillness: (payload) => void;
+  resetVNode: (payload) => void;
 }
 
 export interface StillnessManager {
@@ -28,6 +30,7 @@ export interface StillnessProviderProps<Context> {
   options?: {
     max: number | boolean | string;
   };
+  debugMode?: boolean;
 }
 
 export interface StillnessContextType {

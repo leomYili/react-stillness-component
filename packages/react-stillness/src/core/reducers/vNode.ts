@@ -1,9 +1,9 @@
 import {
   ADD_V_NODE,
   REMOVE_V_NODE,
-  UPDATE_V_NODE,
-  REGISTER_V_NODE_HANDLE,
-} from '../actions';
+  UPDATE_V_NODE_IS_STILLNESS,
+  RESET_V_NODE,
+} from '../actions/vNodeAction';
 import { isFunction } from '../../utils';
 import { UniqueId, Action } from '../../types';
 
@@ -13,8 +13,6 @@ export interface State {
   groupId: UniqueId;
   visible: boolean;
   handleUnique: any[];
-  createdAt: string;
-  updatedAt: string;
 }
 
 export function reduce(
@@ -42,16 +40,22 @@ export function reduce(
           groupId: payload.groupId,
           visible: payload.visible,
           handleUnique: [],
-          createdAt: now,
-          updatedAt: now,
         };
       }
       return { ...state };
-    case UPDATE_V_NODE:
+    case UPDATE_V_NODE_IS_STILLNESS:
       if (state[payload.oldId]) {
         state[payload.id] = {
+          ...rest,
+          visible: payload.visible,
+        };
+      }
+
+      return { ...state };
+    case RESET_V_NODE:
+      if (!state[payload.id]) {
+        state[payload.id] = {
           ...state[payload.oldId],
-          updatedAt: now,
           ...rest,
         };
 
@@ -59,15 +63,7 @@ export function reduce(
           delete state[payload.oldId];
         }
       }
-
       return { ...state };
-    case REGISTER_V_NODE_HANDLE:
-      if (state[payload.id]) {
-        state[payload.id].handleUnique[0] = 'A';
-
-        console.log(state[payload.id]);
-      }
-      return {...state};
     case REMOVE_V_NODE:
       delete state[payload.id];
 
