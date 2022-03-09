@@ -110,15 +110,17 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
       }
 
       this.handle.receiveProps(props);
-      if (this.handleContract.getStillnessId() !== this.stillnessParentId) {
+      /* if (this.handleContract.getStillnessId() !== this.stillnessParentId) {
         this.registerHandle(this.stillnessParentId, props);
-      }
+      } */
 
       this.handleContract.receiveId(this.stillnessParentId);
       
     }
 
-    public registerHandle(id, props: any) {
+    // 这里不再需要二次注册修改store,只要对targetIds产生反应即可,执行相应回调就会驱动component更新了
+    // 连卸载都不需要
+    /* public registerHandle(id, props: any) {
       if (!this.manager) {
         return;
       }
@@ -129,7 +131,7 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
         index: this.handleIndex,
       });
       this.handleContract.receiveIndex(this.handleIndex);
-    }
+    } */
 
     public handleChange = () => {
       const nextState = this.getCurrentState();

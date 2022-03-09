@@ -2,20 +2,15 @@ import React, { Component, createRef } from 'react';
 import ReactDOM from 'react-dom';
 import invariant from 'invariant';
 
-import { StillnessContext, StillnessNodeContext } from '../core';
+import { StillnessNodeContext } from '../core';
 import { withNodeBridge } from '../decorators';
 import {
   UniqueId,
-  StillnessContextType,
   StillnessManager,
   StillnessActions,
-  StillnessMonitor,
 } from '../types';
 import {
-  getNextUniqueId,
   shallowEqual,
-  isPlainObject,
-  isRefAble,
   createWrapperElement,
 } from '../utils';
 
@@ -49,7 +44,6 @@ class OffscreenComponent extends Component<OffscreenProps> {
   };
 
   private actions: StillnessActions;
-  private monitor: StillnessMonitor;
   private helpRef: any = createRef();
   private targetElement: HTMLElement = createWrapperElement();
   private cacheNodes: any[] = [];
@@ -62,13 +56,10 @@ class OffscreenComponent extends Component<OffscreenProps> {
     this.uniqueId = props?.id;
     this.uniqueGroupId = props?.groupId;
     this.actions = props.stillnessManager.getActions();
-    this.monitor = props.stillnessManager.getMonitor();
   }
 
   private mount = (init: boolean = false) => {
-    // this.manager.getMonitor().triggerMountQueue(this.uniqueId);
     // dispatch({type: 'update', payload:{id: this.uniqueId, visible: true}});
-    // dom节点操作以及消息通知,执行所有对应的生命周期函数
 
     this.helpRef?.current?.insertAdjacentElement(
       'afterend',
@@ -87,7 +78,6 @@ class OffscreenComponent extends Component<OffscreenProps> {
 
   private unmount = () => {
     try {
-      // this.manager.getMonitor().triggerUnMountQueue(this.uniqueId);
       // dispatch({type: 'update', payload:{id: this.uniqueId, visible: true}});
 
       if (this.helpRef?.current?.parentNode !== null) {

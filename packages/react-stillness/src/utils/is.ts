@@ -36,3 +36,7 @@ export function isSymbol(value) {
     (type === 'object' && value != null && getTag(value) == '[object Symbol]')
   );
 }
+
+export function intersection<T>(itemsA: T[], itemsB: T[]): T[] {
+	return itemsA.filter((t) => itemsB.indexOf(t) > -1)
+}

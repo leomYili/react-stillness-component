@@ -5,6 +5,8 @@ import {
   StillnessActions,
   StillnessContract,
   StillnessManager,
+  Listener,
+  Unsubscribe,
 } from '../types';
 import { isUndefined } from '../utils';
 
@@ -17,6 +19,18 @@ export class StillnessContractImpl implements StillnessContract {
   public constructor(manager: StillnessManager) {
     this.internalMonitor = manager.getMonitor();
     this.internalActions = manager.getActions();
+  }
+  public subscribeToStateChange(
+    listener: Listener,
+    params: { parentId: Identifier }
+  ): Unsubscribe {
+    return this.internalMonitor.subscribeToStateChange(listener, params);
+  }
+  public subscribeToEffectChange(
+    listener: Listener,
+    params: { id: Identifier; groupId: Identifier }
+  ): Unsubscribe {
+    return this.internalMonitor.subscribeToEffectChange(listener, params);
   }
 
   public receiveId(id: Identifier | null): void {

@@ -1,10 +1,22 @@
-import React, { Component, ComponentType } from 'react';
+import React, {
+  Component,
+  ComponentType,
+  useMemo,
+  useState,
+  useContext,
+  useRef,
+} from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
 
 import { OffscreenProps } from '../components';
 import { StillnessContext, StillnessNodeContext } from '../core';
-import { isUndefined, shallowEqual, getNextUniqueId } from '../utils';
+import {
+  isUndefined,
+  shallowEqual,
+  getNextUniqueId,
+  useIsomorphicLayoutEffect,
+} from '../utils';
 import {
   StillnessContextType,
   StillnessManager,
@@ -18,6 +30,11 @@ interface DecoratedComponentState {
   isCurrentlyMounted: boolean;
 }
 
+/**
+ * 2022.0309 新增监听逻辑,当store.operation中type为unset时,则卸载相应节点即可完成之后的所有操作
+ * @param DecoratedComponent
+ * @returns
+ */
 export function withNodeBridge(
   DecoratedComponent: ComponentType<OffscreenProps>
 ): ComponentType<OffscreenProps> {
@@ -25,7 +42,84 @@ export function withNodeBridge(
 
   const displayName = Decorated.displayName || Decorated.name || 'Component';
 
-  class WrapperComponent extends Component<
+  const getStillnessUniqueId = (id, originalId, prefix) => {
+    return id
+      ? id
+      : originalId || `__stillness${prefix}-${getNextUniqueId()}__`;
+  };
+  function Connect(props: OffscreenProps) {
+    const { stillnessManager } = useContext(StillnessContext);
+    const { stillnessParentId = '__root__' } = useContext(StillnessNodeContext);
+    const [isCurrentlyMounted, setIsCurrentlyMounted] = useState(false);
+    const isMounted = useRef(false);
+    const renderIsScheduled = useRef(false);
+
+    const actualProps = useMemo(() => {
+      const uniqueId = getStillnessUniqueId(props.id, undefined, 'node');
+      const uniqueGroupId = getStillnessUniqueId(
+        props.groupId,
+        undefined,
+        'group'
+      );
+
+      return { id: uniqueId, groupId: uniqueGroupId, ...props };
+    }, [props]);
+
+    useIsomorphicLayoutEffect(() => {
+      // 创建对应节点
+      // subscribeToEffectChange(handleChange)用来监听组件操作行为变化
+
+      setIsCurrentlyMounted(true);
+
+      return () => {
+        // 删除对应节点
+        // unsubscribe
+      };
+    }, []);
+
+    useIsomorphicLayoutEffect(() => {
+      // 根据当前props,直接更新id以及groupId
+      // updateNode逻辑
+      console.log('actualProps', actualProps);
+      if (!renderIsScheduled.current && actualProps.visible) {
+        // 初始化逻辑
+        renderIsScheduled.current = actualProps.visible;
+      }
+    }, [actualProps, stillnessParentId]);
+
+    useIsomorphicLayoutEffect(() => {
+      if (isCurrentlyMounted === false) {
+        if (isMounted.current) {
+          setIsCurrentlyMounted(true);
+        } else {
+          isMounted.current = true;
+        }
+      }
+    }, [isCurrentlyMounted]);
+
+    const handleChange = () => {
+      setIsCurrentlyMounted(false);
+    };
+
+    const renderedWrappedComponent = useMemo(
+      () => <Decorated {...actualProps} stillnessManager={stillnessManager} />,
+      [Decorated, actualProps]
+    );
+
+    return isCurrentlyMounted && renderIsScheduled.current
+      ? renderedWrappedComponent
+      : null;
+  }
+
+  Connect.DecoratedComponent = DecoratedComponent;
+  Connect.displayName = displayName;
+
+  return hoistNonReactStatics(
+    Connect,
+    DecoratedComponent
+  ) as any as ComponentType<OffscreenProps>;
+
+  /* class WrapperComponent extends Component<
     OffscreenProps,
     DecoratedComponentState
   > {
@@ -35,7 +129,6 @@ export function withNodeBridge(
       StillnessContext;
 
     private stillnessManager: StillnessManager | undefined;
-    private stillnessParentId: Identifier;
 
     constructor(props: OffscreenProps) {
       super(props);
@@ -92,12 +185,12 @@ export function withNodeBridge(
             ),
           },
           () => {
-            this.stillnessManager.getActions().updateStillnessVNode({
+            /* this.stillnessManager.getActions().updateStillnessVNode({
               oldId,
               id: this.state.uniqueId,
               groupId: this.state.uniqueGroupId,
               visible: this.props.visible,
-            });
+            }); 
           }
         );
       }
@@ -130,7 +223,7 @@ export function withNodeBridge(
     }
 
     public componentDidMount() {
-      this.stillnessManager.getActions().createStillnessVNode({
+      /* this.stillnessManager.getActions().createStillnessVNode({
         id: this.state.uniqueId,
         groupId: this.state.uniqueGroupId,
         parentId: this.stillnessParentId,
@@ -138,20 +231,16 @@ export function withNodeBridge(
       });
       this.setState({
         isCurrentlyMounted: true,
-      });
+      }); 
     }
 
     public componentWillUnmount() {
       if (!isUndefined(this.stillnessManager)) {
-        this.stillnessManager.getActions().deleteStillnessVNode({
+        this.stillnessManager.getActions().deleteVNode({
           id: this.state.uniqueId,
         });
       }
     }
   }
-
-  return hoistNonReactStatics(
-    WrapperComponent,
-    DecoratedComponent
-  ) as any as ComponentType<OffscreenProps>;
+   */
 }
