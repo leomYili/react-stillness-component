@@ -9,13 +9,17 @@ export type Listener = () => void;
 
 export type ActionCreator<Payload> = (args: any[]) => Action<Payload>;
 
-export type StillnessActions = VNodeActions;
+export type StillnessActions = VNodeActions & OperationActions;
 
 export interface VNodeActions {
   createVNode: (payload) => void;
   deleteVNode: (payload) => void;
   updateVNodeIsStillness: (payload) => void;
   resetVNode: (payload) => void;
+}
+
+export interface OperationActions {
+  updateOperation: (payload) => void;
 }
 
 export interface StillnessManager {
@@ -54,7 +58,7 @@ export interface Action<Payload> {
 }
 
 export interface VNodePayload {
-  oldId?: UniqueId;
+  uniqueId?: UniqueId;
   id: UniqueId;
   groupId?: Symbol | UniqueId;
   handle?: any;

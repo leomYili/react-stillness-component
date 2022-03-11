@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Offscreen } from 'react-stillness-component';
+import { Offscreen, OffscreenInstance } from 'react-stillness-component';
 import { Count } from './count';
 import { WithCount } from './count/countClass';
 
@@ -11,9 +11,12 @@ const List = (props) => {
 
   const testRef = useRef(null);
 
+  const offscreen1Ref = useRef(null);
+
   useEffect(() => {
     // setTimeout(() => setInfo('模拟请求列表真实数据'), 1500);
     console.log(testRef);
+    console.log(offscreen1Ref.current);
   }, []);
 
   return (
@@ -35,7 +38,7 @@ const List = (props) => {
           background: '#bedaff',
         }}
       >
-        <Offscreen visible={visible} id="list1">
+        <Offscreen visible={visible} type="list" ref={offscreen1Ref}>
           <div ref={testRef}>
             <Count />
           </div>

@@ -8,11 +8,9 @@ import {
   UniqueId,
   StillnessManager,
   StillnessActions,
+  Identifier,
 } from '../types';
-import {
-  shallowEqual,
-  createWrapperElement,
-} from '../utils';
+import { shallowEqual, createWrapperElement } from '../utils';
 
 export interface OffscreenProps {
   /**
@@ -20,21 +18,18 @@ export interface OffscreenProps {
    */
   visible: boolean;
   /**
-   * Optionally, even without this prop, the component itself will automatically generate a unique identifier
-   */
-  id?: UniqueId;
-  /**
    * Optional, for grouping stillness components
    * Components of the same group can be stationary at the same time
    */
-  groupId?: UniqueId;
+  type?: UniqueId;
   /**
    * Optional,When the presence of a scrolling element is detected,
    * the scroll position will be automatically saved by default, if this feature is not needed, set to false
    */
   scrollReset?: boolean;
   children: React.ReactNode;
-  stillnessManager?: StillnessManager
+  stillnessManager?: StillnessManager;
+  [key: string]: any;
 }
 
 class OffscreenComponent extends Component<OffscreenProps> {
@@ -48,13 +43,13 @@ class OffscreenComponent extends Component<OffscreenProps> {
   private targetElement: HTMLElement = createWrapperElement();
   private cacheNodes: any[] = [];
   private uniqueId: UniqueId;
-  private uniqueGroupId: UniqueId;
+  private type: Identifier;
 
   constructor(props: OffscreenProps) {
     super(props);
 
-    this.uniqueId = props?.id;
-    this.uniqueGroupId = props?.groupId;
+    this.uniqueId = props?.uniqueId;
+    this.type = props?.type;
     this.actions = props.stillnessManager.getActions();
   }
 

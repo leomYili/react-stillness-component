@@ -53,7 +53,7 @@ export class StillnessContractImpl implements StillnessContract {
   public getStillnessItem() {
     return this.internalMonitor.getStillnessItem(this.id, this.index);
   }
-  public unset(obj: { id?: Identifier; groupId?: Identifier }): void {
+  public unset(obj: { id?: Identifier; type?: Identifier }): void {
     //return this.internalMonitor.unset(obj);
   }
   public clear(): void {
