@@ -33,7 +33,7 @@ export class StillnessMonitorImpl implements StillnessMonitor {
   ): Unsubscribe {
     const { parentId } = params;
     invariant(typeof listener === 'function', 'listener must be a function.');
-    invariant(typeof parentId === 'undefined', 'parentId is required');
+    invariant(typeof parentId === 'string', 'parentId is required');
 
     let prevTargetIds = this.store.getState().operation.targetIds;
     let prevType = this.store.getState().operation.type;
@@ -83,8 +83,7 @@ export class StillnessMonitorImpl implements StillnessMonitor {
         const canSkipListener =
           !effectTypes.includes(currentType) ||
           (prevType === currentType &&
-            intersection(prevTargetIds, currentTargetIds).length ===
-              0 &&
+            intersection(prevTargetIds, currentTargetIds).length === 0 &&
             intersection(prevTargetGroupIds, currentTargetGroupIds).length ===
               0);
 

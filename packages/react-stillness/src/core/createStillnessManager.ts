@@ -4,8 +4,7 @@ import { createStore, Store } from 'redux';
 
 import { stillnessReducers, State } from './reducers';
 import { StillnessManagerImpl, StillnessMonitorImpl } from './classes';
-import { Action, StillnessManager, UniqueId } from '../types';
-import { isUndefined } from '../utils';
+import { StillnessManager } from '../types';
 
 function makeStoreInstance(debugMode: boolean): Store<State> {
   // TODO: if we ever make a react-native version of this,

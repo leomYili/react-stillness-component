@@ -8,7 +8,7 @@ import { StillnessManager } from '../../types';
 import { combineFuncs } from '../../utils';
 
 export function createVNodeActions(manager: StillnessManager) {
-  return combineFuncs(
+  const actions = combineFuncs(
     {
       createVNode,
       deleteVNode,
@@ -17,4 +17,6 @@ export function createVNodeActions(manager: StillnessManager) {
     },
     manager
   );
+
+  return actions;
 }

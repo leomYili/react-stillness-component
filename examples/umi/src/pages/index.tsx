@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
-import { Button, Card, Divider } from 'antd';
-import { Offscreen } from 'react-stillness-component';
+import { Button, Card, Divider, Form } from 'antd';
+import { Offscreen, OffscreenInstance } from 'react-stillness-component';
 
 import { Consumer } from '../module/StillnessContext';
 import { StillnessScope, WithStillness } from '../module';
@@ -21,6 +21,7 @@ export default class IndexPage extends Component {
 
     this.outSideRef = React.createRef();
     this.insideRef = React.createRef();
+    this.ssdsRef = React.createRef();
   }
 
   componentDidMount() {
@@ -43,7 +44,9 @@ export default class IndexPage extends Component {
                 ref={this.outSideRef}
               >
                 <h1 className={styles.title}>Page index</h1>
-                <Offscreen></Offscreen>
+                <Offscreen visible>
+                  <div></div>
+                </Offscreen>
                 <Button
                   onClick={() => {
                     context.actions.drop('count1');

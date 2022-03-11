@@ -3,7 +3,13 @@ import ReactDOM from 'react-dom';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
 import { StillnessContext, StillnessNodeContext } from '../core';
-import { shallowEqual, isPlainObject, isRefAble, isUndefined } from '../utils';
+import {
+  shallowEqual,
+  isPlainObject,
+  isRefAble,
+  isUndefined,
+  isFunction,
+} from '../utils';
 import { Handle } from '../internals';
 import {
   UniqueId,
@@ -65,7 +71,8 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
     private manager: StillnessManager | undefined;
     private handleContract: HandleReceiverContract | undefined;
     private handle: HandleReceiver | undefined;
-    private handleIndex: number;
+    private unsubscribe: any = null;
+    private currentStillness: boolean = false;
     private stillnessParentId: Identifier;
 
     public constructor(props: Props) {
@@ -84,7 +91,11 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
     }
 
     public componentDidMount() {
+      console.log(this.props);
       this.receiveProps(this.props);
+      this.currentStillness = this.manager
+        .getMonitor()
+        .isStillness(this.stillnessParentId);
       this.handleChange();
     }
 
@@ -110,28 +121,27 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
       }
 
       this.handle.receiveProps(props);
-      /* if (this.handleContract.getStillnessId() !== this.stillnessParentId) {
-        this.registerHandle(this.stillnessParentId, props);
-      } */
-
-      this.handleContract.receiveId(this.stillnessParentId);
-      
-    }
-
-    // 这里不再需要二次注册修改store,只要对targetIds产生反应即可,执行相应回调就会驱动component更新了
-    // 连卸载都不需要
-    /* public registerHandle(id, props: any) {
-      if (!this.manager) {
+      if (this.handleContract.getStillnessId() === this.stillnessParentId) {
         return;
       }
+      if (isFunction(this.unsubscribe)) {
+        this.unsubscribe();
+      }
 
-      this.handleIndex = this.manager.getActions().registerVNodeHandle({
-        id,
-        handle: this.handle,
-        index: this.handleIndex,
-      });
-      this.handleContract.receiveIndex(this.handleIndex);
-    } */
+      const globalMonitor = this.manager.getMonitor();
+      this.unsubscribe = globalMonitor.subscribeToStateChange(
+        () => {
+          console.log(
+            '监听到状态变化,这里因为被阻断,所以只能从这里获取当前连接状态',
+            globalMonitor.isStillness(this.stillnessParentId)
+          );
+
+          this.handleChange();
+        },
+        { parentId: this.stillnessParentId }
+      );
+      this.handleContract.receiveId(this.stillnessParentId);
+    }
 
     public handleChange = () => {
       const nextState = this.getCurrentState();

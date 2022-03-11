@@ -38,6 +38,7 @@ export class StillnessManagerImpl implements StillnessManager {
   public getActions(): StillnessActions {
     // 这里需要返回所有可执行的action,方便内部进行直接调用
     const manager = this;
+
     const { dispatch } = this.store;
 
     function bindActionCreator(actionCreator: ActionCreator<any>) {
