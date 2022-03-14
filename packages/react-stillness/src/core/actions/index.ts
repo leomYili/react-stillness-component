@@ -1,9 +1,10 @@
 import {
   createVNode,
   deleteVNode,
-  updateVNodeIsStillness,
+  updateVNode,
   resetVNode,
 } from './vNodeAction';
+import { triggerMount, triggerUnmount } from './operationAction';
 import { StillnessManager } from '../../types';
 import { combineFuncs } from '../../utils';
 
@@ -12,8 +13,20 @@ export function createVNodeActions(manager: StillnessManager) {
     {
       createVNode,
       deleteVNode,
-      updateVNodeIsStillness,
+      updateVNode,
       resetVNode,
+    },
+    manager
+  );
+
+  return actions;
+}
+
+export function createOperationActions(manager: StillnessManager) {
+  const actions = combineFuncs(
+    {
+      triggerMount,
+      triggerUnmount,
     },
     manager
   );

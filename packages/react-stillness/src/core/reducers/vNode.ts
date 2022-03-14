@@ -1,8 +1,8 @@
 import {
   ADD_V_NODE,
   REMOVE_V_NODE,
-  UPDATE_V_NODE_IS_STILLNESS,
   RESET_V_NODE,
+  UPDATE_V_NODE,
 } from '../actions/vNodeAction';
 import { isUndefined, isFunction, getStillnessUniqueId } from '../../utils';
 import { UniqueId, Action, Identifier } from '../../types';
@@ -12,7 +12,6 @@ export interface State {
   type: UniqueId;
   parentId: UniqueId;
   visible: boolean;
-  handleUnique: any[];
 }
 
 export function reduce(
@@ -22,13 +21,9 @@ export function reduce(
     parentId: UniqueId;
     type: Identifier;
     visible: boolean;
-    handleUnique: any[];
-    handle: any;
   }>
 ): { [key: string]: State } {
   const { payload } = action;
-  const { uniqueId, ...rest } = payload;
-  const now = Date.now().toString();
 
   switch (action.type) {
     case ADD_V_NODE:
@@ -37,17 +32,17 @@ export function reduce(
         type: payload.type,
         parentId: payload.parentId,
         visible: payload.visible,
-        handleUnique: [],
       };
       return { ...state };
-    case UPDATE_V_NODE_IS_STILLNESS:
-      /* if (state[payload.oldId]) {
-        state[payload.id] = {
-          ...rest,
+    case UPDATE_V_NODE:
+      if (state[payload.uniqueId]) {
+        state[payload.uniqueId] = {
+          ...state[payload.uniqueId],
+          type: payload.type,
+          parentId: payload.parentId,
           visible: payload.visible,
         };
-      } */
-
+      }
       return { ...state };
     case RESET_V_NODE:
       /* if (!state[payload.id]) {

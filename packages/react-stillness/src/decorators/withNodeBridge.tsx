@@ -8,23 +8,12 @@ import React, {
   useImperativeHandle,
 } from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import invariant from 'invariant';
 
-import { OffscreenProps } from '../components';
+import { OffscreenProps, OffscreenInnerProps } from '../components';
 import { StillnessContext, StillnessNodeContext } from '../core';
-import { register } from '../internals';
-import {
-  isUndefined,
-  shallowEqual,
-  getNextUniqueId,
-  useIsomorphicLayoutEffect,
-} from '../utils';
-import {
-  StillnessContextType,
-  StillnessManager,
-  Identifier,
-  UniqueId,
-} from '../types';
+import { StillnessRegistrationImpl } from '../internals';
+import { isUndefined, isBoolean, useIsomorphicLayoutEffect } from '../utils';
+import { Identifier, UniqueId, Registration } from '../types';
 
 export interface OffscreenInstance {
   getUniqueId: () => UniqueId;
@@ -39,7 +28,7 @@ export interface OffscreenInstance {
  * @returns
  */
 export function withNodeBridge(
-  DecoratedComponent: ComponentType<OffscreenProps>
+  DecoratedComponent: ComponentType<OffscreenInnerProps>
 ): ComponentType<
   React.PropsWithChildren<OffscreenProps> & { ref?: OffscreenInstance }
 > {
@@ -50,19 +39,37 @@ export function withNodeBridge(
     OffscreenInstance,
     OffscreenProps
   > = (props: OffscreenProps, ref: React.Ref<OffscreenInstance>) => {
+    const { children, ...restProps } = props;
     const { stillnessManager } = useContext(StillnessContext);
     const { stillnessParentId = '__root__' } = useContext(StillnessNodeContext);
     const [isCurrentlyMounted, setIsCurrentlyMounted] = useState(false);
+    const [wrapperProps, setWrapperProps] = useState({});
+
+    const uniqueNodeRef = useRef<Registration>(undefined);
     const isMountRef = useRef(false);
 
+    const globalMonitor = stillnessManager.getMonitor();
+
     const handleChange = () => {
+      const _isStillness = globalMonitor.isStillness(
+        uniqueNodeRef.current.getUniqueId()
+      );
+
+      console.log('Effect,从而需要刷新组件', _isStillness);
+
+      if (!_isStillness) {
+        isMountRef.current = false;
+      }
+
       setIsCurrentlyMounted(false);
     };
 
     useImperativeHandle(ref, () => {
       return {
-        getUniqueId: () => stillnessParentId,
-        isStillness: () => true,
+        getUniqueId: () => uniqueNodeRef.current.getUniqueId(),
+        isStillness: () => {
+          return globalMonitor.isStillness(uniqueNodeRef.current.getUniqueId());
+        },
         unset: ({ id, type }) => {
           //stillnessManager.unset({ id, type });
         },
@@ -74,28 +81,45 @@ export function withNodeBridge(
 
     useIsomorphicLayoutEffect(() => {
       // 创建对应节点
-      // subscribeToEffectChange(handleChange)用来监听组件操作行为变化
-      const [uniqueId, unsubscribe] = register(
-        { ...(props as any), parentId: stillnessParentId },
-        stillnessManager
-      );
+      uniqueNodeRef.current = new StillnessRegistrationImpl(stillnessManager);
+
+      const [uniqueId, unregister] = uniqueNodeRef.current.register({
+        ...props,
+        parentId: stillnessParentId,
+      });
+
+      const unsubscribe = globalMonitor.subscribeToEffectChange(handleChange, {
+        uniqueId,
+        type: props.type,
+      });
+
+      setWrapperProps({
+        ...restProps,
+        uniqueId: uniqueNodeRef.current.getUniqueId(),
+        stillnessManager: stillnessManager,
+      });
 
       if (props.visible) {
-        // 初始化逻辑
         setIsCurrentlyMounted(true);
       }
 
       return () => {
-        // 删除对应节点
-        // unsubscribe
+        unregister();
+        unsubscribe();
       };
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      // 根据当前props,直接更新id以及groupId
+      // 根据当前props,直接更新id以及type
       // updateNode逻辑
       if (isMountRef.current) {
-        console.log('update', props);
+        uniqueNodeRef.current.update({ ...props, parentId: stillnessParentId });
+
+        setWrapperProps({
+          ...restProps,
+          uniqueId: uniqueNodeRef.current.getUniqueId(),
+          stillnessManager: stillnessManager,
+        });
       }
     }, [props, stillnessParentId]);
 
@@ -109,11 +133,12 @@ export function withNodeBridge(
       }
     }, [isCurrentlyMounted]);
 
-    const RenderedWrappedComponent = React.memo((props) => (
-      <Decorated {...props} stillnessManager={stillnessManager} />
-    ));
+    const RenderedWrappedComponent = useMemo(
+      () => <Decorated {...wrapperProps}>{children}</Decorated>,
+      [wrapperProps]
+    );
 
-    return isCurrentlyMounted ? <RenderedWrappedComponent {...props} /> : null;
+    return isCurrentlyMounted ? RenderedWrappedComponent : null;
   };
 
   Connect.displayName = displayName;

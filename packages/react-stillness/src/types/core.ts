@@ -11,15 +11,18 @@ export type ActionCreator<Payload> = (args: any[]) => Action<Payload>;
 
 export type StillnessActions = VNodeActions & OperationActions;
 
+export type OperationTypes = 'MOUNT' | 'UNMOUNT' | 'UNSET' | 'CLEAR' | null;
+
 export interface VNodeActions {
-  createVNode: (payload) => void;
-  deleteVNode: (payload) => void;
-  updateVNodeIsStillness: (payload) => void;
-  resetVNode: (payload) => void;
+  createVNode: (payload: VNodePayload) => void;
+  deleteVNode: (payload: VNodePayload) => void;
+  updateVNode: (payload: VNodePayload) => void;
+  resetVNode: (payload: VNodePayload) => void;
 }
 
 export interface OperationActions {
-  updateOperation: (payload) => void;
+  triggerMount: (payload: OperationPayload) => void;
+  triggerUnmount: (payload: OperationPayload) => void;
 }
 
 export interface StillnessManager {
@@ -58,8 +61,14 @@ export interface Action<Payload> {
 }
 
 export interface VNodePayload {
-  uniqueId?: UniqueId;
-  id: UniqueId;
-  groupId?: Symbol | UniqueId;
-  handle?: any;
+  uniqueId: UniqueId;
+  parentId?: UniqueId;
+  type?: Identifier;
+  visible?: boolean;
+}
+
+export interface OperationPayload {
+  type: OperationTypes;
+  targetIds: UniqueId[];
+  targetType?: Identifier;
 }

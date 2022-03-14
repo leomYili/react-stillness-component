@@ -4,19 +4,19 @@ import {
   TRIGGER_CLEAR,
   TRIGGER_UNSET,
 } from '../actions/operationAction';
-import { Action, UniqueId } from '../../types';
+import { Action, UniqueId, OperationTypes } from '../../types';
 import { operationTypes } from '../classes/constants';
 
 export interface State {
-  type: string | null;
+  type: OperationTypes;
   targetIds: UniqueId[];
-  targetGroupIds: UniqueId[];
+  targetType: UniqueId[];
 }
 
 const initialState: State = {
   type: null,
   targetIds: [],
-  targetGroupIds: [],
+  targetType: [],
 };
 
 export function reduce(
@@ -27,28 +27,28 @@ export function reduce(
     case TRIGGER_MOUNT:
       return {
         ...state,
-        type: operationTypes.MOUNT,
+        type: operationTypes.MOUNT as OperationTypes,
         targetIds: action.payload.targetIds,
       };
     case TRIGGER_UNMOUNT:
       return {
         ...state,
-        type: operationTypes.UNMOUNT,
+        type: operationTypes.UNMOUNT as OperationTypes,
         targetIds: action.payload.targetIds,
       };
     case TRIGGER_UNSET:
       return {
         ...state,
-        type: operationTypes.UNSET,
+        type: operationTypes.UNSET as OperationTypes,
         targetIds: action.payload.targetIds,
-        targetGroupIds: action.payload.targetGroupIds,
+        targetType: action.payload.targetType,
       };
     case TRIGGER_CLEAR:
       return {
         ...state,
-        type: operationTypes.CLEAR,
+        type: operationTypes.CLEAR as OperationTypes,
         targetIds: [],
-        targetGroupIds: [],
+        targetType: [],
       };
     default:
       return state;

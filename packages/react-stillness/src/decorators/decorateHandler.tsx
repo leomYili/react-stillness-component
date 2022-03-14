@@ -10,7 +10,6 @@ import {
   isUndefined,
   isFunction,
 } from '../utils';
-import { Handle } from '../internals';
 import {
   UniqueId,
   Identifier,
@@ -19,6 +18,7 @@ import {
   StillnessMonitor,
   StillnessContextType,
   StillnessContract,
+  StillnessHandle,
 } from '../types';
 
 export interface DecorateHandlerArgs<Props, ItemId> {
@@ -28,15 +28,6 @@ export interface DecorateHandlerArgs<Props, ItemId> {
   containerDisplayName: string;
   collect: any;
   options?: any;
-}
-
-interface HandleReceiverContract extends StillnessContract {
-  receiveId: (id: UniqueId) => void;
-  receiveIndex: (index: number) => void;
-}
-
-interface HandleReceiver {
-  receiveProps: (props: any) => void;
 }
 
 interface StillnessComponentProps {}
@@ -69,16 +60,14 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
 
     private decoratedRef: any = createRef();
     private manager: StillnessManager | undefined;
-    private handleContract: HandleReceiverContract | undefined;
-    private handle: HandleReceiver | undefined;
+    private handleContract: StillnessContract | undefined;
+    private handle: StillnessHandle | undefined;
     private unsubscribe: any = null;
     private currentStillness: boolean = false;
     private stillnessParentId: Identifier;
 
     public constructor(props: Props) {
       super(props);
-
-      console.log('初始化');
     }
 
     public getDecoratedComponentInstance() {
@@ -103,6 +92,7 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
       prevProps: Readonly<StillnessComponentProps>
     ): void {
       if (!shallowEqual(this.props, prevProps)) {
+        console.log('?????');
         this.receiveProps(this.props);
         this.handleChange();
       }
@@ -135,6 +125,15 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
             '监听到状态变化,这里因为被阻断,所以只能从这里获取当前连接状态',
             globalMonitor.isStillness(this.stillnessParentId)
           );
+          const _isStillness = globalMonitor.isStillness(
+            this.stillnessParentId
+          );
+
+          if (_isStillness) {
+            this.handleContract.receiveItem(this.handle.unmount());
+          } else {
+            this.handleContract.receiveItem(this.handle.mount());
+          }
 
           this.handleChange();
         },
@@ -192,7 +191,7 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
             return (
               <Decorated
                 {...this.props}
-                {...this.getCurrentState()}
+                {...this.state}
                 ref={isRefAble(Decorated) ? this.decoratedRef : null}
               />
             );
