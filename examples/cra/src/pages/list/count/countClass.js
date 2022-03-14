@@ -25,15 +25,20 @@ export class Count extends Component {
 const spec = {
   mounted: (props, monitor) => {
     console.log('开始进入静止状态', props, monitor);
+
+    return 'mounted';
   },
   unmounted: (props, monitor) => {
     console.log('退出静止状态', props, monitor);
+
+    return 'unmounted';
   },
 };
 
-const collect = (props, monitor) => {
+const collect = (props, contract) => {
+  console.log(contract.getStillnessItem());
   return {
-    isStillness: monitor.isStillness(),
+    isStillness: contract.isStillness(),
   };
 };
 

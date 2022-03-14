@@ -1,4 +1,3 @@
-import invariant from 'invariant';
 import {
   Identifier,
   StillnessMonitor,
@@ -14,31 +13,19 @@ export class StillnessContractImpl implements StillnessContract {
   private internalMonitor: StillnessMonitor;
   private internalActions: StillnessActions;
   private id: Identifier = null;
-  private index: number = null;
+  private item: any;
 
   public constructor(manager: StillnessManager) {
     this.internalMonitor = manager.getMonitor();
     this.internalActions = manager.getActions();
-  }
-  public subscribeToStateChange(
-    listener: Listener,
-    params: { parentId: Identifier }
-  ): Unsubscribe {
-    return this.internalMonitor.subscribeToStateChange(listener, params);
-  }
-  public subscribeToEffectChange(
-    listener: Listener,
-    params: { id: Identifier; groupId: Identifier }
-  ): Unsubscribe {
-    return this.internalMonitor.subscribeToEffectChange(listener, params);
   }
 
   public receiveId(id: Identifier | null): void {
     this.id = id;
   }
 
-  public receiveIndex(index: number): void {
-    this.index = index;
+  public receiveItem(item: any): void {
+    this.item = item;
   }
 
   public isStillness(): boolean {
@@ -47,11 +34,11 @@ export class StillnessContractImpl implements StillnessContract {
   public getStillnessId(): Identifier {
     return this.id;
   }
-  public getStillnessGroupId(): Identifier {
-    return this.internalMonitor.getStillnessGroupId(this.id);
+  public getStillnessType(): Identifier {
+    return this.internalMonitor.getStillnessType(this.id);
   }
   public getStillnessItem() {
-    return this.internalMonitor.getStillnessItem(this.id, this.index);
+    return this.item;
   }
   public unset(obj: { id?: Identifier; type?: Identifier }): void {
     //return this.internalMonitor.unset(obj);

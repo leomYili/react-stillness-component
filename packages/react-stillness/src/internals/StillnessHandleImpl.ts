@@ -1,11 +1,12 @@
 import { RefObject } from 'react';
-import { StillnessSpec, StillnessManager, StillnessContract } from '../types';
+import {
+  StillnessSpec,
+  StillnessManager,
+  StillnessContract,
+  StillnessHandle,
+} from '../types';
 
-export interface Handle {
-  receiveProps(props: any): void;
-}
-
-export class StillnessHandleImpl<Props, ResObject> implements Handle {
+export class StillnessHandleImpl<Props, ResObject> implements StillnessHandle {
   private props: Props | null = null;
   private spec: StillnessSpec<Props, ResObject>;
   private manager: StillnessManager;

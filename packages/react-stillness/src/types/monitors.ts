@@ -11,8 +11,8 @@ export interface StillnessMonitor<ResObject = unknown> {
   subscribeToEffectChange(
     listener: Listener,
     params: {
-      id: UniqueId;
-      groupId: UniqueId;
+      uniqueId: UniqueId;
+      type: Identifier;
     }
   ): Unsubscribe;
 
@@ -20,11 +20,11 @@ export interface StillnessMonitor<ResObject = unknown> {
    * Returning true means the component is in the cached state
    * The default value is true
    */
-  isStillness(id): boolean;
+  isStillness(uniqueId): boolean;
 
-  getStillnessId(id): UniqueId | null;
+  getStillnessId(uniqueId): UniqueId | null;
 
-  getStillnessGroupId(id): UniqueId | null;
+  getStillnessType(uniqueId): UniqueId | null;
 
-  getStillnessItem(id, index): ResObject | null;
+  getStillnessItem(uniqueId): ResObject | null;
 }

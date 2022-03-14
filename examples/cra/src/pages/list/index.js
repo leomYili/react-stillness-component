@@ -30,8 +30,7 @@ const List = (props) => {
       <button>
         <Link to={'/detail'}>进入详情页</Link>
       </button>
-
-      <div
+      {/* <div
         style={{
           display: 'block',
           marginBottom: '20px',
@@ -43,9 +42,9 @@ const List = (props) => {
             <Count />
           </div>
         </Offscreen>
-      </div>
+      </div> */}
 
-      {/* <div
+      <div
         style={{
           background: '#8bc34a',
         }}
@@ -54,7 +53,7 @@ const List = (props) => {
           <>sdsdsd</>
           <WithCount />
         </Offscreen>
-      </div> */}
+      </div>
 
       <button
         onClick={() => {

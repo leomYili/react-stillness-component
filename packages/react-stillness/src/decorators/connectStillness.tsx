@@ -1,5 +1,4 @@
 import { ComponentType } from 'react';
-import invariant from 'invariant';
 
 import { decorateHandler } from './decorateHandler';
 import { StillnessContractImpl, StillnessHandleImpl } from '../internals';

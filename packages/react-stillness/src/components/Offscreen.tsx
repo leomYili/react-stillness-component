@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom';
 import invariant from 'invariant';
 
 import { StillnessNodeContext } from '../core';
+import { operationTypes } from '../core/classes/constants';
 import { withNodeBridge } from '../decorators';
 import {
   UniqueId,
   StillnessManager,
   StillnessActions,
   Identifier,
+  OperationTypes,
 } from '../types';
-import { shallowEqual, createWrapperElement } from '../utils';
+import { shallowEqual, createWrapperElement, isBoolean } from '../utils';
 
 export interface OffscreenProps {
   /**
@@ -28,11 +30,14 @@ export interface OffscreenProps {
    */
   scrollReset?: boolean;
   children: React.ReactNode;
-  stillnessManager?: StillnessManager;
-  [key: string]: any;
 }
 
-class OffscreenComponent extends Component<OffscreenProps> {
+export type OffscreenInnerProps = OffscreenProps & {
+  uniqueId: UniqueId;
+  stillnessManager?: StillnessManager;
+};
+
+class OffscreenComponent extends Component<OffscreenInnerProps> {
   static displayName = 'Offscreen';
   static defaultProps = {
     scrollReset: true,
@@ -43,19 +48,15 @@ class OffscreenComponent extends Component<OffscreenProps> {
   private targetElement: HTMLElement = createWrapperElement();
   private cacheNodes: any[] = [];
   private uniqueId: UniqueId;
-  private type: Identifier;
 
-  constructor(props: OffscreenProps) {
+  constructor(props: OffscreenInnerProps) {
     super(props);
 
-    this.uniqueId = props?.uniqueId;
-    this.type = props?.type;
+    this.uniqueId = props.uniqueId;
     this.actions = props.stillnessManager.getActions();
   }
 
-  private mount = (init: boolean = false) => {
-    // dispatch({type: 'update', payload:{id: this.uniqueId, visible: true}});
-
+  private unmount = (init: boolean = false) => {
     this.helpRef?.current?.insertAdjacentElement(
       'afterend',
       this.targetElement
@@ -67,14 +68,16 @@ class OffscreenComponent extends Component<OffscreenProps> {
 
     if (!init) {
       // 初始化时不会触发对应的生命周期函数
-      // dispatch({type: 'update', payload:{id: this.uniqueId, visible: true}});
+      // dispatch({type: 'updateOperation', payload:{id: this.uniqueId, visible: true}});
+      this.actions.triggerUnmount({
+        type: operationTypes.UNMOUNT as OperationTypes,
+        targetIds: [this.uniqueId], // 这里之后需要通过计算,找出所有向下传播的所有OffScreen的id
+      });
     }
   };
 
-  private unmount = () => {
+  private mount = () => {
     try {
-      // dispatch({type: 'update', payload:{id: this.uniqueId, visible: true}});
-
       if (this.helpRef?.current?.parentNode !== null) {
         this.helpRef?.current?.parentNode.removeChild(this.targetElement);
       }
@@ -82,30 +85,30 @@ class OffscreenComponent extends Component<OffscreenProps> {
       if (this.props.scrollReset) {
         // 保存该节点下可滚动元素的滚动位置
       }
+
+      this.actions.triggerMount({
+        type: operationTypes.MOUNT as OperationTypes,
+        targetIds: [this.uniqueId], // 这里之后需要通过计算,找出所有向下传播的所有OffScreen的id
+      });
     } catch (error) {
       // console.error(error, 'Offscreen.unMount: parentNode is null')
     }
   };
 
-  public shouldComponentUpdate(
-    nextProps: Readonly<OffscreenProps>,
-    nextState: Readonly<{}>
-  ): boolean {
-    return (
-      !shallowEqual(this.props, nextProps) ||
-      !shallowEqual(this.state, nextState)
-    );
+  public shouldComponentUpdate(nextProps: Readonly<OffscreenProps>): boolean {
+    return !shallowEqual(this.props, nextProps);
   }
 
   public componentDidUpdate(prevProps: Readonly<OffscreenProps>): void {
     if (
-      !shallowEqual(this.props, prevProps) &&
-      prevProps.visible !== this.props.visible
+      prevProps.visible !== this.props.visible &&
+      isBoolean(this.props.visible)
     ) {
+      console.log('真实更新', this.props.visible);
       if (this.props.visible) {
-        this.mount();
-      } else {
         this.unmount();
+      } else {
+        this.mount();
       }
     }
   }
@@ -121,16 +124,25 @@ class OffscreenComponent extends Component<OffscreenProps> {
           data-key={this.uniqueId}
           ref={this.helpRef}
           style={{ display: 'none' }}
-        >
-          {ReactDOM.createPortal(this.props.children, this.targetElement)}
-        </div>
+        />
+        {ReactDOM.createPortal(this.props.children, this.targetElement)}
       </StillnessNodeContext.Provider>
     );
   }
 
   public componentDidMount() {
     if (this.props.visible) {
-      this.mount(true);
+      this.unmount(true);
+    }
+  }
+
+  public componentWillUnmount() {
+    try {
+      if (this.helpRef?.current?.parentNode !== null) {
+        this.helpRef?.current?.parentNode.removeChild(this.targetElement);
+      }
+    } catch (error) {
+      // console.error(error, 'Offscreen.unMount: parentNode is null')
     }
   }
 }

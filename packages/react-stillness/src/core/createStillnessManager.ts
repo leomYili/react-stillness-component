@@ -1,5 +1,3 @@
-import { useReducer } from 'react';
-import invariant from 'invariant';
 import { createStore, Store } from 'redux';
 
 import { stillnessReducers, State } from './reducers';

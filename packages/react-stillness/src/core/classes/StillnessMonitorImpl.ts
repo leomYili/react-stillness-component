@@ -8,7 +8,7 @@ import {
   UniqueId,
 } from '../../types';
 import { State } from '../reducers';
-import { intersection } from '../../utils';
+import { shallowEqual, isUndefined } from '../../utils';
 import { operationTypes, lifeCycleTypes, effectTypes } from './constants';
 
 /**
@@ -35,8 +35,8 @@ export class StillnessMonitorImpl implements StillnessMonitor {
     invariant(typeof listener === 'function', 'listener must be a function.');
     invariant(typeof parentId === 'string', 'parentId is required');
 
-    let prevTargetIds = this.store.getState().operation.targetIds;
     let prevType = this.store.getState().operation.type;
+    let prevTargetIds = this.store.getState().operation.targetIds;
     const handleChange = () => {
       const store = this.store.getState();
       const currentTargetIds = store.operation.targetIds;
@@ -46,7 +46,8 @@ export class StillnessMonitorImpl implements StillnessMonitor {
         const canSkipListener =
           !lifeCycleTypes.includes(currentType) ||
           (prevType === currentType &&
-            intersection(prevTargetIds, currentTargetIds).length === 0);
+            shallowEqual(prevTargetIds, currentTargetIds)) ||
+          !currentTargetIds.includes(parentId);
 
         if (!canSkipListener) {
           listener();
@@ -62,61 +63,53 @@ export class StillnessMonitorImpl implements StillnessMonitor {
 
   public subscribeToEffectChange(
     listener: Listener,
-    params: { id: UniqueId; groupId: UniqueId }
+    params: { uniqueId: UniqueId; type?: Identifier }
   ): Unsubscribe {
-    const { id, groupId } = params;
-    invariant(
-      typeof id === 'undefined' || typeof groupId === 'undefined',
-      'id adn groupId is required'
-    );
+    const { uniqueId, type } = params;
+    invariant(!isUndefined(uniqueId), 'uniqueId is required');
 
     let prevType = this.store.getState().operation.type;
     let prevTargetIds = this.store.getState().operation.targetIds;
-    let prevTargetGroupIds = this.store.getState().operation.targetGroupIds;
+    let prevTargetType = this.store.getState().operation.targetType;
     const handleChange = () => {
       const store = this.store.getState();
-      const currentTargetIds = store.operation.targetIds;
-      const currentTargetGroupIds = store.operation.targetGroupIds;
       const currentType = store.operation.type;
+      const currentTargetIds = store.operation.targetIds;
+      const currentTargetType = store.operation.targetType;
 
       try {
         const canSkipListener =
           !effectTypes.includes(currentType) ||
           (prevType === currentType &&
-            intersection(prevTargetIds, currentTargetIds).length === 0 &&
-            intersection(prevTargetGroupIds, currentTargetGroupIds).length ===
-              0);
+            shallowEqual(prevTargetIds, currentTargetIds) &&
+            prevTargetType === currentTargetType);
 
         if (!canSkipListener) {
           listener();
         }
       } finally {
-        prevTargetIds = currentTargetIds;
-        prevTargetGroupIds = currentTargetGroupIds;
         prevType = currentType;
+        prevTargetIds = currentTargetIds;
+        prevTargetType = currentTargetType;
       }
     };
 
     return this.store.subscribe(handleChange);
   }
 
-  public getStillnessItem(id: any, index: number) {
-    if (index >= 0) {
-      return this.store.getState().vNodes[id];
-    }
-
-    return null;
+  public getStillnessItem(uniqueId: any) {
+    return this.store.getState().vNodes[uniqueId];
   }
 
-  public getStillnessId(id): Identifier {
-    return this.store.getState().vNodes[id]?.id;
+  public getStillnessId(uniqueId): Identifier {
+    return this.store.getState().vNodes[uniqueId]?.id;
   }
 
-  public getStillnessGroupId(id): Identifier {
-    return this.store.getState().vNodes[id]?.groupId;
+  public getStillnessType(uniqueId): Identifier {
+    return this.store.getState().vNodes[uniqueId]?.type;
   }
 
-  public isStillness(id): boolean {
-    return this.store.getState().vNodes[id]?.visible;
+  public isStillness(uniqueId): boolean {
+    return this.store.getState().vNodes[uniqueId]?.visible;
   }
 }

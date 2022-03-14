@@ -80,3 +80,9 @@ export function isRefForwardingComponent(C: unknown): boolean {
 export function isRefAble(C: unknown): boolean {
   return isClassComponent(C) || isRefForwardingComponent(C);
 }
+
+export function isBoolean(obj) {
+  return (
+    obj === true || obj === false || toString.call(obj) === '[object Boolean]'
+  );
+}

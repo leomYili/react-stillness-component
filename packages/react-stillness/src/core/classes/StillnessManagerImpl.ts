@@ -2,7 +2,7 @@ import invariant from 'invariant';
 import { Store, Action } from 'redux';
 
 import { State } from '../reducers';
-import { createVNodeActions } from '../actions';
+import { createVNodeActions, createOperationActions } from '../actions';
 import { isUndefined } from '../../utils';
 import {
   StillnessManager,
@@ -50,7 +50,10 @@ export class StillnessManagerImpl implements StillnessManager {
       };
     }
 
-    const actions = { ...createVNodeActions(this) };
+    const actions = {
+      ...createVNodeActions(this),
+      ...createOperationActions(this),
+    };
 
     return Object.keys(actions).reduce(
       (boundActions: StillnessActions, key: string) => {
@@ -62,40 +65,6 @@ export class StillnessManagerImpl implements StillnessManager {
       },
       {} as StillnessActions
     );
-
-    /* return {
-      createStillnessVNode: (payload) => {
-        invariant(
-          isUndefined(this.getStore().vNodes[payload.id]),
-          'The id must be unique.please check if the component id is duplicated'
-        );
-
-        if (this.getStore().vNodes[payload.id]) {
-          return false;
-        }
-
-        this.store.dispatch(addVNode(payload));
-      },
-      updateStillnessVNode: (payload) => {
-        this.store.dispatch(updateVNode(payload));
-      },
-      deleteStillnessVNode: (payload) => {
-        this.store.dispatch(removeVNode(payload));
-      },
-      triggerMountQueue: (payload: { id: UniqueId }) => {},
-      triggerUnmountQueue: (payload: { id: UniqueId }) => {},
-      registerVNodeHandle: (payload: {
-        id: UniqueId;
-        handle: any;
-        index?: number;
-      }) => {
-        this.store.dispatch(registerVNodeHandle(payload));
-
-        return this.getStore().vNodes[payload.id].handleUnique.length;
-      },
-      unset: (payload: { id: UniqueId; groupId?: UniqueId }) => {},
-      clear: () => {},
-    }; */
   }
 
   public dispatch(action: Action<any>): void {
