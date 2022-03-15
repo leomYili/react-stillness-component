@@ -35,10 +35,6 @@ function App() {
               marginTop: 10,
             }}
           ></div>
-          <div style={{ marginTop: 10 }}>
-            <button onClick={() => {}}>清除所有缓存</button>
-            <button onClick={() => {}}>清除List组件缓存</button>
-          </div>
         </div>
       </BrowserRouter>
     </Provider>

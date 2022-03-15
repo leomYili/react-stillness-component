@@ -8,8 +8,14 @@ import {
   UniqueId,
 } from '../../types';
 import { State } from '../reducers';
+import { State as VNodeState } from '../reducers/vNode';
 import { shallowEqual, isUndefined } from '../../utils';
-import { operationTypes, lifeCycleTypes, effectTypes } from './constants';
+import {
+  operationTypes,
+  lifeCycleTypes,
+  effectTypes,
+  rootId,
+} from '../../constants';
 
 /**
  * 这里是真实调用
@@ -35,26 +41,22 @@ export class StillnessMonitorImpl implements StillnessMonitor {
     invariant(typeof listener === 'function', 'listener must be a function.');
     invariant(typeof parentId === 'string', 'parentId is required');
 
-    let prevType = this.store.getState().operation.type;
-    let prevTargetIds = this.store.getState().operation.targetIds;
+    let prevOperation = this.store.getState().operation;
     const handleChange = () => {
       const store = this.store.getState();
-      const currentTargetIds = store.operation.targetIds;
-      const currentType = store.operation.type;
+      const currentOperation = store.operation;
 
       try {
         const canSkipListener =
-          !lifeCycleTypes.includes(currentType) ||
-          (prevType === currentType &&
-            shallowEqual(prevTargetIds, currentTargetIds)) ||
-          !currentTargetIds.includes(parentId);
+          !lifeCycleTypes.includes(currentOperation.type) ||
+          shallowEqual(prevOperation, currentOperation) ||
+          !currentOperation.targetIds.includes(parentId);
 
         if (!canSkipListener) {
           listener();
         }
       } finally {
-        prevTargetIds = currentTargetIds;
-        prevType = currentType;
+        prevOperation = currentOperation;
       }
     };
 
@@ -68,41 +70,34 @@ export class StillnessMonitorImpl implements StillnessMonitor {
     const { uniqueId, type } = params;
     invariant(!isUndefined(uniqueId), 'uniqueId is required');
 
-    let prevType = this.store.getState().operation.type;
-    let prevTargetIds = this.store.getState().operation.targetIds;
-    let prevTargetType = this.store.getState().operation.targetType;
+    let prevOperation = this.store.getState().operation;
     const handleChange = () => {
       const store = this.store.getState();
-      const currentType = store.operation.type;
-      const currentTargetIds = store.operation.targetIds;
-      const currentTargetType = store.operation.targetType;
+      const currentOperation = store.operation;
 
       try {
         const canSkipListener =
-          !effectTypes.includes(currentType) ||
-          (prevType === currentType &&
-            shallowEqual(prevTargetIds, currentTargetIds) &&
-            prevTargetType === currentTargetType);
+          !effectTypes.includes(currentOperation.type) ||
+          shallowEqual(prevOperation, currentOperation) ||
+          !currentOperation.targetIds.includes(uniqueId);
 
         if (!canSkipListener) {
           listener();
         }
       } finally {
-        prevType = currentType;
-        prevTargetIds = currentTargetIds;
-        prevTargetType = currentTargetType;
+        prevOperation = currentOperation;
       }
     };
 
     return this.store.subscribe(handleChange);
   }
 
-  public getStillnessItem(uniqueId: any) {
+  public getStillnessItem(uniqueId: UniqueId): VNodeState {
     return this.store.getState().vNodes[uniqueId];
   }
 
   public getStillnessId(uniqueId): Identifier {
-    return this.store.getState().vNodes[uniqueId]?.id;
+    return this.store.getState().vNodes[uniqueId]?.uniqueId;
   }
 
   public getStillnessType(uniqueId): Identifier {
@@ -110,6 +105,18 @@ export class StillnessMonitorImpl implements StillnessMonitor {
   }
 
   public isStillness(uniqueId): boolean {
-    return this.store.getState().vNodes[uniqueId]?.visible;
+    if (uniqueId === rootId) {
+      return false;
+    }
+
+    const node = this.store.getState().vNodes[uniqueId];
+
+    if (
+      node.isStillness === true ||
+      (node.isStillness === false && node.visible === false)
+    ) {
+      return true;
+    }
+    return false;
   }
 }

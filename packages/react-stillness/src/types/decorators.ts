@@ -10,7 +10,7 @@ export interface StillnessSpec<Props, ResObject = any> {
    */
   mounted?: (
     props: Props,
-    contract: StillnessContract<ResObject>
+    contract: StillnessContract
   ) => ResObject | void;
   /**
    * optional
@@ -19,7 +19,7 @@ export interface StillnessSpec<Props, ResObject = any> {
    */
   unmounted?: (
     props: Props,
-    contract: StillnessContract<ResObject>
+    contract: StillnessContract
   ) => ResObject | void;
 }
 

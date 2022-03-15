@@ -1,4 +1,5 @@
 import { Identifier, UniqueId, Listener, Unsubscribe } from './core';
+import { State as VNodeState } from '../core/reducers/vNode';
 
 export interface StillnessMonitor<ResObject = unknown> {
   subscribeToStateChange(
@@ -26,5 +27,5 @@ export interface StillnessMonitor<ResObject = unknown> {
 
   getStillnessType(uniqueId): UniqueId | null;
 
-  getStillnessItem(uniqueId): ResObject | null;
+  getStillnessItem(uniqueId): VNodeState;
 }

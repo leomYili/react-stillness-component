@@ -17,28 +17,29 @@ export class Count extends Component {
         >
           Add
         </button>
+        {this.props.children}
       </div>
     );
   }
 }
 
 const spec = {
-  mounted: (props, monitor) => {
-    console.log('开始进入静止状态', props, monitor);
+  mounted: (props, contract) => {
+    console.log('开始进入静止状态', contract.getStillnessId());
 
     return 'mounted';
   },
-  unmounted: (props, monitor) => {
-    console.log('退出静止状态', props, monitor);
+  unmounted: (props, contract) => {
+    console.log('退出静止状态');
 
     return 'unmounted';
   },
 };
 
 const collect = (props, contract) => {
-  console.log(contract.getStillnessItem());
   return {
     isStillness: contract.isStillness(),
+    stillnessId: contract.getStillnessId(),
   };
 };
 

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import invariant from 'invariant';
 
 import { StillnessNodeContext } from '../core';
-import { operationTypes } from '../core/classes/constants';
+import { operationTypes } from '../constants';
 import { withNodeBridge } from '../decorators';
 import {
   UniqueId,
@@ -34,6 +34,7 @@ export interface OffscreenProps {
 
 export type OffscreenInnerProps = OffscreenProps & {
   uniqueId: UniqueId;
+  isStillness: boolean;
   stillnessManager?: StillnessManager;
 };
 
@@ -67,12 +68,7 @@ class OffscreenComponent extends Component<OffscreenInnerProps> {
     }
 
     if (!init) {
-      // 初始化时不会触发对应的生命周期函数
-      // dispatch({type: 'updateOperation', payload:{id: this.uniqueId, visible: true}});
-      this.actions.triggerUnmount({
-        type: operationTypes.UNMOUNT as OperationTypes,
-        targetIds: [this.uniqueId], // 这里之后需要通过计算,找出所有向下传播的所有OffScreen的id
-      });
+      this.actions.triggerUnmount({ id: this.uniqueId });
     }
   };
 
@@ -87,25 +83,22 @@ class OffscreenComponent extends Component<OffscreenInnerProps> {
       }
 
       this.actions.triggerMount({
-        type: operationTypes.MOUNT as OperationTypes,
-        targetIds: [this.uniqueId], // 这里之后需要通过计算,找出所有向下传播的所有OffScreen的id
+        id: this.uniqueId,
       });
     } catch (error) {
       // console.error(error, 'Offscreen.unMount: parentNode is null')
     }
   };
 
-  public shouldComponentUpdate(nextProps: Readonly<OffscreenProps>): boolean {
+  public shouldComponentUpdate(
+    nextProps: Readonly<OffscreenInnerProps>
+  ): boolean {
     return !shallowEqual(this.props, nextProps);
   }
 
-  public componentDidUpdate(prevProps: Readonly<OffscreenProps>): void {
-    if (
-      prevProps.visible !== this.props.visible &&
-      isBoolean(this.props.visible)
-    ) {
-      console.log('真实更新', this.props.visible);
-      if (this.props.visible) {
+  public componentDidUpdate(prevProps: Readonly<OffscreenInnerProps>): void {
+    if (prevProps.isStillness !== this.props.isStillness) {
+      if (!this.props.isStillness) {
         this.unmount();
       } else {
         this.mount();
@@ -131,7 +124,7 @@ class OffscreenComponent extends Component<OffscreenInnerProps> {
   }
 
   public componentDidMount() {
-    if (this.props.visible) {
+    if (!this.props.isStillness) {
       this.unmount(true);
     }
   }

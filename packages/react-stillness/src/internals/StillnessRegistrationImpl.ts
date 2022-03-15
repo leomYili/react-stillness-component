@@ -7,37 +7,39 @@ import {
 } from '../types';
 import { getStillnessUniqueId } from '../utils';
 
-interface Params {
-  id: UniqueId;
-  groupId: UniqueId;
-  parentId: UniqueId;
-  visible: boolean;
-  [key: string]: any;
-}
-
 export class StillnessRegistrationImpl implements Registration {
   private manager: StillnessManager;
   private uniqueId: UniqueId;
 
   constructor(manager: StillnessManager) {
     this.manager = manager;
-    this.uniqueId = getStillnessUniqueId('uniqueId');
+    this.uniqueId = getStillnessUniqueId('uniqueId').toString();
   }
 
-  public register: (params: {
-    parentId: Identifier;
-    visible: boolean;
-  }) => [UniqueId, Unsubscribe] = (params) => {
+  public register: (params) => [UniqueId, Unsubscribe] = (params) => {
     const { createVNode, deleteVNode } = this.manager.getActions();
-    createVNode({ uniqueId: this.uniqueId, ...params });
+    const { parentId, type, visible, isStillness } = params;
+    createVNode({
+      uniqueId: this.uniqueId,
+      parentId,
+      type,
+      visible,
+      isStillness,
+    });
 
     return [this.uniqueId, () => deleteVNode({ uniqueId: this.uniqueId })];
   };
 
-  public update = (params: any) => {
-    this.manager
-      .getActions()
-      .updateVNode({ uniqueId: this.uniqueId, ...params });
+  public update = (params) => {
+    const { parentId, type, visible, isStillness } = params;
+
+    this.manager.getActions().updateVNode({
+      uniqueId: this.uniqueId,
+      parentId,
+      type,
+      visible,
+      isStillness,
+    });
   };
 
   public getUniqueId = () => this.uniqueId;

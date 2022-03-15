@@ -4,7 +4,12 @@ import {
   updateVNode,
   resetVNode,
 } from './vNodeAction';
-import { triggerMount, triggerUnmount } from './operationAction';
+import {
+  triggerMount,
+  triggerUnmount,
+  triggerUnset,
+  triggerClear,
+} from './operationAction';
 import { StillnessManager } from '../../types';
 import { combineFuncs } from '../../utils';
 
@@ -27,6 +32,8 @@ export function createOperationActions(manager: StillnessManager) {
     {
       triggerMount,
       triggerUnmount,
+      triggerUnset,
+      triggerClear,
     },
     manager
   );

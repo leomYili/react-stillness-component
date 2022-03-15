@@ -5,18 +5,21 @@ import {
   TRIGGER_UNSET,
 } from '../actions/operationAction';
 import { Action, UniqueId, OperationTypes } from '../../types';
-import { operationTypes } from '../classes/constants';
+import { operationTypes } from '../../constants';
+import { getNowTimeStr } from '../../utils';
 
 export interface State {
   type: OperationTypes;
   targetIds: UniqueId[];
-  targetType: UniqueId[];
+  targetType: string;
+  now: string;
 }
 
 const initialState: State = {
   type: null,
   targetIds: [],
-  targetType: [],
+  targetType: null,
+  now: getNowTimeStr(),
 };
 
 export function reduce(
@@ -29,12 +32,14 @@ export function reduce(
         ...state,
         type: operationTypes.MOUNT as OperationTypes,
         targetIds: action.payload.targetIds,
+        now: getNowTimeStr(),
       };
     case TRIGGER_UNMOUNT:
       return {
         ...state,
         type: operationTypes.UNMOUNT as OperationTypes,
         targetIds: action.payload.targetIds,
+        now: getNowTimeStr(),
       };
     case TRIGGER_UNSET:
       return {
@@ -42,13 +47,15 @@ export function reduce(
         type: operationTypes.UNSET as OperationTypes,
         targetIds: action.payload.targetIds,
         targetType: action.payload.targetType,
+        now: getNowTimeStr(),
       };
     case TRIGGER_CLEAR:
       return {
         ...state,
         type: operationTypes.CLEAR as OperationTypes,
-        targetIds: [],
-        targetType: [],
+        targetIds: action.payload.targetIds,
+        targetType: null,
+        now: getNowTimeStr(),
       };
     default:
       return state;
