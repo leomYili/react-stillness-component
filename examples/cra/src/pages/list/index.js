@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Offscreen, OffscreenInstance } from 'react-stillness-component';
+import { Offscreen } from 'react-stillness-component';
 import { Count } from './count';
 import { WithCount } from './count/countClass';
 
@@ -30,7 +30,7 @@ const List = (props) => {
       <button>
         <Link to={'/detail'}>进入详情页</Link>
       </button>
-      {/* <div
+      <div
         style={{
           display: 'block',
           marginBottom: '20px',
@@ -38,20 +38,31 @@ const List = (props) => {
         }}
       >
         <Offscreen visible={visible} type="list" ref={offscreen1Ref}>
-          <div ref={testRef}>
-            <Count />
-          </div>
+          <WithCount />
         </Offscreen>
-      </div> */}
+      </div>
 
       <div
         style={{
           background: '#8bc34a',
         }}
       >
-        <Offscreen visible={visible} id="list2">
+        <Offscreen visible={visible}>
           <>sdsdsd</>
-          <WithCount />
+          <WithCount>
+            {/* <div
+              style={{
+                display: 'block',
+                margin: '20px',
+                background: '#bedaff',
+              }}
+            >
+              <Offscreen visible={visible}>
+                <>sdsdsd</>
+                <WithCount />
+              </Offscreen>
+            </div> */}
+          </WithCount>
         </Offscreen>
       </div>
 
@@ -62,6 +73,35 @@ const List = (props) => {
       >
         切换显隐状态
       </button>
+
+      <div style={{ marginTop: 10 }}>
+        <button
+          onClick={() => {
+            offscreen1Ref.current.clear();
+          }}
+        >
+          清除所有缓存
+        </button>
+        <button
+          onClick={() => {
+            console.log(offscreen1Ref.current.getUniqueId());
+            offscreen1Ref.current.unset({
+              id: offscreen1Ref.current.getUniqueId(),
+            });
+          }}
+        >
+          清除第一个组件id缓存
+        </button>
+        <button
+          onClick={() => {
+            offscreen1Ref.current.unset({
+              type: 'list',
+            });
+          }}
+        >
+          清除所有type为list的组件缓存
+        </button>
+      </div>
     </div>
   );
 };

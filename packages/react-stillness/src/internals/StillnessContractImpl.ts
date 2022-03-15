@@ -6,6 +6,7 @@ import {
   StillnessManager,
   Listener,
   Unsubscribe,
+  UnsetParams,
 } from '../types';
 import { isUndefined } from '../utils';
 
@@ -40,10 +41,10 @@ export class StillnessContractImpl implements StillnessContract {
   public getStillnessItem() {
     return this.item;
   }
-  public unset(obj: { id?: Identifier; type?: Identifier }): void {
-    //return this.internalMonitor.unset(obj);
+  public unset(params: UnsetParams): void {
+    this.internalActions.triggerUnset(params);
   }
   public clear(): void {
-    //return this.internalMonitor.clear();
+    this.internalActions.triggerClear();
   }
 }

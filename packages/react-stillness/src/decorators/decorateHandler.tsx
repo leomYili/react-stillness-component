@@ -80,7 +80,6 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
     }
 
     public componentDidMount() {
-      console.log(this.props);
       this.receiveProps(this.props);
       this.currentStillness = this.manager
         .getMonitor()
@@ -92,7 +91,6 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
       prevProps: Readonly<StillnessComponentProps>
     ): void {
       if (!shallowEqual(this.props, prevProps)) {
-        console.log('?????');
         this.receiveProps(this.props);
         this.handleChange();
       }
@@ -121,15 +119,11 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
       const globalMonitor = this.manager.getMonitor();
       this.unsubscribe = globalMonitor.subscribeToStateChange(
         () => {
-          console.log(
-            '监听到状态变化,这里因为被阻断,所以只能从这里获取当前连接状态',
-            globalMonitor.isStillness(this.stillnessParentId)
-          );
-          const _isStillness = globalMonitor.isStillness(
+          const parentIsStillness = globalMonitor.isStillness(
             this.stillnessParentId
           );
 
-          if (_isStillness) {
+          if (!parentIsStillness) {
             this.handleContract.receiveItem(this.handle.unmount());
           } else {
             this.handleContract.receiveItem(this.handle.mount());
@@ -205,6 +199,13 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
         return;
       }
 
+      invariant(
+        stillnessManager !== undefined,
+        'Could not find the stillness manager in the context of %s. ' +
+          'Make sure to render a StillnessProvider component in your top-level component. ',
+        displayName,
+        displayName
+      );
       if (stillnessManager === undefined) {
         return;
       }

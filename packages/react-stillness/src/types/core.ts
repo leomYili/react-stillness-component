@@ -1,6 +1,7 @@
 import { Component } from 'react';
 
 import { StillnessMonitor } from './monitors';
+import { UnsetParams, ActionsParams } from './contract';
 
 export type Identifier = string | number;
 export type UniqueId = Identifier;
@@ -21,8 +22,10 @@ export interface VNodeActions {
 }
 
 export interface OperationActions {
-  triggerMount: (payload: OperationPayload) => void;
-  triggerUnmount: (payload: OperationPayload) => void;
+  triggerMount: (params: ActionsParams) => void;
+  triggerUnmount: (params: ActionsParams) => void;
+  triggerUnset: (params: UnsetParams) => void;
+  triggerClear: () => void;
 }
 
 export interface StillnessManager {
@@ -65,6 +68,7 @@ export interface VNodePayload {
   parentId?: UniqueId;
   type?: Identifier;
   visible?: boolean;
+  isStillness?: boolean;
 }
 
 export interface OperationPayload {

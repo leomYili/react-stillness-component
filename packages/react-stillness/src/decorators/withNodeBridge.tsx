@@ -7,16 +7,18 @@ import React, {
   useRef,
   useImperativeHandle,
 } from 'react';
+import invariant from 'invariant';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { OffscreenProps, OffscreenInnerProps } from '../components';
 import { StillnessContext, StillnessNodeContext } from '../core';
-import { StillnessRegistrationImpl } from '../internals';
+import { StillnessRegistrationImpl, StillnessContractImpl } from '../internals';
 import { isUndefined, isBoolean, useIsomorphicLayoutEffect } from '../utils';
-import { Identifier, UniqueId, Registration } from '../types';
+import { Identifier, UniqueId, Registration, UnsetParams } from '../types';
+import { rootId } from '../constants';
 
 export interface OffscreenInstance {
-  getUniqueId: () => UniqueId;
+  getStillnessId: () => UniqueId;
   isStillness: () => boolean;
   unset: ({ id: UniqueId, type: Identifier }) => void;
   clear: () => void;
@@ -39,87 +41,102 @@ export function withNodeBridge(
     OffscreenInstance,
     OffscreenProps
   > = (props: OffscreenProps, ref: React.Ref<OffscreenInstance>) => {
-    const { children, ...restProps } = props;
     const { stillnessManager } = useContext(StillnessContext);
-    const { stillnessParentId = '__root__' } = useContext(StillnessNodeContext);
+    const { stillnessParentId = rootId } = useContext(StillnessNodeContext);
     const [isCurrentlyMounted, setIsCurrentlyMounted] = useState(false);
     const [wrapperProps, setWrapperProps] = useState({});
 
-    const uniqueNodeRef = useRef<Registration>(undefined);
+    invariant(
+      stillnessManager != null,
+      'Expected stillness components context'
+    );
+
     const isMountRef = useRef(false);
+    const uniqueNodeRegistration = useMemo(() => {
+      return new StillnessRegistrationImpl(stillnessManager);
+    }, []);
+
+    const handleContract = new StillnessContractImpl(stillnessManager);
 
     const globalMonitor = stillnessManager.getMonitor();
 
     const handleChange = () => {
-      const _isStillness = globalMonitor.isStillness(
-        uniqueNodeRef.current.getUniqueId()
-      );
-
-      console.log('Effect,从而需要刷新组件', _isStillness);
-
-      if (!_isStillness) {
-        isMountRef.current = false;
-      }
-
       setIsCurrentlyMounted(false);
     };
 
     useImperativeHandle(ref, () => {
       return {
-        getUniqueId: () => uniqueNodeRef.current.getUniqueId(),
-        isStillness: () => {
-          return globalMonitor.isStillness(uniqueNodeRef.current.getUniqueId());
+        getStillnessId: () => {
+          return uniqueNodeRegistration.getUniqueId();
         },
-        unset: ({ id, type }) => {
-          //stillnessManager.unset({ id, type });
+        isStillness: () => {
+          return globalMonitor.isStillness(
+            uniqueNodeRegistration.getUniqueId()
+          );
+        },
+        unset: (params: UnsetParams) => {
+          handleContract.unset({ ...params });
         },
         clear: () => {
-          //stillnessManager.clear();
+          handleContract.clear();
         },
       };
     });
 
     useIsomorphicLayoutEffect(() => {
-      // 创建对应节点
-      uniqueNodeRef.current = new StillnessRegistrationImpl(stillnessManager);
-
-      const [uniqueId, unregister] = uniqueNodeRef.current.register({
+      const [uniqueId, unregister] = uniqueNodeRegistration.register({
         ...props,
         parentId: stillnessParentId,
+        isStillness: globalMonitor.isStillness(stillnessParentId),
       });
 
-      const unsubscribe = globalMonitor.subscribeToEffectChange(handleChange, {
-        uniqueId,
-        type: props.type,
-      });
+      const unEffectSubscribe = globalMonitor.subscribeToEffectChange(
+        handleChange,
+        {
+          uniqueId,
+          type: props.type,
+        }
+      );
 
+      const thisIsStillness = globalMonitor.isStillness(uniqueId);
       setWrapperProps({
-        ...restProps,
-        uniqueId: uniqueNodeRef.current.getUniqueId(),
+        ...props,
+        uniqueId: uniqueId,
         stillnessManager: stillnessManager,
+        isStillness: thisIsStillness,
       });
 
-      if (props.visible) {
+      if (!thisIsStillness) {
         setIsCurrentlyMounted(true);
       }
 
       return () => {
         unregister();
-        unsubscribe();
+        unEffectSubscribe();
       };
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      // 根据当前props,直接更新id以及type
-      // updateNode逻辑
       if (isMountRef.current) {
-        uniqueNodeRef.current.update({ ...props, parentId: stillnessParentId });
+        uniqueNodeRegistration.update({
+          ...props,
+          parentId: stillnessParentId,
+          isStillness: globalMonitor.isStillness(stillnessParentId),
+        });
 
+        const thisIsStillness = globalMonitor.isStillness(
+          uniqueNodeRegistration.getUniqueId()
+        );
         setWrapperProps({
-          ...restProps,
-          uniqueId: uniqueNodeRef.current.getUniqueId(),
+          ...props,
+          isStillness: thisIsStillness,
+          uniqueId: uniqueNodeRegistration.getUniqueId(),
           stillnessManager: stillnessManager,
         });
+
+        if (!thisIsStillness) {
+          setIsCurrentlyMounted(true);
+        }
       }
     }, [props, stillnessParentId]);
 
@@ -134,7 +151,7 @@ export function withNodeBridge(
     }, [isCurrentlyMounted]);
 
     const RenderedWrappedComponent = useMemo(
-      () => <Decorated {...wrapperProps}>{children}</Decorated>,
+      () => <Decorated {...wrapperProps} />,
       [wrapperProps]
     );
 

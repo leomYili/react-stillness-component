@@ -1,6 +1,15 @@
 import { Identifier, UniqueId } from './core';
 import { StillnessMonitor } from './monitors';
 
+export interface ActionsParams{
+  id?: Identifier;
+}
+
+export interface UnsetParams {
+  id?: Identifier;
+  type?: Identifier;
+}
+
 export interface StillnessContract {
   receiveId: (id: UniqueId) => void;
   receiveItem: (item: any) => void;
@@ -9,7 +18,7 @@ export interface StillnessContract {
 
   getStillnessType(): UniqueId | null;
 
-  unset(obj: { id?: UniqueId; type?: Identifier }): void;
+  unset(params: UnsetParams): void;
 
   clear(): void;
 }
