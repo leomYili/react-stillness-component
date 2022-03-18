@@ -12,8 +12,9 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { OffscreenProps, OffscreenInnerProps } from '../components';
 import { StillnessContext, StillnessNodeContext } from '../core';
+import { useStillnessManager, useIsomorphicLayoutEffect } from '../hooks';
 import { StillnessRegistrationImpl, StillnessContractImpl } from '../internals';
-import { isUndefined, isBoolean, useIsomorphicLayoutEffect } from '../utils';
+import { isUndefined, isBoolean } from '../utils';
 import { Identifier, UniqueId, Registration, UnsetParams } from '../types';
 import { rootId } from '../constants';
 
@@ -41,15 +42,10 @@ export function withNodeBridge(
     OffscreenInstance,
     OffscreenProps
   > = (props: OffscreenProps, ref: React.Ref<OffscreenInstance>) => {
-    const { stillnessManager } = useContext(StillnessContext);
+    const stillnessManager = useStillnessManager();
     const { stillnessParentId = rootId } = useContext(StillnessNodeContext);
     const [isCurrentlyMounted, setIsCurrentlyMounted] = useState(false);
     const [wrapperProps, setWrapperProps] = useState({});
-
-    invariant(
-      stillnessManager != null,
-      'Expected stillness components context'
-    );
 
     const isMountRef = useRef(false);
     const uniqueNodeRegistration = useMemo(() => {
