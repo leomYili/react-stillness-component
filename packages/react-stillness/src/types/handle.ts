@@ -3,3 +3,8 @@ export interface StillnessHandle {
   mount(): any;
   unmount(): any;
 }
+
+export interface Handle {
+  mount(): any;
+  unmount(): any;
+}

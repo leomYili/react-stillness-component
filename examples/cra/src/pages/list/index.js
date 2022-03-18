@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Offscreen } from 'react-stillness-component';
 import { Count } from './count';
 import { WithCount } from './count/countClass';
+import { CountHooks } from './count/countHooks';
 
 const List = (props) => {
   const [info, setInfo] = useState('');
@@ -63,6 +64,16 @@ const List = (props) => {
               </Offscreen>
             </div> */}
           </WithCount>
+        </Offscreen>
+      </div>
+
+      <div
+        style={{
+          background: '#bedaff',
+        }}
+      >
+        <Offscreen visible={visible}>
+          <CountHooks></CountHooks>
         </Offscreen>
       </div>
 

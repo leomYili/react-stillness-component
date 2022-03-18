@@ -19,6 +19,7 @@ import {
   StillnessContextType,
   StillnessContract,
   StillnessHandle,
+  HandlerContract,
 } from '../types';
 
 export interface DecorateHandlerArgs<Props, ItemId> {
@@ -60,7 +61,7 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
 
     private decoratedRef: any = createRef();
     private manager: StillnessManager | undefined;
-    private handleContract: StillnessContract | undefined;
+    private handleContract: (StillnessContract & HandlerContract) | undefined;
     private handle: StillnessHandle | undefined;
     private unsubscribe: any = null;
     private currentStillness: boolean = false;

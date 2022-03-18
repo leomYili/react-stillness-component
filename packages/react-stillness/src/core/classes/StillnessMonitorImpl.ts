@@ -105,11 +105,10 @@ export class StillnessMonitorImpl implements StillnessMonitor {
   }
 
   public isStillness(uniqueId): boolean {
-    if (uniqueId === rootId) {
+    const node = this.store.getState().vNodes[uniqueId];
+    if (uniqueId === rootId || isUndefined(node)) {
       return false;
     }
-
-    const node = this.store.getState().vNodes[uniqueId];
 
     if (
       node.isStillness === true ||
