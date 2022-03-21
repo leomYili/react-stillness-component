@@ -1,0 +1,25 @@
+{
+  "packages": ["packages/*"],
+  "command": {
+    "bootstrap": {
+      "hoist": true
+    },
+    "npmClientArgs": ["--no-package-lock", "--no-ci"],
+    "version": {
+      "allowBranch": ["master"]
+    },
+    "publish": {
+      "registry": "https://registry.npmjs.org"
+    }
+  },
+  "ignoreChanges":[
+    "**/*.md",
+    "**/*.test.ts",
+    "**/*.e2e.ts",
+    "**/fixtures/**",
+    "**/test/**"
+  ],
+  "npmClient": "yarn",
+  "useWorkSpaces": true,
+  "version": "independent"
+}

@@ -1,25 +1,27 @@
 {
-  "name": "react-resting-component",
+  "name": "react-stillness-component",
   "private": true,
   "version": "0.1.0",
   "description": "This package makes react-component static, with all dom operations disabled and invisible, and supports hook as well as class-component",
-  "main": "index.js",
-  "browser": "dist/index.ts",
-  "files": [
-    "dist"
-  ],
   "workspaces": [
-    "examples"
+    "packages/*",
+    "examples/*"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "yarn workspaces run clean",
+    "dev": "rollup -c -w",
+    "build": "yarn run clean && NODE_ENV=production rollup -c",
+    "start:cra": "cd ./examples/cra && yarn start",
+    "start:umi": "cross-env APP_ROOT=examples/umi umi dev",
     "prepare": "husky install",
     "changelog": "conventional-changelog -p atom -i CHANGELOG.md -s && git add CHANGELOG.md",
     "cm": "git-cz",
+    "precommit": "lint-staged",
+    "version": "npm run changelog",
     "release": "bash ./scripts/release.sh",
     "lint:staged": "lint-staged",
-    "start:demo": "cross-env APP_ROOT=examples umi dev",
-    "build": "rollup --config"
+    "build:es": "babel packages/react-stillness/src --extensions .ts,.tsx -d lib"
   },
   "config": {
     "commitizen": {
@@ -27,14 +29,14 @@
     }
   },
   "lint-staged": {
-    "*./src/**/*.{js,ts,json,css,less,md}": [
+    "*./packages/**/*.{js,ts,json,css,less,md}": [
       "prettier --write",
       "yarn lint"
     ]
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leomYili/react-resting-component.git"
+    "url": "git+https://github.com/leomYili/react-stillness-component.git"
   },
   "keywords": [
     "react-component"
@@ -42,12 +44,28 @@
   "author": "leomyili",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/leomYili/react-resting-component/issues"
+    "url": "https://github.com/leomYili/react-stillness-component/issues"
   },
-  "homepage": "https://github.com/leomYili/react-resting-component#readme",
+  "homepage": "https://github.com/leomYili/react-stillness-component#readme",
   "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/plugin-proposal-class-properties": "^7.16.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.16.5",
+    "@babel/plugin-proposal-private-methods": "^7.16.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.5",
+    "@babel/plugin-transform-react-jsx": "^7.16.5",
+    "@babel/plugin-transform-runtime": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-typescript": "^7.16.5",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.1.1",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "@types/hoist-non-react-statics": "^3.3.1",
+    "@types/invariant": "^2.2.35",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "commitizen": "^4.2.4",
@@ -55,21 +73,19 @@
     "conventional-changelog-cli": "^2.1.1",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.2.0",
+    "hoist-non-react-statics": "^3.3.2",
     "husky": "^7.0.0",
+    "lerna": "^4.0.0",
     "lint-staged": "^11.1.2",
     "prettier": "^2.4.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.56.3",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-typescript": "^1.0.1",
-    "rollup-plugin-uglify": "^6.0.4",
+    "rollup": "^2.61.1",
+    "rollup-plugin-terser": "^7.0.2",
     "standard-version": "^9.3.1",
     "tslib": "^2.3.1",
     "typescript": "^4.4.3"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16.8"
   }
 }
