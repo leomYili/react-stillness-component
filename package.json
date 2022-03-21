@@ -17,6 +17,8 @@
     "prepare": "husky install",
     "changelog": "conventional-changelog -p atom -i CHANGELOG.md -s && git add CHANGELOG.md",
     "cm": "git-cz",
+    "precommit": "lint-staged",
+    "version": "npm run changelog",
     "release": "bash ./scripts/release.sh",
     "lint:staged": "lint-staged",
     "build:es": "babel packages/react-stillness/src --extensions .ts,.tsx -d lib"
@@ -27,7 +29,7 @@
     }
   },
   "lint-staged": {
-    "*./src/**/*.{js,ts,json,css,less,md}": [
+    "*./packages/**/*.{js,ts,json,css,less,md}": [
       "prettier --write",
       "yarn lint"
     ]
