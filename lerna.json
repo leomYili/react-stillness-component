@@ -1,10 +1,6 @@
 {
   "packages": ["packages/*"],
   "command": {
-    "bootstrap": {
-      "hoist": true
-    },
-    "npmClientArgs": ["--no-package-lock", "--no-ci"],
     "version": {
       "allowBranch": ["main"],
       "ignoreChanges": ["**/*.md"]
@@ -33,6 +29,6 @@
     "**/test/**"
   ],
   "npmClient": "yarn",
-  "useWorkSpaces": true,
+  "useWorkspaces": false,
   "version": "independent"
 }

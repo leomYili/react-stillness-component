@@ -14,14 +14,14 @@
     "start:cra": "cd ./examples/cra && yarn start",
     "start:umi": "cross-env APP_ROOT=examples/umi umi dev",
     "prepare": "husky install",
-    "changelog": "conventional-changelog -p eslint -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "cm": "git-cz",
     "precommit": "lint-staged",
     "release": "bash ./scripts/release.sh",
     "lint:staged": "lint-staged",
     "build:es": "babel packages/react-stillness/src --extensions .ts,.tsx -d lib",
+    "bootstrap": "npx lerna bootstrap",
     "publish:local": "yarn run build && lerna publish from-package",
-    "version:ci": "yarn run changelog && lerna version --yes --conventional-commits --create-release github --message 'chore(release): publish'"
+    "version:ci": "lerna version --yes --conventional-commits --create-release github --message 'chore(release): publish'"
   },
   "config": {
     "commitizen": {
