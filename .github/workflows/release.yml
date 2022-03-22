@@ -26,10 +26,7 @@ jobs:
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@outlook.com"
-
-      - name: Bootstrap lerna
-        run: yarn bootstrap
-
+          
       - name: Bump versions packages
         run: |
           yarn version:ci
