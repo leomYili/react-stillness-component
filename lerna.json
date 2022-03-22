@@ -6,13 +6,26 @@
     },
     "npmClientArgs": ["--no-package-lock", "--no-ci"],
     "version": {
-      "allowBranch": ["master"]
+      "allowBranch": ["main"],
+      "ignoreChanges": ["**/*.md"]
     },
     "publish": {
       "registry": "https://registry.npmjs.org"
     }
   },
-  "ignoreChanges":[
+  "changelog": {
+    "repo": "react-stillness-component",
+    "labels": {
+      "pr(feature)": ":feat: New Feature",
+      "pr(enhancement)": ":rocket: Enhancement",
+      "pr(bug)": ":bug: Bug Fix",
+      "pr(documentation)": ":book: Documentation",
+      "pr(dependency)": ":deciduous_tree: Dependency",
+      "pr(chore)": ":turtle: Chore"
+    },
+    "cacheDir": ".changelog"
+  },
+  "ignoreChanges": [
     "**/*.md",
     "**/*.test.ts",
     "**/*.e2e.ts",

@@ -16,6 +16,11 @@
   ],
   "author": "leomyili",
   "license": "MIT",
+  "publishConfig": {
+    "main": "dist/index.js",
+    "module": "es/index.js",
+    "types": "dist/index.d.ts"
+  },
   "files": [
     "dist",
     "es"

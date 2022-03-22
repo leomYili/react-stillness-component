@@ -1,7 +1,6 @@
 {
   "name": "react-stillness-component",
   "private": true,
-  "version": "0.1.0",
   "description": "This package makes react-component static, with all dom operations disabled and invisible, and supports hook as well as class-component",
   "workspaces": [
     "packages/*",
@@ -15,17 +14,18 @@
     "start:cra": "cd ./examples/cra && yarn start",
     "start:umi": "cross-env APP_ROOT=examples/umi umi dev",
     "prepare": "husky install",
-    "changelog": "conventional-changelog -p atom -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "changelog": "conventional-changelog -p eslint -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "cm": "git-cz",
     "precommit": "lint-staged",
-    "version": "npm run changelog",
     "release": "bash ./scripts/release.sh",
     "lint:staged": "lint-staged",
-    "build:es": "babel packages/react-stillness/src --extensions .ts,.tsx -d lib"
+    "build:es": "babel packages/react-stillness/src --extensions .ts,.tsx -d lib",
+    "publish:local": "yarn run build && lerna publish from-package",
+    "version:ci": "yarn run changelog && lerna version --yes --conventional-commits --create-release github --message 'chore(release): publish'"
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "./node_modules/cz-lerna-changelog"
     }
   },
   "lint-staged": {
@@ -72,7 +72,7 @@
     "conventional-changelog": "^3.1.24",
     "conventional-changelog-cli": "^2.1.1",
     "cross-env": "^7.0.3",
-    "cz-conventional-changelog": "^3.2.0",
+    "cz-lerna-changelog": "^2.0.3",
     "hoist-non-react-statics": "^3.3.2",
     "husky": "^7.0.0",
     "lerna": "^4.0.0",

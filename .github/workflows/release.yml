@@ -1,20 +1,29 @@
-name: Release Drafter
-uses: release-drafter/release-drafter@v5.19.0
+name: Release
 
 on:
-  push:
+  [push, pull_request]:
     branches:
-    - main
+      - main
 
-categories:
-  - title: '🚀 Features'
-    label:
-      - 'feature'
-      - 'enhancement'
-  - title: '🐛 Bug Fixes'
-    labels:
-      - 'fix'
-      - 'bugfix'
-      - 'bug'
-  - title: '🧰 Maintenance'
-    label: 'chore'
+jobs:
+  publish-gpr:
+    name: Publish to GPR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.19.1
+
+      - name: Bootstrap lerna
+        run: yarn bootstrap
+
+      - name: Bump versions packages
+        run: |
+          yarn version:ci
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
