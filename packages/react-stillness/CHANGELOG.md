@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.2.0...react-stillness-component@0.3.0) (2022-03-23)
+
+
+### Features
+
+* **package/react-stillness-component:** adjust the volume to resolve all typescript type errors ([88f2224](https://github.com/leomYili/react-stillness-component/commit/88f22240dc32038ba2bec21bc3e17a00fe69172a))
+
+
+
+
+
 # 0.2.0 (2022-03-22)
 
 
