@@ -4,6 +4,7 @@ import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 import { readdirSync, statSync } from 'fs';
+import { visualizer } from 'rollup-plugin-visualizer';
 import path, { join } from 'path';
 
 const root = path.resolve(__dirname, 'packages');
@@ -57,13 +58,14 @@ export default tailPkgs.map((pkgPath) => {
         babelHelpers: 'runtime',
         extensions,
       }),
-      /* isProd &&
+      isProd &&
         terser({
           compress: {
             pure_getters: true,
             unsafe: true,
           },
-        }), */
+        }),
+      // visualizer(),
     ],
   };
 });

@@ -13,7 +13,7 @@ const INSTANCE_SYM = Symbol.for('__REACT_STILLNESS_CONTEXT_INSTANCE__');
  * @param param0
  * @returns
  */
-export const Provider: FC<StillnessProviderProps<unknown>> = memo(function ({
+export const StillnessProvider: FC<StillnessProviderProps<unknown>> = memo(function ({
   children,
   ...props
 }) {

@@ -3,6 +3,7 @@ import {
   OperationPayload,
   ActionsParams,
   UnsetParams,
+  StillnessManager,
 } from '../../types';
 import { operationTypes, rootId } from '../../constants';
 import { getNodeIdsByCondition } from '../../utils/getNodes';
@@ -12,7 +13,7 @@ export const TRIGGER_UNMOUNT = 'stillness/triggerUnmount';
 export const TRIGGER_UNSET = 'stillness/triggerUnset';
 export const TRIGGER_CLEAR = 'stillness/triggerClear';
 
-export function triggerMount(manager) {
+export function triggerMount(manager: StillnessManager) {
   return (params: ActionsParams): Action<any> => {
     const store = manager.getStore();
     const { id } = params;
@@ -29,7 +30,7 @@ export function triggerMount(manager) {
   };
 }
 
-export function triggerUnmount(manager) {
+export function triggerUnmount(manager: StillnessManager) {
   return (params: ActionsParams): Action<any> => {
     const store = manager.getStore();
     const { id } = params;
@@ -46,7 +47,7 @@ export function triggerUnmount(manager) {
   };
 }
 
-export function triggerUnset(manager) {
+export function triggerUnset(manager: StillnessManager) {
   return (params: UnsetParams): Action<any> => {
     const store = manager.getStore();
     const { id, type } = params;
@@ -64,7 +65,7 @@ export function triggerUnset(manager) {
   };
 }
 
-export function triggerClear(manager) {
+export function triggerClear(manager: StillnessManager) {
   return (payload: OperationPayload): Action<any> => {
     const store = manager.getStore();
     const targetIds = getNodeIdsByCondition({

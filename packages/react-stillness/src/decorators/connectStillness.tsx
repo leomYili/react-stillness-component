@@ -32,7 +32,7 @@ export function connectStillness<
       DecoratedComponent,
       containerDisplayName: 'Stillness',
       createHandle: (manager, contract) =>
-        new StillnessHandleImpl(spec, manager, contract),
+        new StillnessHandleImpl(spec || {}, manager, contract),
       createContract: (manager: StillnessManager) =>
         new StillnessContractImpl(manager),
       collect,

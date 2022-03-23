@@ -16,7 +16,8 @@
     "module": "ESNext",
     "typeRoots": ["./node_modules/@types"],
     "preserveSymlinks": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false
   },
   "include": ["packages/**/*"],
   "exclude": [

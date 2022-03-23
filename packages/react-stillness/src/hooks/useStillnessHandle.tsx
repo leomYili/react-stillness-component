@@ -1,10 +1,13 @@
 import { useMemo } from 'react';
 
 import { HandleImpl } from './HandleImpl';
-import { Handle } from '../types';
+import { Handle, StillnessHookSpec,StillnessContract } from '../types';
 import { useStillnessManager } from './useStillnessManager';
 
-export function useStillnessHandle(spec, contract): Handle {
+export function useStillnessHandle<Props, ResObject>(
+  spec: StillnessHookSpec<Props, ResObject>,
+  contract: StillnessContract
+): Handle {
   const stillnessManager = useStillnessManager();
   return useMemo(
     () => new HandleImpl(spec, stillnessManager, contract),

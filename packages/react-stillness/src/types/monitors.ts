@@ -5,7 +5,7 @@ export interface StillnessMonitor<ResObject = unknown> {
   subscribeToStateChange(
     listener: Listener,
     params: {
-      parentId: UniqueId;
+      parentId?: UniqueId;
     }
   ): Unsubscribe;
 
@@ -13,7 +13,7 @@ export interface StillnessMonitor<ResObject = unknown> {
     listener: Listener,
     params: {
       uniqueId: UniqueId;
-      type: Identifier;
+      type?: Identifier;
     }
   ): Unsubscribe;
 
@@ -21,11 +21,11 @@ export interface StillnessMonitor<ResObject = unknown> {
    * Returning true means the component is in the cached state
    * The default value is true
    */
-  isStillness(uniqueId): boolean;
+  isStillness(uniqueId: UniqueId | undefined): boolean;
 
-  getStillnessId(uniqueId): UniqueId | null;
+  getStillnessId(uniqueId: UniqueId | undefined): UniqueId | null;
 
-  getStillnessType(uniqueId): UniqueId | null;
+  getStillnessType(uniqueId: UniqueId | undefined): Identifier | undefined;
 
-  getStillnessItem(uniqueId): VNodeState;
+  getStillnessItem(uniqueId: UniqueId): VNodeState;
 }

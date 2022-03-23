@@ -11,7 +11,7 @@ import { getNowTimeStr } from '../../utils';
 export interface State {
   type: OperationTypes;
   targetIds: UniqueId[];
-  targetType: string;
+  targetType: string | null;
   now: string;
 }
 

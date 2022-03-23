@@ -1,12 +1,6 @@
 const toString = Object.prototype.toString;
 
-/**
- * Gets the `toStringTag` of `value`.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the `toStringTag`.
- */
+// @ts-ignore
 function getTag(value) {
   if (value == null) {
     return value === undefined ? '[object Undefined]' : '[object Null]';
@@ -29,6 +23,7 @@ export function isFunction(input: unknown): boolean {
   return typeof input === 'function';
 }
 
+// @ts-ignore
 export function isSymbol(value) {
   const type = typeof value;
   return (
@@ -41,11 +36,12 @@ export function intersection<T>(itemsA: T[], itemsB: T[]): T[] {
   return itemsA.filter((t) => itemsB.indexOf(t) > -1);
 }
 
+// @ts-ignore
 export function isUndefined(obj) {
   return obj === void 0;
 }
 
-function isObjectLike(input: any) {
+function isObjectLike(input: unknown): boolean {
   return typeof input === 'object' && input !== null;
 }
 
@@ -81,7 +77,7 @@ export function isRefAble(C: unknown): boolean {
   return isClassComponent(C) || isRefForwardingComponent(C);
 }
 
-export function isBoolean(obj) {
+export function isBoolean(obj: unknown): boolean {
   return (
     obj === true || obj === false || toString.call(obj) === '[object Boolean]'
   );

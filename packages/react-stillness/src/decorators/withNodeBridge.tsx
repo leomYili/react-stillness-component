@@ -21,7 +21,7 @@ import { rootId } from '../constants';
 export interface OffscreenInstance {
   getStillnessId: () => UniqueId;
   isStillness: () => boolean;
-  unset: ({ id: UniqueId, type: Identifier }) => void;
+  unset: (params: UnsetParams) => void;
   clear: () => void;
 }
 

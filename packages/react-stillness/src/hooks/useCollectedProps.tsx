@@ -17,11 +17,13 @@ export function useCollectedProps<Collected>(
   contract: StillnessContract & HandlerContract,
   handle: Handle
 ): Collected {
-  const [collected, setCollected] = useState(() => collector(contract));
+  const [collected, setCollected] = useState(
+    () => (collector && collector(contract)) || ({} as Collected)
+  );
   const { stillnessParentId } = useContext(StillnessNodeContext);
 
   const updateCollected = useCallback(() => {
-    const nextValue = collector(contract);
+    const nextValue = (collector && collector(contract)) || ({} as Collected);
     if (!equal(collected, nextValue)) {
       setCollected(nextValue);
     }

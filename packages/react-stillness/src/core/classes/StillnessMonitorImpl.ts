@@ -6,6 +6,7 @@ import {
   Unsubscribe,
   Listener,
   UniqueId,
+  OperationTypes,
 } from '../../types';
 import { State } from '../reducers';
 import { State as VNodeState } from '../reducers/vNode';
@@ -23,7 +24,7 @@ import {
 export class StillnessMonitorImpl implements StillnessMonitor {
   private store: Store<State>;
 
-  public constructor(store) {
+  public constructor(store: Store<State>) {
     this.store = store;
   }
 
@@ -48,7 +49,8 @@ export class StillnessMonitorImpl implements StillnessMonitor {
 
       try {
         const canSkipListener =
-          !lifeCycleTypes.includes(currentOperation.type) ||
+          (currentOperation.type !== null &&
+            !lifeCycleTypes.includes(currentOperation.type)) ||
           shallowEqual(prevOperation, currentOperation) ||
           !currentOperation.targetIds.includes(parentId);
 
@@ -77,7 +79,8 @@ export class StillnessMonitorImpl implements StillnessMonitor {
 
       try {
         const canSkipListener =
-          !effectTypes.includes(currentOperation.type) ||
+          (currentOperation.type &&
+            !effectTypes.includes(currentOperation.type)) ||
           shallowEqual(prevOperation, currentOperation) ||
           !currentOperation.targetIds.includes(uniqueId);
 
@@ -96,23 +99,27 @@ export class StillnessMonitorImpl implements StillnessMonitor {
     return this.store.getState().vNodes[uniqueId];
   }
 
-  public getStillnessId(uniqueId): Identifier {
-    return this.store.getState().vNodes[uniqueId]?.uniqueId;
+  public getStillnessId(uniqueId: UniqueId): Identifier {
+    return this.store.getState().vNodes[uniqueId].uniqueId;
   }
 
-  public getStillnessType(uniqueId): Identifier {
-    return this.store.getState().vNodes[uniqueId]?.type;
+  public getStillnessType(uniqueId: UniqueId): Identifier | undefined {
+    return this.store.getState().vNodes[uniqueId].type;
   }
 
-  public isStillness(uniqueId): boolean {
-    const node = this.store.getState().vNodes[uniqueId];
+  public isStillness(uniqueId: UniqueId | undefined): boolean {
+    if (isUndefined(uniqueId)) {
+      return false;
+    }
+
+    const node = uniqueId ? this.store.getState().vNodes[uniqueId] : undefined;
     if (uniqueId === rootId || isUndefined(node)) {
       return false;
     }
 
     if (
-      node.isStillness === true ||
-      (node.isStillness === false && node.visible === false)
+      node?.isStillness === true ||
+      (node?.isStillness === false && node?.visible === false)
     ) {
       return true;
     }

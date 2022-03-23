@@ -4,6 +4,7 @@ import {
   StillnessManager,
   UniqueId,
   Unsubscribe,
+  RegistrationParams,
 } from '../types';
 import { getStillnessUniqueId } from '../utils';
 
@@ -16,7 +17,9 @@ export class StillnessRegistrationImpl implements Registration {
     this.uniqueId = getStillnessUniqueId('uniqueId').toString();
   }
 
-  public register: (params) => [UniqueId, Unsubscribe] = (params) => {
+  public register: (params: RegistrationParams) => [UniqueId, Unsubscribe] = (
+    params: RegistrationParams
+  ) => {
     const { createVNode, deleteVNode } = this.manager.getActions();
     const { parentId, type, visible, isStillness } = params;
     createVNode({
@@ -30,7 +33,7 @@ export class StillnessRegistrationImpl implements Registration {
     return [this.uniqueId, () => deleteVNode({ uniqueId: this.uniqueId })];
   };
 
-  public update = (params) => {
+  public update = (params: RegistrationParams) => {
     const { parentId, type, visible, isStillness } = params;
 
     this.manager.getActions().updateVNode({

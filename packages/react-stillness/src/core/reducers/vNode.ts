@@ -29,13 +29,15 @@ export function reduce(
 
   switch (action.type) {
     case ADD_V_NODE:
-      state[payload.uniqueId] = {
-        ...payload,
-        uniqueId: payload.uniqueId,
-      };
+      if (payload.uniqueId) {
+        state[payload.uniqueId] = {
+          ...payload,
+          uniqueId: payload.uniqueId,
+        };
+      }
       return { ...state };
     case UPDATE_V_NODE:
-      if (state[payload.uniqueId]) {
+      if (payload.uniqueId && state[payload.uniqueId]) {
         state[payload.uniqueId] = {
           ...state[payload.uniqueId],
           ...payload,
@@ -56,7 +58,9 @@ export function reduce(
       } */
       return { ...state };
     case REMOVE_V_NODE:
-      delete state[payload.uniqueId];
+      if(payload.uniqueId){
+        delete state[payload.uniqueId];
+      }
 
       return { ...state };
     default:

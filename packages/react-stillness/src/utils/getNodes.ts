@@ -1,14 +1,16 @@
 import { Identifier, UniqueId } from '../types';
 import { isUndefined } from './is';
 
-
 interface Params {
-  nodes:any;
-  id:UniqueId;
-  type?:Identifier;
+  nodes: any;
+  id?: UniqueId;
+  type?: Identifier;
 }
 
-export function getNodeIdsByCondition({ nodes, id, type}:Params):UniqueId[] {
+export function getNodeIdsByCondition({ nodes, id, type }: Params): UniqueId[] {
+  if (!id) {
+    return [];
+  }
   let result = [id, ...getNodeIdsByRootId(nodes, id)];
 
   if (!isUndefined(type)) {
@@ -16,7 +18,7 @@ export function getNodeIdsByCondition({ nodes, id, type}:Params):UniqueId[] {
       const _id = nodes[k].uniqueId;
       if (nodes[k].type === type && !result.includes(_id)) {
         let arr = [_id, ...getNodeIdsByRootId(nodes, _id)];
-        result = [...result,...arr]
+        result = [...result, ...arr];
       }
     }
   }
@@ -24,7 +26,7 @@ export function getNodeIdsByCondition({ nodes, id, type}:Params):UniqueId[] {
   return result;
 }
 
-export function getNodeIdsByRootId(nodes, rootId) {
+export function getNodeIdsByRootId(nodes: any, rootId: UniqueId): UniqueId[] {
   let result = [];
 
   let queue = [];

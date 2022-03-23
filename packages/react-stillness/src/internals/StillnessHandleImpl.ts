@@ -5,6 +5,7 @@ import {
   StillnessContract,
   StillnessHandle,
 } from '../types';
+import { isFunction } from '../utils';
 
 export class StillnessHandleImpl<Props, ResObject> implements StillnessHandle {
   private props: Props | null = null;
@@ -12,7 +13,11 @@ export class StillnessHandleImpl<Props, ResObject> implements StillnessHandle {
   private manager: StillnessManager;
   private contract: StillnessContract;
 
-  constructor(spec, manager, contract) {
+  constructor(
+    spec: StillnessSpec<Props, ResObject>,
+    manager: StillnessManager,
+    contract: StillnessContract
+  ) {
     this.spec = spec;
     this.manager = manager;
     this.contract = contract;
@@ -23,21 +28,23 @@ export class StillnessHandleImpl<Props, ResObject> implements StillnessHandle {
   }
 
   public mount = () => {
-    if (!this.props) {
-      return;
+    let item;
+    if (!this.props || !this.spec.mounted || !isFunction(this.spec.mounted)) {
+      return item;
     }
 
-    const item = this.spec.mounted(this.props, this.contract);
+    item = this.spec.mounted(this.props, this.contract);
 
     return item;
   };
 
   public unmount = () => {
-    if (!this.props) {
+    let item;
+    if (!this.props || !this.spec.unmounted || !isFunction(this.spec.unmounted)) {
       return;
     }
 
-    const item = this.spec.unmounted(this.props, this.contract);
+    item = this.spec.unmounted(this.props, this.contract);
 
     return item;
   };

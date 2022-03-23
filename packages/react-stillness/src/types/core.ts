@@ -2,6 +2,7 @@ import { Component } from 'react';
 
 import { StillnessMonitor } from './monitors';
 import { UnsetParams, ActionsParams } from './contract';
+import { State } from '../core/reducers';
 
 export type Identifier = string | number;
 export type UniqueId = Identifier;
@@ -29,7 +30,7 @@ export interface OperationActions {
 }
 
 export interface StillnessManager {
-  getStore(): void;
+  getStore(): State;
   getMonitor(): StillnessMonitor;
   getActions(): StillnessActions;
   dispatch(action: any): void;
@@ -52,7 +53,7 @@ export interface StillnessNodeProviderProps<Context> {
 }
 
 export interface StillnessNodeContextType {
-  stillnessParentId: Identifier;
+  stillnessParentId: Identifier | undefined;
 }
 
 export interface StillComponent<Props> extends Component<Props> {

@@ -4,8 +4,7 @@ import {
   StillnessActions,
   StillnessContract,
   StillnessManager,
-  Listener,
-  Unsubscribe,
+  UniqueId,
   UnsetParams,
 } from '../types';
 import { isUndefined } from '../utils';
@@ -13,7 +12,7 @@ import { isUndefined } from '../utils';
 export class StillnessContractImpl implements StillnessContract {
   private internalMonitor: StillnessMonitor;
   private internalActions: StillnessActions;
-  private id: Identifier = null;
+  private id: UniqueId | undefined;
   private item: any;
 
   public constructor(manager: StillnessManager) {
@@ -21,7 +20,7 @@ export class StillnessContractImpl implements StillnessContract {
     this.internalActions = manager.getActions();
   }
 
-  public receiveId(id: Identifier | null): void {
+  public receiveId(id: UniqueId | undefined): void {
     this.id = id;
   }
 
@@ -32,10 +31,10 @@ export class StillnessContractImpl implements StillnessContract {
   public isStillness(): boolean {
     return this.internalMonitor.isStillness(this.id);
   }
-  public getStillnessId(): Identifier {
+  public getStillnessId(): UniqueId | undefined {
     return this.id;
   }
-  public getStillnessType(): Identifier {
+  public getStillnessType(): Identifier | undefined {
     return this.internalMonitor.getStillnessType(this.id);
   }
   public getStillnessItem() {

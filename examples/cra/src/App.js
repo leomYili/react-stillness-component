@@ -6,11 +6,11 @@ import Detail from './pages/detail';
 import logo from './logo.svg';
 import './App.css';
 
-import { Provider } from 'react-stillness-component';
+import { StillnessProvider } from 'react-stillness-component';
 
 function App() {
   return (
-    <Provider debugMode>
+    <StillnessProvider debugMode>
       <BrowserRouter>
         <div className="App">
           <header className="App-header">
@@ -37,7 +37,7 @@ function App() {
           ></div>
         </div>
       </BrowserRouter>
-    </Provider>
+    </StillnessProvider>
   );
 }
 

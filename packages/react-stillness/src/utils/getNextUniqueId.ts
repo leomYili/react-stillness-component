@@ -1,6 +1,6 @@
 const idCounter = {};
 
-export function getStillnessUniqueId(prefix) {
+export function getStillnessUniqueId(prefix: string) {
   if (!idCounter[prefix]) {
     idCounter[prefix] = 0;
   }

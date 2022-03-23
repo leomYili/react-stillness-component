@@ -61,15 +61,10 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
 
     private decoratedRef: any = createRef();
     private manager: StillnessManager | undefined;
-    private handleContract: (StillnessContract & HandlerContract) | undefined;
-    private handle: StillnessHandle | undefined;
+    private handleContract: StillnessContract & HandlerContract;
+    private handle: StillnessHandle;
     private unsubscribe: any = null;
-    private currentStillness: boolean = false;
-    private stillnessParentId: Identifier;
-
-    public constructor(props: Props) {
-      super(props);
-    }
+    private stillnessParentId: Identifier | undefined;
 
     public getDecoratedComponentInstance() {
       invariant(
@@ -82,9 +77,6 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
 
     public componentDidMount() {
       this.receiveProps(this.props);
-      this.currentStillness = this.manager
-        .getMonitor()
-        .isStillness(this.stillnessParentId);
       this.handleChange();
     }
 

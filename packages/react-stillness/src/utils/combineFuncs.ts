@@ -1,3 +1,4 @@
+// @ts-ignore
 export const combineFuncs = (slices, ...args) => {
   return Object.keys(slices).reduce(
     (acc, prop) => ({

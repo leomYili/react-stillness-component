@@ -11,9 +11,9 @@ export interface UnsetParams {
 }
 
 export interface StillnessContract {
-  getStillnessId(): UniqueId | null;
+  getStillnessId(): UniqueId | undefined;
 
-  getStillnessType(): UniqueId | null;
+  getStillnessType(): Identifier | undefined;
 
   unset(params: UnsetParams): void;
 
@@ -21,6 +21,6 @@ export interface StillnessContract {
 }
 
 export interface HandlerContract {
-  receiveId: (id: UniqueId) => void;
+  receiveId: (id: UniqueId | undefined) => void;
   receiveItem: (item: any) => void;
 }

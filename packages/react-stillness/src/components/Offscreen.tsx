@@ -35,7 +35,7 @@ export interface OffscreenProps {
 export type OffscreenInnerProps = OffscreenProps & {
   uniqueId: UniqueId;
   isStillness: boolean;
-  stillnessManager?: StillnessManager;
+  stillnessManager: StillnessManager;
 };
 
 class OffscreenComponent extends Component<OffscreenInnerProps> {
