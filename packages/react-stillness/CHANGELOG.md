@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.4.0...react-stillness-component@0.4.1) (2022-03-25)
+
+
+### Bug Fixes
+
+* fix discovered issues ([9a3bc95](https://github.com/leomYili/react-stillness-component/commit/9a3bc95418bcf6eb4479d347169226893463720e))
+
+
+
+
+
 # [0.4.0](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.3.0...react-stillness-component@0.4.0) (2022-03-25)
 
 
