@@ -12,7 +12,12 @@ import {
   Identifier,
   OperationTypes,
 } from '../types';
-import { shallowEqual, createWrapperElement, isBoolean } from '../utils';
+import {
+  shallowEqual,
+  createWrapperElement,
+  getScrollPropertyInNodes,
+  isBoolean,
+} from '../utils';
 
 export interface OffscreenProps {
   /**
@@ -47,7 +52,7 @@ class OffscreenComponent extends Component<OffscreenInnerProps> {
   private actions: StillnessActions;
   private helpRef: any = createRef();
   private targetElement: HTMLElement = createWrapperElement();
-  private cacheNodes: any[] = [];
+  private cacheNodes: { node: Element; left: number; top: number }[] = [];
   private uniqueId: UniqueId;
 
   constructor(props: OffscreenInnerProps) {
@@ -64,7 +69,11 @@ class OffscreenComponent extends Component<OffscreenInnerProps> {
     );
 
     if (this.props.scrollReset) {
-      // 恢复该节点下可滚动元素的滚动位置
+      // reset
+      this.cacheNodes.forEach(({ node, left, top }, index) => {
+        node.scrollLeft = left;
+        node.scrollTop = top;
+      });
     }
 
     if (!init) {
@@ -74,12 +83,13 @@ class OffscreenComponent extends Component<OffscreenInnerProps> {
 
   private mount = () => {
     try {
-      if (this.helpRef?.current?.parentNode !== null) {
-        this.helpRef?.current?.parentNode.removeChild(this.targetElement);
+      if (this.props.scrollReset) {
+        // save
+        this.cacheNodes = getScrollPropertyInNodes(this.targetElement);
       }
 
-      if (this.props.scrollReset) {
-        // 保存该节点下可滚动元素的滚动位置
+      if (this.helpRef?.current?.parentNode !== null) {
+        this.helpRef?.current?.parentNode.removeChild(this.targetElement);
       }
 
       this.actions.triggerMount({
