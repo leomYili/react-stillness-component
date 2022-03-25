@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.3.0...react-stillness-component@0.4.0) (2022-03-25)
+
+
+### Features
+
+* add scrolling position memory function ([3bff942](https://github.com/leomYili/react-stillness-component/commit/3bff9426fc448b57c3efd8ed3fef2fb9b552ba8a))
+
+
+
+
+
 # [0.3.0](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.2.0...react-stillness-component@0.3.0) (2022-03-23)
 
 
