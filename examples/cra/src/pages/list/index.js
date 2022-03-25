@@ -10,13 +10,10 @@ const List = (props) => {
   const [info, setInfo] = useState('');
   const [visible, setVisible] = useState(true);
 
-  const testRef = useRef(null);
-
   const offscreen1Ref = useRef(null);
 
   useEffect(() => {
     // setTimeout(() => setInfo('模拟请求列表真实数据'), 1500);
-    console.log(testRef);
     console.log(offscreen1Ref.current);
   }, []);
 
@@ -27,11 +24,11 @@ const List = (props) => {
         console.log('冒泡点击??????');
       }}
     >
-      <h3>这是列表页 && 数据为 {info}</h3>
+      {/* <h3>这是列表页 && 数据为 {info}</h3>
       <button>
         <Link to={'/detail'}>进入详情页</Link>
-      </button>
-      {/* <div
+      </button> */}
+      <div
         style={{
           display: 'block',
           marginBottom: '20px',
@@ -49,7 +46,6 @@ const List = (props) => {
         }}
       >
         <Offscreen visible={visible}>
-          <>sdsdsd</>
           <WithCount>
             <div
               style={{
@@ -59,7 +55,6 @@ const List = (props) => {
               }}
             >
               <Offscreen visible={visible}>
-                <>sdsdsd</>
                 <WithCount />
               </Offscreen>
             </div>
@@ -72,10 +67,10 @@ const List = (props) => {
           background: '#009688',
         }}
       >
-        <Offscreen visible={visible}>
+        <Offscreen visible={visible} type="list">
           <CountHooks></CountHooks>
         </Offscreen>
-      </div> */}
+      </div> 
 
       <div
         style={{
@@ -87,15 +82,15 @@ const List = (props) => {
           <div
             style={{
               display: 'block',
-              height: 300,
+              height: 200,
               overflow: 'auto',
               padding: 20,
             }}
           >
             <h3>滚动区域</h3>
-            <div style={{ background: '#2196f3', height: 300 }}>一</div>
-            <div style={{ background: '#cddc39', height: 300 }}>二</div>
-            <div style={{ background: '#795548', height: 300 }}>三</div>
+            <div style={{ background: '#2196f3', height: 200 }}>一</div>
+            <div style={{ background: '#cddc39', height: 200 }}>二</div>
+            <div style={{ background: '#795548', height: 200 }}>三</div>
           </div>
         </Offscreen>
       </div>
@@ -118,9 +113,9 @@ const List = (props) => {
         </button>
         <button
           onClick={() => {
-            console.log(offscreen1Ref.current.getUniqueId());
+            console.log(offscreen1Ref.current.getStillnessId());
             offscreen1Ref.current.unset({
-              id: offscreen1Ref.current.getUniqueId(),
+              id: offscreen1Ref.current.getStillnessId(),
             });
           }}
         >

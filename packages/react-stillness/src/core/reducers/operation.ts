@@ -5,7 +5,7 @@ import {
   TRIGGER_UNSET,
 } from '../actions/operationAction';
 import { Action, UniqueId, OperationTypes } from '../../types';
-import { operationTypes } from '../../constants';
+import { NONE, operationTypes } from '../../constants';
 import { getNowTimeStr } from '../../utils';
 
 export interface State {
@@ -57,6 +57,7 @@ export function reduce(
         targetType: null,
         now: getNowTimeStr(),
       };
+    case NONE:
     default:
       return state;
   }

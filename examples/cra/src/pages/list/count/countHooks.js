@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { useStillness } from 'react-stillness-component';
 
 const spec = {
@@ -16,19 +16,22 @@ const spec = {
     return {
       isStillness: contract.isStillness(),
       stillnessId: contract.getStillnessId(),
+      item: contract.getStillnessItem(),
     };
   },
 };
 
-export function CountHooks() {
+export function CountHooks(props) {
   const [count, setCount] = useState(0);
   const collected = useStillness(spec);
 
-  console.log(collected);
+  useEffect(() => {
+    console.log(collected);
+  }, [collected]);
 
   return (
     <div className="count">
-      <p>class count: {count}</p>
+      <p>hook count: {count}</p>
       <button
         onClick={() => {
           setCount((count) => count + 1);
@@ -36,6 +39,7 @@ export function CountHooks() {
       >
         Add
       </button>
+      {props.children}
     </div>
   );
 }

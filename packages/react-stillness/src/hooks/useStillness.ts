@@ -7,7 +7,6 @@ import { useStillnessContract } from './useStillnessContract';
 import { useStillnessMonitor } from './useStillnessMonitor';
 import { useStillnessManager } from './useStillnessManager';
 import { useStillnessHandle } from './useStillnessHandle';
-import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect';
 
 export function useStillness<CollectedProps, ResObject = any>(
   specArg: FactoryOrInstance<StillnessHookSpec<CollectedProps, ResObject>>,
@@ -15,7 +14,7 @@ export function useStillness<CollectedProps, ResObject = any>(
 ): CollectedProps {
   const stillnessManager = useStillnessManager();
   const spec = useOptionalFactory(specArg, deps);
-  const contract = useStillnessContract(stillnessManager);
+  const contract = useStillnessContract(spec, stillnessManager);
   const monitor = useStillnessMonitor(stillnessManager);
   const handle = useStillnessHandle(spec, contract);
 

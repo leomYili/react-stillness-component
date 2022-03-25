@@ -76,7 +76,7 @@ The keep-alive component of react.
       return (
         <div>
           <button onClick={() => setShow(show => !show)}>Toggle</button>
-          <Offscreen visible={visible}>
+          <Offscreen visible={show}>
             <Count />
           </Offscreen>
         </div>

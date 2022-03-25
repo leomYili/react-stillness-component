@@ -82,7 +82,8 @@ export class StillnessMonitorImpl implements StillnessMonitor {
           (currentOperation.type &&
             !effectTypes.includes(currentOperation.type)) ||
           shallowEqual(prevOperation, currentOperation) ||
-          !currentOperation.targetIds.includes(uniqueId);
+          (!currentOperation.targetIds.includes(uniqueId) &&
+            (isUndefined(type) || currentOperation.targetType !== type));
 
         if (!canSkipListener) {
           listener();
@@ -104,16 +105,12 @@ export class StillnessMonitorImpl implements StillnessMonitor {
   }
 
   public getStillnessType(uniqueId: UniqueId): Identifier | undefined {
-    return this.store.getState().vNodes[uniqueId].type;
+    return this.store.getState().vNodes[uniqueId]?.type;
   }
 
   public isStillness(uniqueId: UniqueId | undefined): boolean {
-    if (isUndefined(uniqueId)) {
-      return false;
-    }
-
     const node = uniqueId ? this.store.getState().vNodes[uniqueId] : undefined;
-    if (uniqueId === rootId || isUndefined(node)) {
+    if (isUndefined(uniqueId) || uniqueId === rootId || isUndefined(node)) {
       return false;
     }
 

@@ -4,8 +4,11 @@ import {
   ActionsParams,
   UnsetParams,
   StillnessManager,
+  OperationTypes,
+  Identifier,
 } from '../../types';
-import { operationTypes, rootId } from '../../constants';
+import { State as OperationState } from '../reducers/operation';
+import { operationTypes, rootId, NONE } from '../../constants';
 import { getNodeIdsByCondition } from '../../utils/getNodes';
 
 export const TRIGGER_MOUNT = 'stillness/triggerMount';
@@ -13,12 +16,34 @@ export const TRIGGER_UNMOUNT = 'stillness/triggerUnmount';
 export const TRIGGER_UNSET = 'stillness/triggerUnset';
 export const TRIGGER_CLEAR = 'stillness/triggerClear';
 
+function isEventExist(prev: OperationState, next: OperationState) {
+  if (
+    prev.type === next.type &&
+    next.targetIds.every((val) => prev.targetIds.includes(val))
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+// add judgment conditions to remove repeated response events triggered by child components
 export function triggerMount(manager: StillnessManager) {
   return (params: ActionsParams): Action<any> => {
     const store = manager.getStore();
     const { id } = params;
 
     const targetIds = getNodeIdsByCondition({ nodes: store.vNodes, id });
+
+    if (
+      store.operation.targetIds.includes(id as Identifier) &&
+      isEventExist(store.operation, {
+        type: operationTypes.MOUNT,
+        targetIds,
+      } as OperationState)
+    ) {
+      return { type: NONE, payload: null };
+    }
 
     return {
       type: TRIGGER_MOUNT,
@@ -30,12 +55,23 @@ export function triggerMount(manager: StillnessManager) {
   };
 }
 
+// add judgment conditions to remove repeated response events triggered by child components
 export function triggerUnmount(manager: StillnessManager) {
   return (params: ActionsParams): Action<any> => {
     const store = manager.getStore();
     const { id } = params;
 
     const targetIds = getNodeIdsByCondition({ nodes: store.vNodes, id });
+
+    if (
+      store.operation.targetIds.includes(id as Identifier) &&
+      isEventExist(store.operation, {
+        type: operationTypes.UNMOUNT,
+        targetIds,
+      } as OperationState)
+    ) {
+      return { type: NONE, payload: null };
+    }
 
     return {
       type: TRIGGER_UNMOUNT,

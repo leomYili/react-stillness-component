@@ -1,7 +1,7 @@
 import { Identifier, UniqueId } from './core';
 import { StillnessMonitor } from './monitors';
 
-export interface ActionsParams{
+export interface ActionsParams {
   id?: Identifier;
 }
 
@@ -12,6 +12,8 @@ export interface UnsetParams {
 
 export interface StillnessContract {
   getStillnessId(): UniqueId | undefined;
+
+  getStillnessItem(): any;
 
   getStillnessType(): Identifier | undefined;
 
