@@ -178,7 +178,7 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
             return (
               <Decorated
                 {...this.props}
-                {...this.state}
+                {...this.getCurrentState()}
                 ref={isRefAble(Decorated) ? this.decoratedRef : null}
               />
             );

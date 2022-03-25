@@ -114,10 +114,11 @@ export function withNodeBridge(
 
     useIsomorphicLayoutEffect(() => {
       if (isMountRef.current) {
+        const parentIsStillness = globalMonitor.isStillness(stillnessParentId);
         uniqueNodeRegistration.update({
           ...props,
           parentId: stillnessParentId,
-          isStillness: globalMonitor.isStillness(stillnessParentId),
+          isStillness: parentIsStillness || !props.visible,
         });
 
         const thisIsStillness = globalMonitor.isStillness(
