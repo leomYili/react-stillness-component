@@ -31,7 +31,7 @@ const List = (props) => {
       <button>
         <Link to={'/detail'}>进入详情页</Link>
       </button>
-      <div
+      {/* <div
         style={{
           display: 'block',
           marginBottom: '20px',
@@ -51,7 +51,7 @@ const List = (props) => {
         <Offscreen visible={visible}>
           <>sdsdsd</>
           <WithCount>
-            {/* <div
+            <div
               style={{
                 display: 'block',
                 margin: '20px',
@@ -62,18 +62,41 @@ const List = (props) => {
                 <>sdsdsd</>
                 <WithCount />
               </Offscreen>
-            </div> */}
+            </div>
           </WithCount>
         </Offscreen>
       </div>
 
       <div
         style={{
-          background: '#bedaff',
+          background: '#009688',
         }}
       >
         <Offscreen visible={visible}>
           <CountHooks></CountHooks>
+        </Offscreen>
+      </div> */}
+
+      <div
+        style={{
+          marginTop: 20,
+          background: '#ff9800',
+        }}
+      >
+        <Offscreen visible={visible}>
+          <div
+            style={{
+              display: 'block',
+              height: 300,
+              overflow: 'auto',
+              padding: 20,
+            }}
+          >
+            <h3>滚动区域</h3>
+            <div style={{ background: '#2196f3', height: 300 }}>一</div>
+            <div style={{ background: '#cddc39', height: 300 }}>二</div>
+            <div style={{ background: '#795548', height: 300 }}>三</div>
+          </div>
         </Offscreen>
       </div>
 

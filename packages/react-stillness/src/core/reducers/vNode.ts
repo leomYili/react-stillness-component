@@ -58,7 +58,7 @@ export function reduce(
       } */
       return { ...state };
     case REMOVE_V_NODE:
-      if(payload.uniqueId){
+      if (payload.uniqueId) {
         delete state[payload.uniqueId];
       }
 
