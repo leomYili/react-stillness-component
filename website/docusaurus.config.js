@@ -17,6 +17,7 @@ const config = {
   organizationName: 'leomyili', // Usually your GitHub org/user name.
   projectName: 'react-stillness-component', // Usually your repo name.
   deploymentBranch: 'gh-pages',
+  trailingSlash: false,
 
   i18n: {
     defaultLocale: 'en',
