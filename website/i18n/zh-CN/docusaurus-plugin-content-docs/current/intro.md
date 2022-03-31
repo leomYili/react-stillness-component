@@ -56,7 +56,7 @@ title: 简介
 
 ### typescript
 
-组件目前使用**typescript**进行开发，相关的类型定义请参考[Typescript 支持](get-started.mdx#typescript-support).
+组件目前使用**typescript**进行开发，相关的类型定义请参考[Typescript 支持](get-started.md#typescript-support).
 
 ### 兼容性
 

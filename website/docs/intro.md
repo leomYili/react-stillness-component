@@ -56,7 +56,7 @@ Because of the use of `Portal`, even if the real dom element is removed or moved
 
 ### typescript
 
-The component is currently developed using **typescript**, please refer to [Typescript support](get-started.mdx#typescript-support) for the relevant type definitions.
+The component is currently developed using **typescript**, please refer to [Typescript support](get-started.md#typescript-support) for the relevant type definitions.
 
 ### Compatibility
 

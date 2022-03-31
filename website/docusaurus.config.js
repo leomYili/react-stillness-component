@@ -114,7 +114,7 @@ const config = {
             items: [
               {
                 label: 'Get Started',
-                to: '/docs/category/getting-started',
+                to: '/docs/get-started',
               },
               {
                 label: 'API',
