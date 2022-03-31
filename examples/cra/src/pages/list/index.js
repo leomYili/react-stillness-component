@@ -10,10 +10,12 @@ const List = (props) => {
   const [info, setInfo] = useState('');
   const [visible, setVisible] = useState(true);
 
+  const testRef = useRef(null);
   const offscreen1Ref = useRef(null);
 
   useEffect(() => {
     // setTimeout(() => setInfo('模拟请求列表真实数据'), 1500);
+    console.log(testRef);
     console.log(offscreen1Ref.current);
   }, []);
 
@@ -53,6 +55,7 @@ const List = (props) => {
                 margin: '20px',
                 background: '#bedaff',
               }}
+              ref={testRef}
             >
               <Offscreen visible={visible}>
                 <WithCount />

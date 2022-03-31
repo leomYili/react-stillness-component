@@ -1,0 +1,30 @@
+{
+  "title": {
+    "message": "React-stillness-component",
+    "description": "The title in the navbar"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  },
+  "item.label.Docs": {
+    "message": "文档",
+    "description": "Navbar item with label Docs"
+  },
+  "item.label.Example": {
+    "message": "示例",
+    "description": "Navbar item with label Example"
+  },
+  "item.label.API": {
+    "message": "API",
+    "description": "Navbar item with label API"
+  },
+  "item.label.Examples": {
+    "message": "示例",
+    "description": "Navbar item with label Examples"
+  },
+  "item.label.releases": {
+    "message": "releases",
+    "description": "Navbar item with label releases"
+  }
+}

@@ -45,7 +45,6 @@ export default class IndexPage extends Component {
               >
                 <h1 className={styles.title}>Page index</h1>
                 <Offscreen visible>
-                  <div></div>
                 </Offscreen>
                 <Button
                   onClick={() => {
