@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[172],{51023:function(e){e.exports=JSON.parse('{"title":"API","slug":"/category/api","permalink":"/docs/category/api","navigation":{"previous":{"title":"Contract","permalink":"/docs/basic-concepts/contract"},"next":{"title":"StillnessProvider","permalink":"/docs/api/Components/stillnessProvider"}}}')}}]);
