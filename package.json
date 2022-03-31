@@ -4,8 +4,7 @@
   "description": "This package makes react-component static, with all dom operations disabled and invisible, and supports hook as well as class-component",
   "workspaces": [
     "packages/*",
-    "examples/*",
-    "website"
+    "examples/*"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
