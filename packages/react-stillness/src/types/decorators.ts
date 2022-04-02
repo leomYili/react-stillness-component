@@ -8,19 +8,14 @@ export interface StillnessSpec<Props, ResObject = any> {
    * @param props
    * @param contract
    */
-  mounted?: (
-    props: Props,
-    contract: StillnessContract
-  ) => ResObject | void;
+  mounted?: (props: Props, contract: StillnessContract) => ResObject | void;
   /**
    * optional
    * This event will be triggered after the component leaves the resting state
    * and if there is any return value, it will be returned in contract.getItem()
    */
-  unmounted?: (
-    props: Props,
-    contract: StillnessContract
-  ) => ResObject | void;
+  unmounted?: (props: Props, contract: StillnessContract) => ResObject | void;
+  collect?: StillnessCollector<Props, ResObject>;
 }
 
 export type StillnessCollector<CollectedProps, TargetProps = any> = (

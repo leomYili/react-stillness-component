@@ -26,10 +26,10 @@ const List = (props) => {
         console.log('冒泡点击??????');
       }}
     >
-      {/* <h3>这是列表页 && 数据为 {info}</h3>
+      <h3>这是列表页 && 数据为 {info}</h3>
       <button>
         <Link to={'/detail'}>进入详情页</Link>
-      </button> */}
+      </button>
       <div
         style={{
           display: 'block',
