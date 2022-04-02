@@ -1,6 +1,6 @@
 {
   "name": "react-stillness-component",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "This package makes react-component static, with all dom operations disabled and invisible, and supports hook as well as class-component",
   "bugs": {
     "url": "https://github.com/leomYili/react-stillness-component/issues"
