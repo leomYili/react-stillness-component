@@ -2,28 +2,26 @@ import { ComponentType } from 'react';
 
 import { decorateHandler } from './decorateHandler';
 import { StillnessContractImpl, StillnessHandleImpl } from '../internals';
-import {
-  checkDecoratorArguments,
-} from '../utils';
+import { checkDecoratorArguments } from '../utils';
 import {
   UniqueId,
   StillnessSpec,
   StillnessCollector,
   StillnessManager,
+  FactoryOrInstance,
 } from '../types';
 
 export function connectStillness<
   RequiredProps,
   CollectedProps = any,
   ResObject = any
->({
-  spec,
-  collect,
-}: {
-  spec: StillnessSpec<RequiredProps, ResObject>;
-  collect: StillnessCollector<CollectedProps, RequiredProps>;
-}) {
-  checkDecoratorArguments('connectStillness', 'spec,collect', spec, collect);
+>(specArg: FactoryOrInstance<StillnessSpec<CollectedProps, ResObject>>) {
+  checkDecoratorArguments('connectStillness', 'specArg');
+
+  const _spec =
+    typeof specArg === 'function'
+      ? (specArg as () => StillnessSpec<CollectedProps, ResObject>)()
+      : (specArg as StillnessSpec<CollectedProps, ResObject>);
 
   return function decorateStillness<
     RComponentType extends ComponentType<RequiredProps & CollectedProps>
@@ -32,10 +30,10 @@ export function connectStillness<
       DecoratedComponent,
       containerDisplayName: 'Stillness',
       createHandle: (manager, contract) =>
-        new StillnessHandleImpl(spec || {}, manager, contract),
+        new StillnessHandleImpl(_spec || {}, manager, contract),
       createContract: (manager: StillnessManager) =>
         new StillnessContractImpl(manager),
-      collect,
+      collect: _spec.collect,
     });
   };
 }

@@ -7,7 +7,6 @@ export class Count extends Component {
   };
 
   render() {
-
     console.log(this.props);
     return (
       <div className="count">
@@ -36,13 +35,12 @@ const spec = {
 
     // return 'unmounted';
   },
+  collect: (props, contract) => {
+    return {
+      isStillness: contract.isStillness(),
+      stillnessId: contract.getStillnessId(),
+    };
+  },
 };
 
-const collect = (props, contract) => {
-  return {
-    isStillness: contract.isStillness(),
-    stillnessId: contract.getStillnessId(),
-  };
-};
-
-export const WithCount = connectStillness({ spec, collect })(Count);
+export const WithCount = connectStillness(spec)(Count);
