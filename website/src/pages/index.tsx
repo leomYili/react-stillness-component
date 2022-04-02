@@ -42,9 +42,6 @@ export default function Home(): JSX.Element {
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />"
     >
-      <Head>
-        <meta name="baidu-site-verification" content="code-7U9vS3Ps0V" />
-      </Head>
       <HomepageHeader />
       <main>
         <HomepageEditor />
