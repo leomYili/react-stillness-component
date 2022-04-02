@@ -66,6 +66,18 @@ const config = {
     ({
       hideableSidebar: true,
       autoCollapseSidebarCategories: false,
+      /* algolia: {
+        // The application ID provided by Algolia
+        appId: 'YOUR_APP_ID',
+  
+        // Public API key: it is safe to commit it
+        apiKey: 'YOUR_SEARCH_API_KEY',
+  
+        indexName: 'react-stillness-component',
+  
+        // Optional: see doc section below
+        contextualSearch: true,
+      }, */
       navbar: {
         hideOnScroll: true,
         title: 'React-stillness-component',

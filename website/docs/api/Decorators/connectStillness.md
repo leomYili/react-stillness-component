@@ -29,16 +29,17 @@ const spec = {
   unmounted: (props, contract) => {
     return 'unmounted';
   },
-};
-
-const collect = (props, contract) => {
-  return {
-    isStillness: contract.isStillness(),
-    stillnessId: contract.getStillnessId(),
+  collect: (props, contract) => {
+    return {
+      isStillness: contract.isStillness(),
+      stillnessId: contract.getStillnessId(),
+    };
   };
 };
 
-export const WithCount = connectStillness({ spec, collect })(Count);
+const 
+
+export const WithCount = connectStillness(spec)(Count);
 ```
 
 ## Parameters
@@ -50,7 +51,7 @@ export const WithCount = connectStillness({ spec, collect })(Count);
   - `unmounted`: Required, **function**, used to describe the unmounting behavior of a stillness-component with the following arguments
     - `props`: Required, **object**, the props of the component
     - `contract`: Required, **object**, the contract of the component, see [Contract State](api/contract-state.md) for more information
-- `collect`: Required, **function**, used to describe the data collection behavior of a stillness-component with the following parameters
-  - `props`: Required, **object**, the props of the component
-  - `contract`: Required, **object**, the contract of the component, see [Contract State](api/contract-state.md) for more information
+  - `collect`: Required, **function**, used to describe the data collection behavior of a stillness-component with the following parameters
+    - `props`: Required, **object**, the props of the component
+    - `contract`: Required, **object**, the contract of the component, see [Contract State](api/contract-state.md) for more information
 
