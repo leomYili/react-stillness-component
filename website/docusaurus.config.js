@@ -5,12 +5,14 @@ const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const npm2yarn = require('@docusaurus/remark-plugin-npm2yarn');
 
+const baseUrl = process.env.BASE_URL || '/';
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'React-stillness-component',
   tagline: 'Stillness react component state and rendering',
   url: 'https://leomyili.github.io',
-  baseUrl: '/react-stillness-component/',
+  baseUrl,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',

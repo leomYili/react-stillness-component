@@ -7,6 +7,8 @@
     "start": "docusaurus start",
     "start:zh": "yarn run clean && yarn run start --locale zh-CN",
     "build": "docusaurus build",
+    "build:gh": "cross-env BASE_URL='/react-stillness-component/' docusaurus build",
+    "build:vercel": "cross-env BASE_URL='/' docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clean": "docusaurus clear",
@@ -31,6 +33,7 @@
   "devDependencies": {
     "@docusaurus/module-type-aliases": "2.0.0-beta.18",
     "@tsconfig/docusaurus": "^1.0.5",
+    "cross-env": "^7.0.3",
     "typescript": "^4.6.3"
   },
   "browserslist": {

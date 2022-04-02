@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/leomYili/react-stillness-component">
-    <img width="120" src="https://github.com/leomYili/react-stillness-component/website/static/img/logo.png">
+    <img width="120" src="https://leomyili.github.io/react-stillness-component/img/logo.png">
   </a>
 </p>
 
