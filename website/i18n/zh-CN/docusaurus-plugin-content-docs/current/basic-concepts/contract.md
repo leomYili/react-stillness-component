@@ -12,16 +12,16 @@ title: Contract
 示例如下:
 
 ```jsx title="Hoc"
-// highlight-start
-const collect = (props， contract) => {
-  return {
+const spec = {
+  // highlight-start
+  collect: (props,contract) => ({
     isStillness: contract.isStillness()，
     stillnessId: contract.getStillnessId()，
-  };
+  });
+  // highlight-end
 };
-// highlight-end
 
-connectStillness({ collect });
+connectStillness(spec);
 ```
 
 或者

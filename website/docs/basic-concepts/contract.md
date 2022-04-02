@@ -12,16 +12,16 @@ For each component that needs to listen to the stillness state, a pure function 
 The example is as follows:
 
 ```jsx title="Hoc"
-// highlight-start
-const collect = (props， contract) => {
-  return {
+const spec = {
+  // highlight-start
+  collect: (props,contract) => ({
     isStillness: contract.isStillness()，
     stillnessId: contract.getStillnessId()，
-  };
+  });
+  // highlight-end
 };
-// highlight-end
 
-connectStillness({ collect });
+connectStillness(spec);
 ```
 
 or

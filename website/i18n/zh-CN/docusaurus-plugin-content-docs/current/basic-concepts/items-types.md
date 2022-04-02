@@ -28,9 +28,15 @@ const spec = {
       }
     };
   }，
+  collect: (props, contract) => {
+    return {
+      isStillness: contract.isStillness(),
+      stillnessId: contract.getStillnessId(),
+    };
+  },
 };
 
-connectStillness({ spec，... }) or useStillness(spec);
+connectStillness(spec) or useStillness(spec);
 ...
 ```
 

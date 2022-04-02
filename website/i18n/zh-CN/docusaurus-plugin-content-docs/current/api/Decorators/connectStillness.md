@@ -29,16 +29,17 @@ const spec = {
   unmounted: (props, contract) => {
     return 'unmounted';
   },
-};
-
-const collect = (props, contract) => {
-  return {
-    isStillness: contract.isStillness(),
-    stillnessId: contract.getStillnessId(),
+  collect: (props, contract) => {
+    return {
+      isStillness: contract.isStillness(),
+      stillnessId: contract.getStillnessId(),
+    };
   };
 };
 
-export const WithCount = connectStillness({ spec, collect })(Count);
+const 
+
+export const WithCount = connectStillness(spec)(Count);
 ```
 
 ## 参数
@@ -50,6 +51,6 @@ export const WithCount = connectStillness({ spec, collect })(Count);
   - `unmounted`: 可选， **function** 类型，用于描述静止组件的卸载行为，参数为：
     - `props`: 必选， **object** 类型，组件的 props
     - `contract`: 必选， **object** 类型，组件的 contract,更多信息请查看 [Contract State](api/contract-state.md)
-- `collect`: 必选， **function** 类型，用于描述静止组件的数据收集行为，参数为：
-  - `props`: 必选， **object** 类型，组件的 props
-  - `contract`: 必选， **object** 类型，组件的 contract,更多信息请查看 [Contract State](api/contract-state.md)
+  - `collect`: 必选， **function** 类型，用于描述静止组件的数据收集行为，参数为：
+    - `props`: 必选， **object** 类型，组件的 props
+    - `contract`: 必选， **object** 类型，组件的 contract,更多信息请查看 [Contract State](api/contract-state.md)
