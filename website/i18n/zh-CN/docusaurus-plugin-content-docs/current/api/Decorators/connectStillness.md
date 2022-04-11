@@ -37,8 +37,6 @@ const spec = {
   };
 };
 
-const 
-
 export const WithCount = connectStillness(spec)(Count);
 ```
 
