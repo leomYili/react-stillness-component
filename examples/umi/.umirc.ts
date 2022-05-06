@@ -5,8 +5,28 @@ export default defineConfig({
     type: 'none',
   },
   routes: [
-    { path: '/', component: '@/pages/index' },
-    { path: '/modal', component: '@/pages/modal' },
-    { path: '/second', component: '@/pages/second' },
+    {
+      exact: false,
+      path: '/',
+      component: '@/layouts/index',
+      routes: [
+        {
+          exact: false,
+          path: '/home',
+          component: '@/pages/home',
+          stillness: true,
+          routes: [
+            {
+              path: '/home/a',
+              component: '@/pages/a',
+              stillness: true,
+            },
+          ],
+        },
+        { path: '/about', component: '@/pages/about', stillness: true },
+        { path: '/list', component: '@/pages/list' },
+      ],
+    },
   ],
+  stillness: {},
 });

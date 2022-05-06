@@ -1,0 +1,49 @@
+{
+  "name": "umi-renderer-stillness",
+  "version": "0.0.1",
+  "description": "react-stillness-component renderer",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "keep-alive",
+    "stillness",
+    "react-stillness-component"
+  ],
+  "author": "leomyili",
+  "license": "MIT",
+  "dependencies": {
+    "@types/react": "^16.9.43",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-config": "^5.0.2",
+    "@umijs/runtime": "3.5.23",
+    "react-router-config": "5.1.1",
+    "react-stillness-component": "0.5.0"
+  },
+  "peerDependencies": {
+    "react": "16.x || 17.x",
+    "react-dom": "16.x || 17.x"
+  },
+  "rollup": {
+    "input": "src/index.ts",
+    "output": [
+      {
+        "file": "dist/index.js",
+        "format": "umd",
+        "name": "StillnessUmiRenderer",
+        "globals": {
+          "react": "React",
+          "react-dom": "ReactDOM",
+          "runtime": "runtime"
+
+        }
+      }
+    ],
+    "external": [
+      "react",
+      "react-dom",
+      "@umijs/runtime"
+    ]
+  }
+}

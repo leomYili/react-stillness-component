@@ -26,8 +26,10 @@
     "@ant-design/pro-layout": "^6.5.0",
     "react": "17.x",
     "react-dom": "17.x",
-    "react-stillness-component": "0.4.1",
-    "umi": "^3.5.20"
+    "react-router-dom": "5.2.0",
+    "react-stillness-component": "0.5.0",
+    "umi": "^3.5.20",
+    "umi-plugin-stillness": "0.0.1"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",

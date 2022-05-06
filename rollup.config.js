@@ -1,5 +1,6 @@
 import nodeResolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
+import copy from 'rollup-plugin-copy';
 import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
@@ -44,8 +45,16 @@ export default tailPkgs.map((pkgPath) => {
     output: getPKGOutputConfig(rollup.output, pkgPath),
     external: rollup.external || [],
     plugins: [
+      copy({
+        targets: [
+          {
+            src: path.resolve(root, pkgPath, 'src/assets'),
+            dest: path.resolve(root, pkgPath, 'dist/'),
+          },
+        ],
+      }),
       typescript({
-        tsconfig: './tsconfig.base.json',
+        tsconfig: path.resolve(root, pkgPath, 'tsconfig.json'),
       }),
       nodeResolve({
         extensions,
