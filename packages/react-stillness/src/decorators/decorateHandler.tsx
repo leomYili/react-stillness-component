@@ -215,7 +215,7 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
   }
 
   return hoistNonReactStatics(
-    StillnessComponent,
+    StillnessComponent as any,
     DecoratedComponent
   ) as any as StillComponent<Props>;
 }
