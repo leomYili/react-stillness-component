@@ -150,4 +150,4 @@ class OffscreenComponent extends Component<OffscreenInnerProps> {
   }
 }
 
-export const Offscreen = withNodeBridge(OffscreenComponent);
+export const Offscreen: any = withNodeBridge(OffscreenComponent);
