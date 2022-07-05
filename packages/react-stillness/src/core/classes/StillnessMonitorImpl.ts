@@ -40,7 +40,10 @@ export class StillnessMonitorImpl implements StillnessMonitor {
   ): Unsubscribe {
     const { parentId } = params;
     invariant(typeof listener === 'function', 'listener must be a function.');
-    invariant(typeof parentId === 'string', 'parentId is required');
+    invariant(
+      typeof parentId === 'string',
+      'parentId is required,Expected need Offscreen component'
+    );
 
     let prevOperation = this.store.getState().operation;
     const handleChange = () => {

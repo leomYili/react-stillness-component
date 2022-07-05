@@ -70,9 +70,9 @@ function RouterComponent(props: IRouterComponentProps) {
   }, [history]);
 
   return (
-    <Router history={history}>
-      <StillnessProvider>{renderRoutes(renderRoutesProps)}</StillnessProvider>
-    </Router>
+    <StillnessProvider>
+      <Router history={history}>{renderRoutes(renderRoutesProps)}</Router>
+    </StillnessProvider>
   );
 }
 

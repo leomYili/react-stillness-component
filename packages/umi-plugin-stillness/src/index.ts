@@ -23,6 +23,7 @@ export default (api: IApi) => {
         join(__dirname, 'assets/exports.tpl'),
         'utf-8'
       );
+
       api.writeTmpFile({
         path: 'plugin-stillness/exports.ts',
         content: exportsTpl,

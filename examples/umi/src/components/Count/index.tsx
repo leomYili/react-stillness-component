@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
-import { useStillness, useStillnessManager } from 'react-stillness-component';
+import { useStillness, useStillnessManager } from 'umi';
 
 export default function Count() {
   const [count, setCount] = useState(0);
-  const stillnessManager  = useStillnessManager();
+  const stillnessManager = useStillnessManager();
   const collected = useStillness({
     mounted: (contract) => {
-      return "mounted";
+      console.log('被隐藏');
+      return 'mounted';
     },
     unmounted: (contract) => {
-      return "unmounted";
+      return 'unmounted';
     },
     collect: (contract) => {
       return {
         isStillness: contract.isStillness(),
-        stillnessId: contract.getStillnessId()
+        stillnessId: contract.getStillnessId(),
       };
-    }
+    },
   });
 
   return (
