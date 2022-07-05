@@ -34,7 +34,7 @@ export default function Switch(props: any) {
 
               if (child.props.stillness) {
                 return (
-                  <Offscreen visible={childMatch !== null}>
+                  <Offscreen type={path} visible={childMatch !== null}>
                     {cloneElement(element, {
                       location,
                       computedMatch: childMatch,
