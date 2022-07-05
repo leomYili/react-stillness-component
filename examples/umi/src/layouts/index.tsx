@@ -1,4 +1,5 @@
-import { IRouteComponentProps, Router } from 'umi';
+import React from "react";
+import { IRouteComponentProps, Router,StillnessProvider } from 'umi';
 import { Link } from 'react-router-dom';
 
 export default function Layout({

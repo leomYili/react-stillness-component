@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext } from 'react';
+import { useCallback, useContext } from 'react';
 
 import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect';
 import { StillnessNodeContext } from '../core';

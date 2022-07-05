@@ -14,7 +14,6 @@
     "baseUrl": ".",
     "target": "ESNext",
     "module": "ESNext",
-    "typeRoots": ["./node_modules/@types"],
     "preserveSymlinks": true,
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false
@@ -25,6 +24,8 @@
     "**/dist",
     "**/es",
     "example",
+    "**/*.test.ts",
+    "**/*.test.tsx",
     "**/*.spec.ts",
     "fixtures",
     "**/lib",

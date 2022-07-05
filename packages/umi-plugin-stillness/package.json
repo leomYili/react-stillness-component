@@ -18,8 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "@umijs/types": "^3.5.23",
-    "react-stillness-component": "^0.6.1",
-    "umi-renderer-stillness": "^0.1.1"
+    "react-stillness-component": "0.6.1",
+    "umi-renderer-stillness": "0.1.1"
   },
   "rollup": {
     "input": "src/index.ts",

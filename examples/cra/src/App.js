@@ -12,7 +12,7 @@ import { StillnessProvider, Offscreen } from 'react-stillness-component';
 
 function App() {
   return (
-    <StillnessProvider debugMode>
+    <StillnessProvider>
       <BrowserRouter>
         <div className="App">
           <header className="App-header">

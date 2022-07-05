@@ -14,12 +14,12 @@
   "author": "leomyili",
   "license": "MIT",
   "dependencies": {
-    "@types/react": "^16.9.43",
-    "@types/react-dom": "^16.9.8",
+    "@types/react": "^17.x",
+    "@types/react-dom": "^17.x",
     "@types/react-router-config": "^5.0.2",
-    "@umijs/runtime": "3.5.23",
+    "@umijs/runtime": "^3.x",
     "react-router-config": "5.1.1",
-    "react-stillness-component": "^0.6.1"
+    "react-stillness-component": "0.6.1"
   },
   "peerDependencies": {
     "react": "16.x || 17.x",

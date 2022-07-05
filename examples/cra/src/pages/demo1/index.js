@@ -4,7 +4,7 @@ import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 
 import { StillnessProvider, Offscreen } from 'react-stillness-component';
 
-import { WithCount } from '../list/count/countClass';
+import { CountHooks } from '../list/count/countHooks';
 
 import CustomSwitch from './CustomSwitch';
 
@@ -35,7 +35,7 @@ export default function demo1({ match, location }) {
                 exact
                 children={(props) => {
                   console.log(props);
-                  return <WithCount />;
+                  return <CountHooks />;
                 }}
               ></Route>
               <Route

@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { useStillness } from "react-stillness-component";
+import React, { useState } from 'react';
+import { useStillness, useStillnessManager } from 'react-stillness-component';
 
 export default function Count() {
   const [count, setCount] = useState(0);
-  /* const collected = useStillness({
+  const stillnessManager  = useStillnessManager();
+  const collected = useStillness({
     mounted: (contract) => {
       return "mounted";
     },
@@ -16,7 +17,7 @@ export default function Count() {
         stillnessId: contract.getStillnessId()
       };
     }
-  });*/
+  });
 
   return (
     <div className="count">

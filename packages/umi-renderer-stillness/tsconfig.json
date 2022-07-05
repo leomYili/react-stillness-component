@@ -14,7 +14,7 @@
     "baseUrl": ".",
     "target": "ESNext",
     "module": "ESNext",
-    "typeRoots": ["./node_modules/@types"],
+    "typeRoots": ["./node_modules/@types","./src/index.d.ts"],
     "preserveSymlinks": true,
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false

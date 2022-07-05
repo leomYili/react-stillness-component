@@ -1,4 +1,6 @@
-module.exports = {
+const babelJest = require("babel-jest");
+
+module.exports = babelJest.createTransformer({
   presets: [
     [
       '@babel/preset-env',
@@ -21,4 +23,4 @@ module.exports = {
     '@babel/plugin-proposal-object-rest-spread',
     '@babel/plugin-transform-runtime',
   ],
-};
+});

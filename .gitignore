@@ -8,6 +8,9 @@ yarn-error.log*
 npminstall-debug.log*
 package-lock.json*
 
+# Test Artifacts
+coverage/
+
 # production
 /build
 /dll
