@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { Component, ComponentType, createRef } from 'react';
 import ReactDOM from 'react-dom';
 import invariant from 'invariant';
 
@@ -43,7 +43,9 @@ export type OffscreenInnerProps = OffscreenProps & {
   stillnessManager: StillnessManager;
 };
 
-class OffscreenComponent extends Component<OffscreenInnerProps> {
+class OffscreenComponent extends Component<
+  React.PropsWithChildren<OffscreenInnerProps>
+> {
   static displayName = 'Offscreen';
   static defaultProps = {
     scrollReset: true,
@@ -150,4 +152,4 @@ class OffscreenComponent extends Component<OffscreenInnerProps> {
   }
 }
 
-export const Offscreen: any = withNodeBridge(OffscreenComponent);
+export default withNodeBridge(OffscreenComponent);

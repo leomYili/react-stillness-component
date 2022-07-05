@@ -6,6 +6,12 @@ import { StillnessProvider } from 'react-stillness-component';
 import { IRoute } from '..';
 import renderRoutes from '../renderRoutes/renderRoutes';
 
+declare global {
+  interface Window {
+    g_useSSR: any;
+  }
+}
+
 interface IRouterComponentProps {
   routes: IRoute[];
   plugin: Plugin;
@@ -64,11 +70,9 @@ function RouterComponent(props: IRouterComponentProps) {
   }, [history]);
 
   return (
-    <StillnessProvider>
-      <Router history={history}>
-        {renderRoutes(renderRoutesProps)}
-      </Router>
-    </StillnessProvider>
+    <Router history={history}>
+      <StillnessProvider>{renderRoutes(renderRoutesProps)}</StillnessProvider>
+    </Router>
   );
 }
 

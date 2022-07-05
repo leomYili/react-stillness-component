@@ -17,6 +17,8 @@ export interface StillnessContract {
 
   getStillnessType(): Identifier | undefined;
 
+  isStillness(): boolean;
+
   unset(params: UnsetParams): void;
 
   clear(): void;

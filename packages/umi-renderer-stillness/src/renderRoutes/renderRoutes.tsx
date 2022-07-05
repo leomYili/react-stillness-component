@@ -26,7 +26,7 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
   let Component: any = route!.component;
   function ComponentWithInitialPropsFetch(props: any) {
     const [initialProps, setInitialProps] = useState(
-      () => (window as any).g_initialProps,
+      () => (window as any).g_initialProps
     );
 
     useEffect(() => {
@@ -59,7 +59,7 @@ function wrapInitialPropsFetch(route: IRoute, opts: IOpts): IComponent {
           });
 
           const initialProps = await Component!.getInitialProps!(
-            ctx || defaultCtx,
+            ctx || defaultCtx
           );
           setInitialProps(initialProps);
         }
@@ -84,13 +84,18 @@ function render({
 }: {
   route: IRoute;
   opts: IOpts;
-  props: object;
+  props: any;
 }) {
-  const routes = renderRoutes({
-    ...opts,
-    routes: route.routes || [],
-    rootRoutes: opts.rootRoutes,
-  });
+  const routes = renderRoutes(
+    {
+      ...opts,
+      routes: route.routes || [],
+      rootRoutes: opts.rootRoutes,
+    },
+    {
+      location: props.location,
+    }
+  );
   let { component: Component, wrappers } = route;
   if (Component) {
     const defaultPageInitialProps = opts.isServer
@@ -156,9 +161,9 @@ function getRouteElement({ route, index, opts }: IGetRouteElementOpts) {
   }
 }
 
-export default function renderRoutes(opts: IOpts) {
+export default function renderRoutes(opts: IOpts, switchProps?: any) {
   return opts.routes ? (
-    <StillnessSwitch>
+    <StillnessSwitch {...switchProps}>
       {opts.routes.map((route, index) =>
         getRouteElement({
           route,
@@ -167,7 +172,7 @@ export default function renderRoutes(opts: IOpts) {
             ...opts,
             rootRoutes: opts.rootRoutes || opts.routes,
           },
-        }),
+        })
       )}
     </StillnessSwitch>
   ) : null;

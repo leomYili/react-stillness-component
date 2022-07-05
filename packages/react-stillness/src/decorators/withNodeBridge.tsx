@@ -6,12 +6,13 @@ import React, {
   useContext,
   useRef,
   useImperativeHandle,
+  FC,
 } from 'react';
 import invariant from 'invariant';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { OffscreenProps, OffscreenInnerProps } from '../components';
-import { StillnessContext, StillnessNodeContext } from '../core';
+import { StillnessNodeContext } from '../core';
 import { useStillnessManager, useIsomorphicLayoutEffect } from '../hooks';
 import { StillnessRegistrationImpl, StillnessContractImpl } from '../internals';
 import { isUndefined, isBoolean } from '../utils';
@@ -32,9 +33,7 @@ export interface OffscreenInstance {
  */
 export function withNodeBridge(
   DecoratedComponent: ComponentType<OffscreenInnerProps>
-): ComponentType<
-  React.PropsWithChildren<OffscreenProps> & { ref?: OffscreenInstance }
-> {
+): FC<React.PropsWithChildren<OffscreenProps> & { ref?: OffscreenInstance }> {
   const Decorated: any = DecoratedComponent;
 
   const displayName = Decorated.displayName || Decorated.name || 'Component';
@@ -157,9 +156,12 @@ export function withNodeBridge(
 
   Connect.displayName = displayName;
 
-  hoistNonReactStatics(Connect, DecoratedComponent);
+  const ConnectComponent = React.forwardRef(Connect);
 
-  return React.forwardRef(Connect) as unknown as ComponentType<
+  return hoistNonReactStatics(
+    ConnectComponent,
+    DecoratedComponent as any
+  ) as any as FC<
     React.PropsWithChildren<OffscreenProps> & { ref?: OffscreenInstance }
   >;
 }

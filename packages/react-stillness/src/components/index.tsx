@@ -1,1 +1,5 @@
-export * from './Offscreen';
+export {
+  default as Offscreen,
+  OffscreenProps,
+  OffscreenInnerProps,
+} from './Offscreen';

@@ -1,5 +1,4 @@
-import React, { Component, RefObject, createRef } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component, createRef } from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
 import { StillnessContext, StillnessNodeContext } from '../core';
@@ -217,5 +216,5 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
   return hoistNonReactStatics(
     StillnessComponent as any,
     DecoratedComponent
-  ) as any as StillComponent<Props>;
+  ) as any as StillComponent<React.PropsWithChildren<Props>>;
 }

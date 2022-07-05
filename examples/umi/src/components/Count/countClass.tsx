@@ -1,7 +1,12 @@
-import React from 'react';
-import { connectStillness } from './connectStillness';
+import React, { Component } from 'react';
+import { connectStillness } from 'umi';
 
-class Count extends React.Component<any> {
+interface Props {
+  isStillness: any;
+  stillnessId: any;
+}
+
+export class Count extends Component<Props> {
   state = {
     count: 0,
   };
@@ -42,11 +47,4 @@ const spec = {
   },
 };
 
-const Wrapper = connectStillness(spec)(Count);
-
-function AS() {
-  return <Wrapper />;
-}
-
-export * from './connectStillness';
-export * from './withNodeBridge';
+export default connectStillness(spec)(Count);

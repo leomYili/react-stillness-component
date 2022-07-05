@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { useCollectedProps } from './useCollectedProps';
 import { StillnessHookSpec, FactoryOrInstance } from '../types';
 import { useOptionalFactory } from './useOptionalFactory';

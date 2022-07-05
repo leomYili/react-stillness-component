@@ -1,4 +1,4 @@
-import { ComponentType } from 'react';
+import { ComponentType as RComponentType, PropsWithChildren } from 'react';
 
 import { decorateHandler } from './decorateHandler';
 import { StillnessContractImpl, StillnessHandleImpl } from '../internals';
@@ -9,13 +9,16 @@ import {
   StillnessCollector,
   StillnessManager,
   FactoryOrInstance,
+  StillnessComponentEnhancer,
 } from '../types';
 
 export function connectStillness<
   RequiredProps,
   CollectedProps = any,
   ResObject = any
->(specArg: FactoryOrInstance<StillnessSpec<CollectedProps, ResObject>>) {
+>(
+  specArg: FactoryOrInstance<StillnessSpec<CollectedProps, ResObject>>
+): StillnessComponentEnhancer<PropsWithChildren<CollectedProps>> {
   checkDecoratorArguments('connectStillness', 'specArg');
 
   const _spec =
@@ -24,7 +27,7 @@ export function connectStillness<
       : (specArg as StillnessSpec<CollectedProps, ResObject>);
 
   return function decorateStillness<
-    RComponentType extends ComponentType<RequiredProps & CollectedProps>
+    ComponentType extends RComponentType<RequiredProps & CollectedProps>
   >(DecoratedComponent: ComponentType) {
     return decorateHandler<RequiredProps, CollectedProps, UniqueId>({
       DecoratedComponent,
@@ -35,5 +38,5 @@ export function connectStillness<
         new StillnessContractImpl(manager),
       collect: _spec.collect,
     });
-  };
+  } as any as StillnessComponentEnhancer<PropsWithChildren<CollectedProps>>;
 }
