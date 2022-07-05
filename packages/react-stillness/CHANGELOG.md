@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.2](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.6.1...react-stillness-component@0.6.2) (2022-07-05)
+
+
+### Bug Fixes
+
+* 修复react类型错误以及去除esm版本 ([e71f4ff](https://github.com/leomYili/react-stillness-component/commit/e71f4ffb199c412785f51e5d609e98102376bef5))
+
+
+
+
+
 ## [0.6.1](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.6.0...react-stillness-component@0.6.1) (2022-05-12)
 
 
