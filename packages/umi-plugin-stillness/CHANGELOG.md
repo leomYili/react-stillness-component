@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.4](https://github.com/leomYili/react-stillness-component/compare/umi-plugin-stillness@0.1.3...umi-plugin-stillness@0.1.4) (2022-07-05)
+
+
+### Bug Fixes
+
+* umi-plugin-stillness给每个路由加上type,用于外部控制缓存状态 ([1528929](https://github.com/leomYili/react-stillness-component/commit/15289290b1ae53549d10aa8bc2f0a453eb0e9798))
+
+
+
+
+
 ## [0.1.3](https://github.com/leomYili/react-stillness-component/compare/umi-plugin-stillness@0.1.2...umi-plugin-stillness@0.1.3) (2022-07-05)
 
 **Note:** Version bump only for package umi-plugin-stillness
