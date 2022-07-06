@@ -42,6 +42,7 @@ export class StillnessRegistrationImpl implements Registration {
       type,
       visible,
       isStillness,
+      childQueue: [],
     });
   };
 

@@ -13,6 +13,7 @@ export interface State {
   parentId: UniqueId;
   visible?: boolean;
   isStillness?: boolean;
+  childQueue?: UniqueId[];
 }
 
 export function reduce(
@@ -23,6 +24,7 @@ export function reduce(
     type?: Identifier;
     visible?: boolean;
     isStillness?: boolean;
+    childQueue?: UniqueId[];
   }>
 ): { [key: string]: State } {
   const { payload } = action;

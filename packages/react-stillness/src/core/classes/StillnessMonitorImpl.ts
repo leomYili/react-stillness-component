@@ -18,9 +18,6 @@ import {
   rootId,
 } from '../../constants';
 
-/**
- * 这里是真实调用
- */
 export class StillnessMonitorImpl implements StillnessMonitor {
   private store: Store<State>;
 

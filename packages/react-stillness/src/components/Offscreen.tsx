@@ -16,7 +16,9 @@ import {
   shallowEqual,
   createWrapperElement,
   getScrollPropertyInNodes,
+  isRealChildNode,
   isBoolean,
+  throttle,
 } from '../utils';
 
 export interface OffscreenProps {
@@ -34,11 +36,12 @@ export interface OffscreenProps {
    * the scroll position will be automatically saved by default, if this feature is not needed, set to false
    */
   scrollReset?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export type OffscreenInnerProps = OffscreenProps & {
   uniqueId: UniqueId;
+  parentIsStillness: boolean;
   isStillness: boolean;
   stillnessManager: StillnessManager;
 };
@@ -85,13 +88,12 @@ class OffscreenComponent extends Component<
 
   private mount = () => {
     try {
-      if (this.props.scrollReset) {
-        // save
-        this.cacheNodes = getScrollPropertyInNodes(this.targetElement);
-      }
-
-      if (this.helpRef?.current?.parentNode !== null) {
-        this.helpRef?.current?.parentNode.removeChild(this.targetElement);
+      if (
+        this.helpRef?.current?.parentNode !== null &&
+        !this.props.parentIsStillness
+      ) {
+        this.helpRef?.current?.parentNode?.removeChild(this.targetElement);
+        this.forceUpdate();
       }
 
       this.actions.triggerMount({
@@ -99,6 +101,40 @@ class OffscreenComponent extends Component<
       });
     } catch (error) {
       // console.error(error, 'Offscreen.unMount: parentNode is null')
+    }
+  };
+
+  private listenerTargetElementChildScroll = () => {
+    if (this.props.scrollReset) {
+      this.targetElement.addEventListener(
+        'scroll',
+        throttle(
+          (e: any) => {
+            if (isRealChildNode(this.targetElement, e.target)) {
+              let index = this.cacheNodes.findIndex((el) => {
+                return el.node === e.target;
+              });
+
+              if (index !== -1) {
+                this.cacheNodes[index] = {
+                  node: e.target,
+                  left: e.target.scrollLeft || 0,
+                  top: e.target.scrollTop || 0,
+                };
+              } else {
+                this.cacheNodes.push({
+                  node: e.target,
+                  left: e.target.scrollLeft || 0,
+                  top: e.target.scrollTop || 0,
+                });
+              }
+            }
+          },
+          this,
+          200
+        ),
+        true
+      );
     }
   };
 
@@ -138,6 +174,7 @@ class OffscreenComponent extends Component<
   public componentDidMount() {
     if (!this.props.isStillness) {
       this.unmount(true);
+      this.listenerTargetElementChildScroll();
     }
   }
 
@@ -146,6 +183,7 @@ class OffscreenComponent extends Component<
       if (this.helpRef?.current?.parentNode !== null) {
         this.helpRef?.current?.parentNode.removeChild(this.targetElement);
       }
+      ReactDOM.unmountComponentAtNode(this.targetElement);
     } catch (error) {
       // console.error(error, 'Offscreen.unMount: parentNode is null')
     }

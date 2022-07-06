@@ -164,7 +164,10 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
       return (
         <StillnessNodeContext.Consumer>
           {({ stillnessParentId }) => {
-            if (isUndefined(this.context?.stillnessManager)) {
+            if (
+              isUndefined(this.context?.stillnessManager) ||
+              isUndefined(stillnessParentId)
+            ) {
               return null;
             }
 

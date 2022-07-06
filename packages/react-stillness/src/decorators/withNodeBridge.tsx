@@ -92,11 +92,12 @@ export function withNodeBridge(
           type: props.type,
         }
       );
-
+      const parentIsStillness = globalMonitor.isStillness(stillnessParentId);
       const thisIsStillness = globalMonitor.isStillness(uniqueId);
       setWrapperProps({
         ...props,
-        uniqueId: uniqueId,
+        uniqueId,
+        parentIsStillness,
         stillnessManager: stillnessManager,
         isStillness: thisIsStillness,
       });
@@ -119,12 +120,13 @@ export function withNodeBridge(
           parentId: stillnessParentId,
           isStillness: parentIsStillness || !props.visible,
         });
-
+        
         const thisIsStillness = globalMonitor.isStillness(
           uniqueNodeRegistration.getUniqueId()
         );
         setWrapperProps({
           ...props,
+          parentIsStillness,
           isStillness: thisIsStillness,
           uniqueId: uniqueNodeRegistration.getUniqueId(),
           stillnessManager: stillnessManager,
@@ -156,12 +158,9 @@ export function withNodeBridge(
 
   Connect.displayName = displayName;
 
-  const ConnectComponent = React.forwardRef(Connect);
+  hoistNonReactStatics(Connect, DecoratedComponent);
 
-  return hoistNonReactStatics(
-    ConnectComponent,
-    DecoratedComponent as any
-  ) as any as FC<
+  return React.forwardRef(Connect) as unknown as FC<
     React.PropsWithChildren<OffscreenProps> & { ref?: OffscreenInstance }
   >;
 }

@@ -5,3 +5,4 @@ export * from './is';
 export * from './to';
 export * from './dom';
 export * from './combineFuncs';
+export * from './throttle';

@@ -65,12 +65,13 @@ function RouterComponent(props: IRouterComponentProps) {
         },
       });
     }
+    
     routeChangeHandler(history.location, 'POP');
     return history.listen(routeChangeHandler);
   }, [history]);
 
   return (
-    <StillnessProvider>
+    <StillnessProvider debugMode>
       <Router history={history}>{renderRoutes(renderRoutesProps)}</Router>
     </StillnessProvider>
   );
