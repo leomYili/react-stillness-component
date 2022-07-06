@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/leomYili/react-stillness-component/compare/umi-renderer-stillness@0.1.4...umi-renderer-stillness@0.2.0) (2022-07-06)
+
+
+### Features
+
+* optimize performance for nested components, as well as use listeners to get the scrolling prop ([fc87317](https://github.com/leomYili/react-stillness-component/commit/fc87317ac39e77a7c6e2237d3e8423a309e644be))
+
+
+
+
+
 ## [0.1.4](https://github.com/leomYili/react-stillness-component/compare/umi-renderer-stillness@0.1.3...umi-renderer-stillness@0.1.4) (2022-07-05)
 
 
