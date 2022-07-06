@@ -7,7 +7,6 @@ export class Count extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div className="count">
         <p>count: {this.state.count}</p>
@@ -26,12 +25,12 @@ export class Count extends Component {
 
 const spec = {
   mounted: (props, contract) => {
-    console.log('开始进入静止状态', contract.getStillnessId());
+    // console.log('开始进入静止状态', contract.getStillnessId());
 
     // return 'mounted';
   },
   unmounted: (props, contract) => {
-    console.log('退出静止状态');
+    // console.log('退出静止状态');
 
     // return 'unmounted';
   },

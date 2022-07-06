@@ -15,3 +15,19 @@ export function getScrollPropertyInNodes(targetElement: HTMLElement) {
 
   return result;
 }
+
+export function isRealChildNode(
+  targetElement: HTMLElement,
+  element: any
+) {
+  let isExist = false;
+
+  if (targetElement.hasChildNodes()) {
+    for (let node of targetElement.children) {
+      if (node === element) {
+        return true;
+      }
+    }
+  }
+  return isExist;
+}

@@ -5,6 +5,7 @@ import About from './pages/about';
 import Detail from './pages/detail';
 import Demo1 from './pages/demo1';
 import Demo2 from './pages/demo2';
+import Demo3 from './pages/demo3';
 import logo from './logo.svg';
 import './App.css';
 
@@ -12,7 +13,7 @@ import { StillnessProvider, Offscreen } from 'react-stillness-component';
 
 function App() {
   return (
-    <StillnessProvider>
+    <StillnessProvider debugMode>
       <BrowserRouter>
         <div className="App">
           <header className="App-header">
@@ -23,10 +24,13 @@ function App() {
               去列表页
             </Link>
             <Link to={'/demo1'} className="App-link">
-              去demo1
+              去demo1(react-router-v5)
             </Link>
             <Link to={'/demo2'} className="App-link">
-              去demo2
+              去demo2(react-router-v6)
+            </Link>
+            <Link to={'/demo3'} className="App-link">
+              去demo3(nested node 优化)
             </Link>
           </header>
           <hr />
@@ -42,6 +46,7 @@ function App() {
             <Route path="/about" component={About} />
             <Route path="/demo1" component={Demo1} />
             <Route path="/demo2" component={Demo2} />
+            <Route path="/demo3" component={Demo3} />
           </Switch>
         </div>
       </BrowserRouter>

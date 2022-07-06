@@ -70,6 +70,7 @@ export interface VNodePayload {
   type?: Identifier;
   visible?: boolean;
   isStillness?: boolean;
+  childQueue?: UniqueId[];
 }
 
 export interface OperationPayload {
