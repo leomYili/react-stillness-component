@@ -34,10 +34,8 @@ const spec = {
       isStillness: contract.isStillness(),
       stillnessId: contract.getStillnessId(),
     };
-  };
+  }
 };
-
-const 
 
 export const WithCount = connectStillness(spec)(Count);
 ```

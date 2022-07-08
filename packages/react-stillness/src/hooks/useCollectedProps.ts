@@ -1,5 +1,4 @@
-import { useState, useCallback, useContext } from 'react';
-import equal from 'fast-deep-equal';
+import { useRef, useContext } from 'react';
 
 import { useCollector } from './useCollector';
 import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect';
@@ -11,6 +10,7 @@ import {
   UniqueId,
   HandlerContract,
 } from '../types';
+import { isFunction } from 'src/utils';
 
 export function useCollectedProps<Collected>(
   collector: ((contract: StillnessContract) => Collected) | undefined,
@@ -23,10 +23,15 @@ export function useCollectedProps<Collected>(
     collector || (() => ({} as Collected))
   );
   const { stillnessParentId } = useContext(StillnessNodeContext);
+  const unsubscribe: any = useRef(null);
 
   useIsomorphicLayoutEffect(
     function subscribeToMonitorStateChange() {
-      return monitor.subscribeToStateChange(
+      if (isFunction(unsubscribe.current)) {
+        unsubscribe?.current();
+      }
+
+      unsubscribe.current = monitor.subscribeToStateChange(
         () => {
           const parentIsStillness = monitor.isStillness(stillnessParentId);
           if (!parentIsStillness) {
@@ -41,8 +46,14 @@ export function useCollectedProps<Collected>(
           parentId: stillnessParentId,
         }
       );
+
+      return () => {
+        if (isFunction(unsubscribe.current)) {
+          unsubscribe.current();
+        }
+      };
     },
-    [monitor, updateCollected, stillnessParentId]
+    [monitor, updateCollected, stillnessParentId, handle]
   );
 
   return collected;
