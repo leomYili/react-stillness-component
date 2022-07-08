@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/leomYili/react-stillness-component/compare/umi-renderer-stillness@0.2.0...umi-renderer-stillness@0.2.1) (2022-07-08)
+
+
+### Bug Fixes
+
+* 修复hooks的异常props未更新的情况,以及对应更新文档 ([3f1e8dc](https://github.com/leomYili/react-stillness-component/commit/3f1e8dc5b9c64abd6da242b13d0c4a38ea1205cf))
+
+
+
+
+
 # [0.2.0](https://github.com/leomYili/react-stillness-component/compare/umi-renderer-stillness@0.1.4...umi-renderer-stillness@0.2.0) (2022-07-06)
 
 

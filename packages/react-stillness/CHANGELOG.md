@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.1](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.7.0...react-stillness-component@0.7.1) (2022-07-08)
+
+
+### Bug Fixes
+
+* 修复hooks的异常props未更新的情况,以及对应更新文档 ([3f1e8dc](https://github.com/leomYili/react-stillness-component/commit/3f1e8dc5b9c64abd6da242b13d0c4a38ea1205cf))
+
+
+
+
+
 # [0.7.0](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.6.4...react-stillness-component@0.7.0) (2022-07-06)
 
 
