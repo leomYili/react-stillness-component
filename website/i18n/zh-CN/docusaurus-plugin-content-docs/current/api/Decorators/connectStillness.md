@@ -34,7 +34,7 @@ const spec = {
       isStillness: contract.isStillness(),
       stillnessId: contract.getStillnessId(),
     };
-  };
+  }
 };
 
 export const WithCount = connectStillness(spec)(Count);

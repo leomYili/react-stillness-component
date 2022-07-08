@@ -24,7 +24,7 @@ export default function Demo3({ match, location }) {
           >
             <Offscreen visible>
               <div style={{ overflowX: 'auto', height: '200px' }}>
-                <div style={{ height: 500 }}>
+                <div style={{ height: 700 }}>
                   这是测试文字,一直延长, 这是测试文字,一直延长
                   这是测试文字,一直延长 这是测试文字,一直延长
                   这是测试文字,一直延长 这是测试文字,一直延长

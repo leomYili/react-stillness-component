@@ -71,7 +71,7 @@ function RouterComponent(props: IRouterComponentProps) {
   }, [history]);
 
   return (
-    <StillnessProvider debugMode>
+    <StillnessProvider>
       <Router history={history}>{renderRoutes(renderRoutesProps)}</Router>
     </StillnessProvider>
   );

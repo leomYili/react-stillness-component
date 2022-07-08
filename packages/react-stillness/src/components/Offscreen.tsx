@@ -131,7 +131,7 @@ class OffscreenComponent extends Component<
             }
           },
           this,
-          200
+          120
         ),
         true
       );

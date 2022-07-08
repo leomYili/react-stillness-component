@@ -42,6 +42,11 @@ export default tailPkgs.map((pkgPath) => {
 
   return {
     input: path.resolve(root, pkgPath, rollup.input),
+    onwarn: function (warning) {
+      if (warning.code === 'THIS_IS_UNDEFINED') {
+        return;
+      }
+    },
     output: getPKGOutputConfig(rollup.output, pkgPath),
     external: rollup.external || [],
     plugins: [
