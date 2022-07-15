@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.7.1...react-stillness-component@0.8.0) (2022-07-15)
+
+
+### Features
+
+* 增加tdd单元测试以及测试推送变更ci流程 ([3bd5071](https://github.com/leomYili/react-stillness-component/commit/3bd5071774bde985d50177cdebbff6d876083a8f))
+
+
+
+
+
 ## [0.7.1](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.7.0...react-stillness-component@0.7.1) (2022-07-08)
 
 
