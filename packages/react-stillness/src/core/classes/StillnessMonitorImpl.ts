@@ -6,17 +6,11 @@ import {
   Unsubscribe,
   Listener,
   UniqueId,
-  OperationTypes,
 } from '../../types';
 import { State } from '../reducers';
 import { State as VNodeState } from '../reducers/vNode';
 import { shallowEqual, isUndefined } from '../../utils';
-import {
-  operationTypes,
-  lifeCycleTypes,
-  effectTypes,
-  rootId,
-} from '../../constants';
+import { lifeCycleTypes, effectTypes, rootId } from '../../constants';
 
 export class StillnessMonitorImpl implements StillnessMonitor {
   private store: Store<State>;

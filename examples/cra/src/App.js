@@ -7,6 +7,7 @@ import Demo1 from './pages/demo1';
 import Demo2 from './pages/demo2';
 import Demo3 from './pages/demo3';
 import Demo4 from './pages/demo4';
+import Demo5 from './pages/demo5';
 import logo from './logo.svg';
 import './App.css';
 
@@ -36,6 +37,9 @@ function App() {
             <Link to={'/demo4'} className="App-link">
               去demo4(hooks 优化)
             </Link>
+            <Link to={'/demo5'} className="App-link">
+              去demo5(options max)
+            </Link>
           </header>
           <hr />
           <Switch>
@@ -52,6 +56,7 @@ function App() {
             <Route path="/demo2" component={Demo2} />
             <Route path="/demo3" component={Demo3} />
             <Route path="/demo4" component={Demo4} />
+            <Route path="/demo5" component={Demo5} />
           </Switch>
         </div>
       </BrowserRouter>

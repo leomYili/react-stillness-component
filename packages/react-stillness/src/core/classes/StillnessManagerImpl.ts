@@ -2,7 +2,11 @@ import invariant from 'invariant';
 import { Store, Action } from 'redux';
 
 import { State } from '../reducers';
-import { createVNodeActions, createOperationActions } from '../actions';
+import {
+  createVNodeActions,
+  createOperationActions,
+  createMaxActions,
+} from '../actions';
 import { isUndefined } from '../../utils';
 import {
   StillnessManager,
@@ -11,6 +15,7 @@ import {
   VNodeActions,
   UniqueId,
   ActionCreator,
+  ProviderOptions,
 } from '../../types';
 
 interface StillnessStore {
@@ -21,8 +26,13 @@ interface StillnessStore {
 export class StillnessManagerImpl implements StillnessManager {
   private store: Store<State>;
   private monitor: StillnessMonitor;
+  private options: ProviderOptions;
 
-  public constructor(store: Store<State>, monitor: StillnessMonitor) {
+  public constructor(
+    store: Store<State>,
+    monitor: StillnessMonitor,
+    options: ProviderOptions
+  ) {
     this.store = store;
     this.monitor = monitor;
   }
@@ -53,6 +63,7 @@ export class StillnessManagerImpl implements StillnessManager {
     const actions = {
       ...createVNodeActions(this),
       ...createOperationActions(this),
+      ...createMaxActions(this),
     };
 
     return Object.keys(actions).reduce(

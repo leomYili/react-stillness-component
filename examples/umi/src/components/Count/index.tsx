@@ -20,6 +20,8 @@ export default function Count() {
     },
   });
 
+  console.log(collected.);
+
   return (
     <div className="count">
       <p>class count: {count}</p>

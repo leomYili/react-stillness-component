@@ -2,7 +2,8 @@ import { createStore, Store } from 'redux';
 
 import { stillnessReducers, State } from './reducers';
 import { StillnessManagerImpl, StillnessMonitorImpl } from './classes';
-import { StillnessManager } from '../types';
+import { StillnessManager, ProviderOptions } from '../types';
+import { isUndefined } from '../utils';
 
 function makeStoreInstance(debugMode: boolean): Store<State> {
   // TODO: if we ever make a react-native version of this,
@@ -23,11 +24,16 @@ function makeStoreInstance(debugMode: boolean): Store<State> {
 
 export function createStillnessManager(
   globalContext: unknown = undefined,
-  options: unknown = {},
+  options: ProviderOptions = { max: -1 },
   debugMode: boolean = false
 ): StillnessManager {
   const store = makeStoreInstance(debugMode);
   const monitor = new StillnessMonitorImpl(store);
-  const manager = new StillnessManagerImpl(store, monitor);
+  const manager = new StillnessManagerImpl(store, monitor, options);
+
+  if (!isUndefined(options) && options?.max) {
+    // 进行初始化,重置store
+    manager.getActions().resetMax({ max: options.max });
+  }
   return manager;
 }

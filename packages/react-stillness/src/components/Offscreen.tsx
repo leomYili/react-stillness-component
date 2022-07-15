@@ -2,8 +2,9 @@ import React, { Component, ComponentType, createRef } from 'react';
 import ReactDOM from 'react-dom';
 import invariant from 'invariant';
 
+import { State } from '../core/reducers';
 import { StillnessNodeContext } from '../core';
-import { operationTypes } from '../constants';
+import { operationTypes, rootId } from '../constants';
 import { withNodeBridge } from '../decorators';
 import {
   UniqueId,
@@ -41,6 +42,7 @@ export interface OffscreenProps {
 
 export type OffscreenInnerProps = OffscreenProps & {
   uniqueId: UniqueId;
+  parentId: UniqueId;
   parentIsStillness: boolean;
   isStillness: boolean;
   stillnessManager: StillnessManager;
@@ -94,6 +96,23 @@ class OffscreenComponent extends Component<
       ) {
         this.helpRef?.current?.parentNode?.removeChild(this.targetElement);
         this.forceUpdate();
+      }
+
+      if (this.props.parentId === rootId) {
+        const store = this.props.stillnessManager.getStore();
+
+        const index = store.max.caches.indexOf(this.uniqueId);
+
+        if (index !== -1) {
+          this.actions.updateCache({ cacheId: this.uniqueId });
+        } else {
+          if (store.max.caches.length + 1 > store.max.capacity) {
+            const removeCacheId = store.max.caches[0];
+            this.actions.removeCache({});
+            this.actions.triggerUnset({ id: removeCacheId });
+          }
+          this.actions.createCache({ cacheId: this.uniqueId });
+        }
       }
 
       this.actions.triggerMount({
@@ -174,8 +193,8 @@ class OffscreenComponent extends Component<
   public componentDidMount() {
     if (!this.props.isStillness) {
       this.unmount(true);
-      this.listenerTargetElementChildScroll();
     }
+    this.listenerTargetElementChildScroll();
   }
 
   public componentWillUnmount() {
@@ -183,7 +202,6 @@ class OffscreenComponent extends Component<
       if (this.helpRef?.current?.parentNode !== null) {
         this.helpRef?.current?.parentNode.removeChild(this.targetElement);
       }
-      ReactDOM.unmountComponentAtNode(this.targetElement);
     } catch (error) {
       // console.error(error, 'Offscreen.unMount: parentNode is null')
     }

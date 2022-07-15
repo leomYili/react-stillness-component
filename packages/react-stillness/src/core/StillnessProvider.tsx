@@ -40,9 +40,21 @@ export const StillnessProvider: FC<StillnessProviderProps<unknown>> = memo(
     }, []);
 
     return (
-      <StillnessContext.Provider value={{ stillnessManager }}>
-        {children}
-      </StillnessContext.Provider>
+      <StillnessContext.Consumer>
+        {({ stillnessManager: parentStillnessManager }) => {
+          if (parentStillnessManager) {
+            console.warn(
+              'There is already a stillnessManager, please check if there is an error, there may be unknown problems'
+            );
+          }
+
+          return (
+            <StillnessContext.Provider value={{ stillnessManager }}>
+              {children}
+            </StillnessContext.Provider>
+          );
+        }}
+      </StillnessContext.Consumer>
     );
   }
 );
