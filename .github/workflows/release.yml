@@ -26,9 +26,15 @@ jobs:
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@outlook.com"
+
+      - name: Install Dependencies
+        run: yarn install
           
       - name: Bump versions packages
-        run: |
-          yarn version:ci
+        run: yarn ci
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Publish coverage to codecov.io
+        uses: codecov/codecov-action@v3
+        

@@ -23,7 +23,7 @@ export function updateVNode(manager: StillnessManager) {
   };
 }
 
-export function deleteVNode(manager: StillnessManager) {
+export function removeVNode(manager: StillnessManager) {
   return (payload: VNodePayload): Action<VNodePayload> => {
     return {
       type: REMOVE_V_NODE,

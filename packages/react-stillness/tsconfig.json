@@ -18,7 +18,7 @@
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "./jest-setup.ts"],
   "exclude": [
     "node_modules",
     "**/dist",

@@ -1,8 +1,9 @@
 import { ComponentType as RComponentType, PropsWithChildren } from 'react';
 
+import invariant from 'invariant';
 import { decorateHandler } from './decorateHandler';
 import { StillnessContractImpl, StillnessHandleImpl } from '../internals';
-import { checkDecoratorArguments } from '../utils';
+import { checkDecoratorArguments, isUndefined } from '../utils';
 import {
   UniqueId,
   StillnessSpec,
@@ -19,7 +20,7 @@ export function connectStillness<
 >(
   specArg: FactoryOrInstance<StillnessSpec<CollectedProps, ResObject>>
 ): StillnessComponentEnhancer<PropsWithChildren<CollectedProps>> {
-  checkDecoratorArguments('connectStillness', 'specArg');
+  invariant(!isUndefined(specArg), 'spec is required');
 
   const _spec =
     typeof specArg === 'function'

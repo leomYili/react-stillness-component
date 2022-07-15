@@ -140,6 +140,11 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
         return {} as CollectedProps;
       }
 
+      if (!isFunction(collect)) {
+        console.warn('collect is not a function');
+        return {} as CollectedProps;
+      }
+
       const nextState = collect(
         this.props,
         this.handleContract

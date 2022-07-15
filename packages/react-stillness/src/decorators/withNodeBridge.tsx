@@ -97,6 +97,7 @@ export function withNodeBridge(
       setWrapperProps({
         ...props,
         uniqueId,
+        parentId: stillnessParentId,
         parentIsStillness,
         stillnessManager: stillnessManager,
         isStillness: thisIsStillness,
@@ -120,13 +121,14 @@ export function withNodeBridge(
           parentId: stillnessParentId,
           isStillness: parentIsStillness || !props.visible,
         });
-        
+
         const thisIsStillness = globalMonitor.isStillness(
           uniqueNodeRegistration.getUniqueId()
         );
         setWrapperProps({
           ...props,
           parentIsStillness,
+          parentId: stillnessParentId,
           isStillness: thisIsStillness,
           uniqueId: uniqueNodeRegistration.getUniqueId(),
           stillnessManager: stillnessManager,

@@ -20,7 +20,7 @@ export class StillnessRegistrationImpl implements Registration {
   public register: (params: RegistrationParams) => [UniqueId, Unsubscribe] = (
     params: RegistrationParams
   ) => {
-    const { createVNode, deleteVNode } = this.manager.getActions();
+    const { createVNode, removeVNode } = this.manager.getActions();
     const { parentId, type, visible, isStillness } = params;
     createVNode({
       uniqueId: this.uniqueId,
@@ -30,7 +30,7 @@ export class StillnessRegistrationImpl implements Registration {
       isStillness,
     });
 
-    return [this.uniqueId, () => deleteVNode({ uniqueId: this.uniqueId })];
+    return [this.uniqueId, () => removeVNode({ uniqueId: this.uniqueId })];
   };
 
   public update = (params: RegistrationParams) => {

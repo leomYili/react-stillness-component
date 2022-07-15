@@ -6,7 +6,7 @@ title: StillnessProvider
 
 > The `StillnessProvider` is the core of the stillness component and needs to be placed outside of all `<Offscreen>` components.
 
-## 使用
+## Usage
 
 ```jsx
 import React from 'react';

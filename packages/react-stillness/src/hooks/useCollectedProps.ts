@@ -10,7 +10,7 @@ import {
   UniqueId,
   HandlerContract,
 } from '../types';
-import { isFunction } from 'src/utils';
+import { isFunction } from '../utils';
 
 export function useCollectedProps<Collected>(
   collector: ((contract: StillnessContract) => Collected) | undefined,

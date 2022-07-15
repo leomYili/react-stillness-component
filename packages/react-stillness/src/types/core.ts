@@ -11,13 +11,13 @@ export type Listener = () => void;
 
 export type ActionCreator<Payload> = (args: any[]) => Action<Payload>;
 
-export type StillnessActions = VNodeActions & OperationActions;
+export type StillnessActions = VNodeActions & OperationActions & MaxActions;
 
 export type OperationTypes = 'MOUNT' | 'UNMOUNT' | 'UNSET' | 'CLEAR' | null;
 
 export interface VNodeActions {
   createVNode: (payload: VNodePayload) => void;
-  deleteVNode: (payload: VNodePayload) => void;
+  removeVNode: (payload: VNodePayload) => void;
   updateVNode: (payload: VNodePayload) => void;
   resetVNode: (payload: VNodePayload) => void;
 }
@@ -29,6 +29,13 @@ export interface OperationActions {
   triggerClear: () => void;
 }
 
+export interface MaxActions {
+  resetMax: (payload: MaxPayload) => void;
+  createCache: (payload: MaxPayload) => void;
+  removeCache: (payload: MaxPayload) => void;
+  updateCache: (payload: MaxPayload) => void;
+}
+
 export interface StillnessManager {
   getStore(): State;
   getMonitor(): StillnessMonitor;
@@ -36,11 +43,13 @@ export interface StillnessManager {
   dispatch(action: any): void;
 }
 
+export interface ProviderOptions {
+  max: number;
+}
+
 export interface StillnessProviderProps<Context> {
   context?: Context;
-  options?: {
-    max: number | boolean | string;
-  };
+  options?: ProviderOptions;
   debugMode?: boolean;
 }
 
@@ -77,4 +86,9 @@ export interface OperationPayload {
   type: OperationTypes;
   targetIds: UniqueId[];
   targetType?: Identifier;
+}
+
+export interface MaxPayload {
+  max?: number | boolean;
+  cacheId?: UniqueId;
 }
