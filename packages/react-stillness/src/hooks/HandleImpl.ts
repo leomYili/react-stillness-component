@@ -25,8 +25,8 @@ export class HandleImpl<CollectedProps, ResObject> implements Handle {
   public mount = () => {
     let item;
 
-    if(this.spec.mounted && isFunction(this.spec.mounted)){
-      item = this.spec.mounted(this.contract);
+    if(this.spec?.mounted && isFunction(this.spec?.mounted)){
+      item = this.spec?.mounted(this.contract);
     }
 
     return item;
@@ -35,8 +35,8 @@ export class HandleImpl<CollectedProps, ResObject> implements Handle {
   public unmount = () => {
     let item;
 
-    if (this.spec.unmounted && isFunction(this.spec.unmounted)) {
-      item = this.spec.unmounted(this.contract);
+    if (this.spec?.unmounted && isFunction(this.spec?.unmounted)) {
+      item = this.spec?.unmounted(this.contract);
     }
 
     return item;

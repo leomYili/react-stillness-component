@@ -39,4 +39,18 @@ describe('withNodeBridge', () => {
       render(<DecoratedClass visible />);
     }).toThrow(/Expected stillness component context/);
   });
+
+  it('throw an error if rendered', () => {
+    console.error = jest.fn();
+
+    class TestClass extends React.Component<
+      React.PropsWithChildren<OffscreenInnerProps>
+    > {}
+
+    const DecoratedClass = withNodeBridge(TestClass);
+
+    expect(() => {
+      render(<DecoratedClass visible />);
+    }).toThrow(/Expected stillness component context/);
+  });
 });

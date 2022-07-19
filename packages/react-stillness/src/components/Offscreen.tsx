@@ -20,6 +20,8 @@ import {
   isRealChildNode,
   isBoolean,
   throttle,
+  isUndefined,
+  isFunction,
 } from '../utils';
 
 export interface OffscreenProps {
@@ -48,7 +50,7 @@ export type OffscreenInnerProps = OffscreenProps & {
   stillnessManager: StillnessManager;
 };
 
-class OffscreenComponent extends Component<
+export class OffscreenComponent extends Component<
   React.PropsWithChildren<OffscreenInnerProps>
 > {
   static displayName = 'Offscreen';
@@ -65,11 +67,17 @@ class OffscreenComponent extends Component<
   constructor(props: OffscreenInnerProps) {
     super(props);
 
-    this.uniqueId = props.uniqueId;
-    this.actions = props.stillnessManager.getActions();
+    invariant(!isUndefined(props.uniqueId), 'uniqueId is required');
+    invariant(
+      !isUndefined(props.stillnessManager),
+      'stillnessManager is required'
+    );
+
+    this.uniqueId = props?.uniqueId;
+    this.actions = props?.stillnessManager?.getActions() || {};
   }
 
-  private unmount = (init: boolean = false) => {
+  public unmount = (init: boolean = false) => {
     this.helpRef?.current?.insertAdjacentElement(
       'afterend',
       this.targetElement
@@ -84,38 +92,37 @@ class OffscreenComponent extends Component<
     }
 
     if (!init) {
-      this.actions.triggerUnmount({ id: this.uniqueId });
+      this.actions?.triggerUnmount({ id: this.uniqueId });
     }
   };
 
-  private mount = () => {
+  public mount = () => {
     try {
       if (
         this.helpRef?.current?.parentNode !== null &&
-        !this.props.parentIsStillness
+        !this.props?.parentIsStillness
       ) {
         this.helpRef?.current?.parentNode?.removeChild(this.targetElement);
         this.forceUpdate();
       }
 
-      if (this.props.parentId === rootId) {
-        const store = this.props.stillnessManager.getStore();
-
+      const store = this.props.stillnessManager.getStore();
+      if (store.max?.capacity > 0 && this.props.parentId === rootId) {
         const index = store.max.caches.indexOf(this.uniqueId);
 
         if (index !== -1) {
-          this.actions.updateCache({ cacheId: this.uniqueId });
+          this.actions?.updateCache({ cacheId: this.uniqueId });
         } else {
           if (store.max.caches.length + 1 > store.max.capacity) {
             const removeCacheId = store.max.caches[0];
-            this.actions.removeCache({});
-            this.actions.triggerUnset({ id: removeCacheId });
+            this.actions?.removeCache({});
+            this.actions?.triggerUnset({ id: removeCacheId });
           }
-          this.actions.createCache({ cacheId: this.uniqueId });
+          this.actions?.createCache({ cacheId: this.uniqueId });
         }
       }
 
-      this.actions.triggerMount({
+      this.actions?.triggerMount({
         id: this.uniqueId,
       });
     } catch (error) {
@@ -124,7 +131,7 @@ class OffscreenComponent extends Component<
   };
 
   private listenerTargetElementChildScroll = () => {
-    if (this.props.scrollReset) {
+    if (this.props?.scrollReset) {
       this.targetElement.addEventListener(
         'scroll',
         throttle(
@@ -157,15 +164,9 @@ class OffscreenComponent extends Component<
     }
   };
 
-  public shouldComponentUpdate(
-    nextProps: Readonly<OffscreenInnerProps>
-  ): boolean {
-    return !shallowEqual(this.props, nextProps);
-  }
-
   public componentDidUpdate(prevProps: Readonly<OffscreenInnerProps>): void {
-    if (prevProps.isStillness !== this.props.isStillness) {
-      if (!this.props.isStillness) {
+    if (prevProps?.isStillness !== this.props?.isStillness) {
+      if (!this.props?.isStillness) {
         this.unmount();
       } else {
         this.mount();
@@ -185,13 +186,13 @@ class OffscreenComponent extends Component<
           ref={this.helpRef}
           style={{ display: 'none' }}
         />
-        {ReactDOM.createPortal(this.props.children, this.targetElement)}
+        {ReactDOM.createPortal(this.props?.children, this.targetElement)}
       </StillnessNodeContext.Provider>
     );
   }
 
   public componentDidMount() {
-    if (!this.props.isStillness) {
+    if (!this.props?.isStillness) {
       this.unmount(true);
     }
     this.listenerTargetElementChildScroll();

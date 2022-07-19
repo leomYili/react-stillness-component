@@ -5,7 +5,7 @@ import { createStillnessManager } from '../../core/createStillnessManager';
 describe('StillnessHandleImpl', () => {
   const spec = {
     mounted: (props) => `mounted and count${props?.count || 0}`,
-    unmounted: () => 'unmounted',
+    unmounted: (props) => `unmounted and count${props?.count || 0}`,
     collect: (props, contract) => {
       return {
         item: contract.getItem(),
@@ -32,10 +32,19 @@ describe('StillnessHandleImpl', () => {
 
     const handle = new StillnessHandleImpl(spec, mockManager, mockContract);
 
+    expect(handle.mount()).toBeUndefined();
+    expect(handle.unmount()).toBeUndefined();
+
     handle.receiveProps({ count: 1 } as any);
 
-    const result = handle.mount();
+    const result1 = handle.mount();
 
-    expect(result).toEqual('mounted and count1');
+    expect(result1).toEqual('mounted and count1');
+
+    handle.receiveProps({ count: 2 } as any);
+
+    const result2 = handle.unmount();
+
+    expect(result2).toEqual('unmounted and count2');
   });
 });

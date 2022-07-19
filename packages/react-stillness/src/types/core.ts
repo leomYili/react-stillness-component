@@ -51,6 +51,7 @@ export interface StillnessProviderProps<Context> {
   context?: Context;
   options?: ProviderOptions;
   debugMode?: boolean;
+  children?: any;
 }
 
 export interface StillnessContextType {

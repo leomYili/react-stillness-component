@@ -1,4 +1,5 @@
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import List from './pages/list';
 import About from './pages/about';
@@ -14,8 +15,16 @@ import './App.css';
 import { StillnessProvider, Offscreen } from 'react-stillness-component';
 
 function App() {
+  const [visible, setVisible] = useState(0);
+
   return (
-    <StillnessProvider debugMode>
+    <StillnessProvider debugMode options={{ max: visible }}>
+      {/* <Offscreen visible={visible}>
+        <div>测试</div>
+      </Offscreen> */}
+      <button data-testid="toggle" onClick={() => setVisible(visible + 1)}>
+        click
+      </button>
       <BrowserRouter>
         <div className="App">
           <header className="App-header">

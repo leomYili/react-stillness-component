@@ -1,12 +1,15 @@
 /* @refresh reset */
 
-import React, { FC, useEffect, memo, useReducer } from 'react';
+import React, { FC, useEffect, memo, useReducer, useMemo } from 'react';
 import { StillnessProviderProps, StillnessManager } from '../types';
 import { StillnessContext } from './StillnessContext';
-import { createStillnessManager } from './createStillnessManager';
+import {
+  createStillnessManager,
+  getGlobalContext,
+  INSTANCE_SYM,
+} from './createStillnessManager';
 
 let refCount = 0;
-export const INSTANCE_SYM = '__REACT_STILLNESS_CONTEXT_INSTANCE__';
 
 /**
  * stillness Components 的上下文,用于缓存所有静止实例
@@ -16,7 +19,7 @@ export const INSTANCE_SYM = '__REACT_STILLNESS_CONTEXT_INSTANCE__';
 export const StillnessProvider: FC<StillnessProviderProps<unknown>> = memo(
   function ({ children, ...props }) {
     const [stillnessManager, isGlobalInstance] =
-      getStillnessContextValue(props);
+      useStillnessContextValue(props);
 
     /*
      * 保持全局的实例统一
@@ -26,10 +29,6 @@ export const StillnessProvider: FC<StillnessProviderProps<unknown>> = memo(
       if (isGlobalInstance) {
         const context = getGlobalContext();
         ++refCount;
-
-        context[INSTANCE_SYM] = {
-          stillnessManager,
-        };
 
         return () => {
           if (--refCount === 0) {
@@ -59,19 +58,18 @@ export const StillnessProvider: FC<StillnessProviderProps<unknown>> = memo(
   }
 );
 
-function getStillnessContextValue(props: StillnessProviderProps<unknown>): any {
-  const manager = createStillnessManager(
-    props.context,
-    props.options,
-    props.debugMode
-  );
+function useStillnessContextValue(props: StillnessProviderProps<unknown>): any {
+  return useMemo(() => {
+    const manager = createStillnessManager(
+      props.context,
+      props.options,
+      props.debugMode
+    );
 
-  const isGlobalInstance = !props.context;
+    const isGlobalInstance = !props.context;
 
-  return [manager, isGlobalInstance];
+    return [manager, isGlobalInstance];
+  }, [props]);
 }
 
 declare const global: any;
-function getGlobalContext() {
-  return typeof global !== 'undefined' ? global : (window as any);
-}
