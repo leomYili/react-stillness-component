@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.1](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.8.0...react-stillness-component@0.8.1) (2022-07-20)
+
+
+### Bug Fixes
+
+* fix the problem of provider updating props ([a8255db](https://github.com/leomYili/react-stillness-component/commit/a8255dbb8f460c643ae5d1d7387cdbd230e7f0ce))
+
+
+
+
+
 # [0.8.0](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.7.1...react-stillness-component@0.8.0) (2022-07-15)
 
 
