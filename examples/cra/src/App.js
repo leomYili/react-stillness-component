@@ -15,16 +15,9 @@ import './App.css';
 import { StillnessProvider, Offscreen } from 'react-stillness-component';
 
 function App() {
-  const [visible, setVisible] = useState(0);
 
   return (
-    <StillnessProvider debugMode options={{ max: visible }}>
-      {/* <Offscreen visible={visible}>
-        <div>测试</div>
-      </Offscreen> */}
-      <button data-testid="toggle" onClick={() => setVisible(visible + 1)}>
-        click
-      </button>
+    <StillnessProvider debugMode>
       <BrowserRouter>
         <div className="App">
           <header className="App-header">

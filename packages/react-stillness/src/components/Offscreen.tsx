@@ -16,7 +16,6 @@ import {
 import {
   shallowEqual,
   createWrapperElement,
-  getScrollPropertyInNodes,
   isRealChildNode,
   isBoolean,
   throttle,

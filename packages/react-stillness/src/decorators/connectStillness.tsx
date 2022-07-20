@@ -3,7 +3,7 @@ import { ComponentType as RComponentType, PropsWithChildren } from 'react';
 import invariant from 'invariant';
 import { decorateHandler } from './decorateHandler';
 import { StillnessContractImpl, StillnessHandleImpl } from '../internals';
-import { checkDecoratorArguments, isUndefined } from '../utils';
+import { isUndefined } from '../utils';
 import {
   UniqueId,
   StillnessSpec,

@@ -6,7 +6,6 @@ import userEvent from '@testing-library/user-event';
 import { useStillness } from '../useStillness';
 import { StillnessProvider } from '../../core/StillnessProvider';
 import { Offscreen } from '../../components';
-import { sleep } from '../../utils/testingHelper';
 
 describe('useStillness', () => {
   it('Error is reported when there is no context', () => {
