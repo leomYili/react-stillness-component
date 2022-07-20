@@ -65,15 +65,6 @@ export function decorateHandler<Props, CollectedProps, ItemId>({
     private unsubscribe: any = null;
     private stillnessParentId: Identifier | undefined;
 
-    public getDecoratedComponentInstance() {
-      invariant(
-        this.decoratedRef.current,
-        'In order to access an instance of the decorated component, it must either be a class component or use React.forwardRef()'
-      );
-
-      return this.decoratedRef.current as any;
-    }
-
     public componentDidMount() {
       this.receiveProps(this.props);
       this.handleChange();

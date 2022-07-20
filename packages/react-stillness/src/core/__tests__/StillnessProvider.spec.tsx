@@ -4,7 +4,8 @@ import { act } from 'react-dom/test-utils';
 import { jest } from '@jest/globals';
 
 import { StillnessContext } from '../StillnessContext';
-import { StillnessProvider, INSTANCE_SYM } from '../StillnessProvider';
+import { StillnessProvider } from '../StillnessProvider';
+import { INSTANCE_SYM } from '../createStillnessManager';
 import { createStillnessManager } from '../createStillnessManager';
 
 describe('StillnessProvider', () => {

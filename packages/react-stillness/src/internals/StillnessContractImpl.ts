@@ -28,22 +28,25 @@ export class StillnessContractImpl implements StillnessContract {
     this.item = item;
   }
 
-  public isStillness(): boolean {
+  public isStillness = (): boolean => {
     return this.internalMonitor.isStillness(this.id);
-  }
-  public getStillnessId(): UniqueId | undefined {
+  };
+  public getStillnessId = (): UniqueId | undefined => {
     return this.id;
-  }
-  public getStillnessType(): Identifier | undefined {
+  };
+  public getStillnessType = (): Identifier | undefined => {
     return this.internalMonitor.getStillnessType(this.id);
-  }
-  public getStillnessItem() {
+  };
+  public getStillnessItem = () => {
     return this.item;
-  }
-  public unset(params: UnsetParams): void {
+  };
+  public unset = (params: UnsetParams): void => {
     this.internalActions.triggerUnset(params);
-  }
-  public clear(): void {
+  };
+  public clear = (): void => {
     this.internalActions.triggerClear();
-  }
+  };
+  public resetMax = (max: number): void => {
+    this.internalActions.resetMax({ max });
+  };
 }

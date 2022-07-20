@@ -12,6 +12,7 @@ describe('connectStillness', () => {
     class Component extends React.Component {}
 
     expect(() => {
+      // @ts-ignore
       connectStillness()(Component);
     }).toThrow(/spec is required/i);
   });
@@ -40,7 +41,7 @@ describe('connectStillness', () => {
   it('show null when there is no context', () => {
     class Component extends React.Component {
       render() {
-        return <div>test</div>;
+        return <div data-testid={'test'}>test</div>;
       }
     }
 

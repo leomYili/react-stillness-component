@@ -1,4 +1,5 @@
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import List from './pages/list';
 import About from './pages/about';
@@ -14,6 +15,7 @@ import './App.css';
 import { StillnessProvider, Offscreen } from 'react-stillness-component';
 
 function App() {
+
   return (
     <StillnessProvider debugMode>
       <BrowserRouter>

@@ -22,18 +22,33 @@ function makeStoreInstance(debugMode: boolean): Store<State> {
   );
 }
 
+export const INSTANCE_SYM = '__REACT_STILLNESS_CONTEXT_INSTANCE__';
+
+export function getGlobalContext() {
+  return typeof global !== 'undefined' ? global : (window as any);
+}
+
 export function createStillnessManager(
-  globalContext: unknown = undefined,
+  globalContext: unknown = getGlobalContext(),
   options: ProviderOptions = { max: -1 },
   debugMode: boolean = false
 ): StillnessManager {
-  const store = makeStoreInstance(debugMode);
-  const monitor = new StillnessMonitorImpl(store);
-  const manager = new StillnessManagerImpl(store, monitor, options);
+  const ctx = globalContext as any;
+
+  if (!ctx[INSTANCE_SYM]) {
+    const store = makeStoreInstance(debugMode);
+    const monitor = new StillnessMonitorImpl(store);
+    const manager = new StillnessManagerImpl(store, monitor, options);
+
+    ctx[INSTANCE_SYM] = {
+      stillnessManager: manager,
+    };
+  }
 
   if (!isUndefined(options) && options?.max) {
     // 进行初始化,重置store
-    manager.getActions().resetMax({ max: options.max });
+    ctx[INSTANCE_SYM].stillnessManager.getActions().resetMax({ max: options.max });
   }
-  return manager;
+
+  return ctx[INSTANCE_SYM].stillnessManager;
 }

@@ -116,7 +116,6 @@ const List = (props) => {
         </button>
         <button
           onClick={() => {
-            console.log(offscreen1Ref.current.getStillnessId());
             offscreen1Ref.current.unset({
               id: offscreen1Ref.current.getStillnessId(),
             });

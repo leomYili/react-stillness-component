@@ -6,6 +6,10 @@ export class Count extends Component {
     count: 0,
   };
 
+  componentDidMount(){
+    console.log("初始化");
+  }
+
   render() {
     return (
       <div className="count">

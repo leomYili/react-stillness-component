@@ -22,6 +22,8 @@ export interface StillnessContract {
   unset(params: UnsetParams): void;
 
   clear(): void;
+
+  resetMax(max: number): void;
 }
 
 export interface HandlerContract {

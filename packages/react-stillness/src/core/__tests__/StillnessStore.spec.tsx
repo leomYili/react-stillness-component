@@ -4,6 +4,8 @@ import { createStillnessManager } from '../createStillnessManager';
 import { getStillnessUniqueId } from '../../utils';
 import { operationTypes } from '../../constants';
 
+import { RESET_MAX } from '../actions/maxActions';
+
 describe('StillnessStores', () => {
   it('init store', () => {
     let manager = createStillnessManager();
@@ -15,6 +17,17 @@ describe('StillnessStores', () => {
 
   let manager = createStillnessManager();
   let uniqueId = getStillnessUniqueId('uniqueId').toString();
+
+  it('use dispatch', () => {
+    manager.dispatch({
+      type: RESET_MAX,
+      payload: {
+        max: 1,
+      },
+    });
+
+    expect(manager.getStore().max.capacity).toEqual(1);
+  });
 
   it('action createVNode', () => {
     manager.getActions().createVNode({

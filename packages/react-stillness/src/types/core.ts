@@ -51,6 +51,7 @@ export interface StillnessProviderProps<Context> {
   context?: Context;
   options?: ProviderOptions;
   debugMode?: boolean;
+  children?: any;
 }
 
 export interface StillnessContextType {
@@ -65,9 +66,7 @@ export interface StillnessNodeContextType {
   stillnessParentId: Identifier | undefined;
 }
 
-export interface StillComponent<Props> extends Component<Props> {
-  getDecoratedComponentInstance(): Component<Props> | null;
-}
+export interface StillComponent<Props> extends Component<Props> {}
 export interface Action<Payload> {
   type: Identifier;
   payload: Payload;

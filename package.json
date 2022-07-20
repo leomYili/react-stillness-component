@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "test": "jest --projects ./packages/*/",
-    "test:unit": "jest --coverage --projects ./packages/*/",
+    "test:coverage": "jest --coverage --projects ./packages/*/",
     "clean": "yarn workspaces run clean",
     "dev": "rollup -c -w",
     "build": "yarn run clean && NODE_ENV=production rollup -c",
@@ -23,7 +23,7 @@
     "bootstrap": "npx lerna bootstrap",
     "publish:local": "yarn run build && lerna publish from-package",
     "version": "lerna version --yes --conventional-commits --create-release github --message 'chore(release): publish'",
-    "ci": "run-s test:unit version git-is-clean",
+    "ci": "run-s test:coverage version git-is-clean",
     "git-is-clean": "git status && git diff-index HEAD"
   },
   "config": {
@@ -73,6 +73,7 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "~12.1.5",
     "@testing-library/react-hooks": "~7.0.2",
+    "@testing-library/user-event": "^14.2.5",
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/invariant": "^2.2.35",
     "@types/jest": "^27.5.0",
