@@ -29,7 +29,7 @@
     "react-router-dom": "5.2.0",
     "react-stillness-component": "0.8.1",
     "umi": "^3.5.26",
-    "umi-plugin-stillness": "0.2.3"
+    "umi-plugin-stillness": "0.2.1"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",
