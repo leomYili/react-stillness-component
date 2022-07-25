@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-stillness",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "keep-alive for umi base on react-stillness-component",
   "main": "dist/index.js",
   "scripts": {
@@ -21,8 +21,8 @@
   "license": "MIT",
   "dependencies": {
     "@umijs/types": "^3.5.23",
-    "react-stillness-component": "^0.8.1",
-    "umi-renderer-stillness": "^0.2.3"
+    "react-stillness-component": "^0.8.2",
+    "umi-renderer-stillness": "^0.2.4"
   },
   "rollup": {
     "input": "src/index.ts",

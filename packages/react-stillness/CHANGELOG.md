@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.2](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.8.1...react-stillness-component@0.8.2) (2022-07-25)
+
+
+### Bug Fixes
+
+* nextjs example and modify umi-renderer-stillness bug ([2abaa97](https://github.com/leomYili/react-stillness-component/commit/2abaa9797a7656045193d3edc5cadeb77f21347f))
+
+
+
+
+
 ## [0.8.1](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.8.0...react-stillness-component@0.8.1) (2022-07-20)
 
 
