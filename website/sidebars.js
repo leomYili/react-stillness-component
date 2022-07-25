@@ -23,10 +23,7 @@ const sidebars = {
         type: 'generated-index',
       },
       collapsed: true,
-      items: [
-        'basic-concepts/items-types',
-        'basic-concepts/contract',
-      ],
+      items: ['basic-concepts/items-types', 'basic-concepts/contract','basic-concepts/max'],
     },
     {
       type: 'category',
@@ -42,6 +39,7 @@ const sidebars = {
         },
       ],
     },
+    'faq',
   ],
   examples: [
     {

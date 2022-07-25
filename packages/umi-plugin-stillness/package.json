@@ -6,6 +6,9 @@
   "scripts": {
     "clean": "rimraf dist"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "keep-alive",
     "stillness",

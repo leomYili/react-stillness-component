@@ -20,7 +20,7 @@ export default function Count() {
     },
   });
 
-  console.log(collected.);
+  console.log(collected.isStillness);
 
   return (
     <div className="count">

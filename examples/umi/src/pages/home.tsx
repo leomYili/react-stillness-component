@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useStillnessManager } from 'umi';
 
 function Home(props: any) {
   const manager = useStillnessManager();
-
   return (
     <div>
       <h2>Home</h2>
