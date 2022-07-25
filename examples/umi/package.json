@@ -27,9 +27,9 @@
     "react": "17.x",
     "react-dom": "17.x",
     "react-router-dom": "5.2.0",
-    "react-stillness-component": "0.6.4",
+    "react-stillness-component": "0.8.1",
     "umi": "^3.5.26",
-    "umi-plugin-stillness": "0.1.4"
+    "umi-plugin-stillness": "0.2.3"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",

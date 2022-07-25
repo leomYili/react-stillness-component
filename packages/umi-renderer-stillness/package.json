@@ -11,6 +11,9 @@
     "stillness",
     "react-stillness-component"
   ],
+  "files": [
+    "dist"
+  ],
   "author": "leomyili",
   "license": "MIT",
   "dependencies": {

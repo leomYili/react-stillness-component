@@ -22,15 +22,9 @@ export default function Switch(props: any) {
               const path = child.props.path || child.props.from;
               element = child;
 
-              const childMatch = isExist
-                ? null
-                : path
+              const childMatch = path
                 ? matchPath(location.pathname, { ...child.props, path })
                 : match;
-
-              if (childMatch !== null) {
-                isExist = true;
-              }
 
               if (child.props.stillness) {
                 return (
@@ -42,7 +36,7 @@ export default function Switch(props: any) {
                     })}
                   </Offscreen>
                 );
-              } else {
+              } else if (childMatch) {
                 return cloneElement(element, {
                   location,
                   computedMatch: childMatch,
@@ -50,6 +44,8 @@ export default function Switch(props: any) {
                 });
               }
             }
+
+            return null;
           }
         );
       }}

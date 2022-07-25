@@ -45,9 +45,11 @@ export function createStillnessManager(
     };
   }
 
-  if (!isUndefined(options) && options?.max) {
+  if (!isUndefined(options) && options?.max >= 0) {
     // 进行初始化,重置store
-    ctx[INSTANCE_SYM].stillnessManager.getActions().resetMax({ max: options.max });
+    ctx[INSTANCE_SYM].stillnessManager
+      .getActions()
+      .resetMax({ max: options.max });
   }
 
   return ctx[INSTANCE_SYM].stillnessManager;
