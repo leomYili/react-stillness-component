@@ -14884,6 +14884,16 @@ react-sortable-hoc@^2.0.0:
     invariant "^2.2.4"
     prop-types "^15.5.7"
 
+react-stillness-component@0.8.1:
+  version "0.8.1"
+  resolved "https://registry.npmjs.org/react-stillness-component/-/react-stillness-component-0.8.1.tgz#20f47bdaa96ae70e774b7faae0dac391aa01427f"
+  integrity sha512-Sp0wjTGrvteOcbjJXt4aQv2dzzWuI3YC0oodPiipkwn8lVOMZ63Z9iWnetC7cmnnI+SHwM1y0+ks5wzh+Rv8JQ==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    hoist-non-react-statics "^3.3.2"
+    invariant "^2.2.4"
+    redux "^4.1.2"
+
 react-stillness-component@^0.7.1:
   version "0.7.1"
   resolved "https://registry.npmjs.org/react-stillness-component/-/react-stillness-component-0.7.1.tgz#6d26b91d964e0ca03d2ae6a9c489eb913ce334ea"
