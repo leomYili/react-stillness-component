@@ -1,6 +1,6 @@
 {
   "name": "umi-renderer-stillness",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "react-stillness-component renderer",
   "main": "dist/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "@types/react-router-config": "^5.0.2",
     "@umijs/runtime": "^3.x",
     "react-router-config": "5.1.1",
-    "react-stillness-component": "^0.8.2"
+    "react-stillness-component": "^0.8.3"
   },
   "peerDependencies": {
     "react": "16.x || 17.x",

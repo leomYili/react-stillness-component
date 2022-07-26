@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.3](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.8.2...react-stillness-component@0.8.3) (2022-07-26)
+
+
+### Bug Fixes
+
+* 修复打包异常导致umi-plugin 报错 ([7c962e3](https://github.com/leomYili/react-stillness-component/commit/7c962e352823e70e43198fc1517e8185ace84174))
+
+
+
+
+
 ## [0.8.2](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.8.1...react-stillness-component@0.8.2) (2022-07-25)
 
 
