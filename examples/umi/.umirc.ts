@@ -27,6 +27,5 @@ export default defineConfig({
         { path: '/list', component: '@/pages/list' },
       ],
     },
-  ],
-  stillness: {},
+  ]
 });
