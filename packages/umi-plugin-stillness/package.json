@@ -22,7 +22,7 @@
   "dependencies": {
     "@umijs/types": "^3.5.23",
     "react-stillness-component": "^0.8.2",
-    "umi-renderer-stillness": "^0.2.4"
+    "umi-renderer-stillness": "^0.2.1"
   },
   "rollup": {
     "input": "src/index.ts",
