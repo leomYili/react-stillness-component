@@ -38,14 +38,16 @@
         "globals": {
           "react": "React",
           "react-dom": "ReactDOM",
-          "runtime": "runtime"
+          "runtime": "runtime",
+          "react-stillness-component": "reactStillnessComponent"
         }
       }
     ],
     "external": [
       "react",
       "react-dom",
-      "@umijs/runtime"
+      "@umijs/runtime",
+      "react-stillness-component"
     ]
   }
 }
