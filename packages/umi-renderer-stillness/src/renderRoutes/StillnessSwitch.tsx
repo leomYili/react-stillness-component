@@ -22,9 +22,15 @@ export default function Switch(props: any) {
               const path = child.props.path || child.props.from;
               element = child;
 
-              const childMatch = path
+              const childMatch = isExist
+                ? null
+                : path
                 ? matchPath(location.pathname, { ...child.props, path })
                 : match;
+
+              if (childMatch !== null) {
+                isExist = true;
+              }
 
               if (child.props.stillness) {
                 return (
