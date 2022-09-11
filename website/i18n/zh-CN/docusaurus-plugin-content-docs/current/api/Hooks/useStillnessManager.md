@@ -12,7 +12,7 @@ title: useStillnessManager
 import { useStillnessManager } from 'react-stillness-component';
 
 function Example() {
-  const stillnessManager = useStillnessManager
+  const stillnessManager = useStillnessManager();
 
   return <div>Example</div>
 }
