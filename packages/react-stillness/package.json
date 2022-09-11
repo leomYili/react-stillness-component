@@ -20,7 +20,7 @@
   "license": "MIT",
   "publishConfig": {
     "main": "dist/index.js",
-    "module": "es/index.js",
+    "module": "es/index.ts",
     "types": "dist/src/index.d.ts"
   },
   "files": [
@@ -56,6 +56,15 @@
       {
         "file": "dist/index.js",
         "format": "umd",
+        "name": "ReactStillness",
+        "globals": {
+          "react": "React",
+          "react-dom": "ReactDOM"
+        }
+      },
+      {
+        "file": "es/index.ts",
+        "format": "esm",
         "name": "ReactStillness",
         "globals": {
           "react": "React",

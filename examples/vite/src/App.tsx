@@ -6,10 +6,12 @@ import './App.css';
 
 function App() {
   const [count, setCount] = useState(0);
-  const [visible,setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
+
+  console.log(visible);
 
   return (
-    <StillnessProvider>
+    <StillnessProvider debugMode>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
@@ -27,6 +29,13 @@ function App() {
           <p>
             Edit <code>App.tsx</code> and save to test HMR updates.
           </p>
+          <button
+            onClick={() => {
+              setVisible(!visible);
+            }}
+          >
+            switch
+          </button>
           <p>
             <a
               className="App-link"
