@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.6](https://github.com/leomYili/react-stillness-component/compare/umi-plugin-stillness@0.2.5...umi-plugin-stillness@0.2.6) (2022-09-11)
+
+**Note:** Version bump only for package umi-plugin-stillness
+
+
+
+
+
 ## [0.2.5](https://github.com/leomYili/react-stillness-component/compare/umi-plugin-stillness@0.2.4...umi-plugin-stillness@0.2.5) (2022-07-26)
 
 **Note:** Version bump only for package umi-plugin-stillness
