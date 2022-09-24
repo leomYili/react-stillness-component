@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[9719],{37383:function(e){e.exports=JSON.parse('{"allTagsPath":"/react-stillness-component/blog/tags","name":"TDD","count":1,"permalink":"/react-stillness-component/blog/tags/tdd"}')}}]);
