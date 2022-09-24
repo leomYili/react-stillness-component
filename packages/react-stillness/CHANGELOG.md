@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.8.4...react-stillness-component@0.9.0) (2022-09-24)
+
+
+### Bug Fixes
+
+* delete console ([a839d28](https://github.com/leomYili/react-stillness-component/commit/a839d28cc4e03526eea706282ea55cc4b106b0b0))
+
+
+### Features
+
+* compatible with react18 ([6c0b2b6](https://github.com/leomYili/react-stillness-component/commit/6c0b2b646e03be30d904ac7cc09ab98295887646))
+
+
+
+
+
 ## [0.8.4](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.8.3...react-stillness-component@0.8.4) (2022-09-11)
 
 
