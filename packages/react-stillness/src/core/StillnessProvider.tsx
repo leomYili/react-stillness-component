@@ -11,11 +11,6 @@ import {
 
 let refCount = 0;
 
-require('react-dom');
-window.React2 = require('react');
-
-console.log(window.React1 === window.React2);
-
 /**
  * stillness Components 的上下文,用于缓存所有静止实例
  * @param param0
