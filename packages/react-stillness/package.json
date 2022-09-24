@@ -24,7 +24,8 @@
     "types": "dist/src/index.d.ts"
   },
   "files": [
-    "dist"
+    "dist",
+    "es"
   ],
   "types": "dist/src/index.d.ts",
   "dependencies": {
@@ -43,12 +44,9 @@
   "peerDependencies": {
     "@types/hoist-non-react-statics": ">= 3.3.1",
     "@types/node": ">= 12",
-    "@types/react": ">= 16",
-    "react": ">= 16.8"
-  },
-  "resolutions": {
-    "@types/react": "17.x",
-    "@types/react-dom": "17.x"
+    "@types/react": ">= 16.8",
+    "react": "^16.8 || ^17.0 || ^18.0",
+    "react-dom": "^16.8 || ^17.0 || ^18.0"
   },
   "rollup": {
     "input": "src/index.ts",
