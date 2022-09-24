@@ -4,6 +4,10 @@
 
 The keep-alive component of react.
 
+supports:
+
+React v16.8+
+
 ## Features
 
 - Minimal syntax, only one prop can be used to complete the component state storage
