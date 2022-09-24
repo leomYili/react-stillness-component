@@ -14901,16 +14901,6 @@ react-stillness-component@0.8.1:
     invariant "^2.2.4"
     redux "^4.1.2"
 
-react-stillness-component@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.npmjs.org/react-stillness-component/-/react-stillness-component-0.7.1.tgz#6d26b91d964e0ca03d2ae6a9c489eb913ce334ea"
-  integrity sha512-MdNEjRe+l1a347FAHwH8Z3ThSTjP0UCzhUv4Hn/x77BePEX7XCfZhshLujfHoTMKA1YFPdjFbjMlpfGJ4Lu/pA==
-  dependencies:
-    fast-deep-equal "^3.1.3"
-    hoist-non-react-statics "^3.3.2"
-    invariant "^2.2.4"
-    redux "^4.1.2"
-
 react-tween-state@^0.1.5:
   version "0.1.5"
   resolved "https://registry.npmjs.org/react-tween-state/-/react-tween-state-0.1.5.tgz#e98b066551efb93cb92dd1be14995c2e3deae339"
@@ -17362,15 +17352,6 @@ umask@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/umask/-/umask-1.1.0.tgz#f29cebf01df517912bb58ff9c4e50fde8e33320d"
   integrity sha512-lE/rxOhmiScJu9L6RTNVgB/zZbF+vGC0/p6D3xnkAePI2o0sMyFG966iR5Ki50OI/0mNi2yaRnxfLsPmEZF/JA==
-
-umi-plugin-stillness@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.npmjs.org/umi-plugin-stillness/-/umi-plugin-stillness-0.2.1.tgz#a3dc07a41e81ea8d002d88facc3a679586237a16"
-  integrity sha512-ayYi3+Pqq8Lh/O4ZyaLCuiGkdHBnnlyMyNLJeq8E0FvmWMfLvyny0c3SKNZEUxTbbdGAi6hSmDy27mcWBpsmEw==
-  dependencies:
-    "@umijs/types" "^3.5.23"
-    react-stillness-component "^0.7.1"
-    umi-renderer-stillness "^0.2.1"
 
 umi-request@^1.2.14:
   version "1.4.0"

@@ -50,9 +50,12 @@ const config = {
         },
         blog: {
           showReadingTime: true,
+          readingTime: ({ content, frontMatter, defaultReadingTime }) =>
+            defaultReadingTime({ content, options: { wordsPerMinute: 300 } }),
           // Please change this to your repo.
           editUrl:
             'https://github.com/leomYili/react-stillness-component/tree/main/docs',
+          postsPerPage: 'ALL',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -97,12 +100,12 @@ const config = {
             position: 'left',
             label: 'Examples',
           },
+          { to: '/blog', label: 'Blog', position: 'left' },
           {
             href: 'https://github.com/leomYili/react-stillness-component/releases',
             label: 'releases',
             position: 'right',
           },
-          // { to: '/blog', label: 'Blog', position: 'left' },
           {
             type: 'localeDropdown',
             position: 'right',
