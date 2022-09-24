@@ -29,6 +29,6 @@ function App() {
 
 ## Props
 
-- `visible`: optional, **boolean**, used to manually control whether the component is quiescent or not, will start quiescent component only when `true`, if initialized with `false`, it will automatically turn on **lazy loading**
+- `visible`: Required, **boolean**, used to manually control whether the component is quiescent or not, will start quiescent component only when `true`, if initialized with `false`, it will automatically turn on **lazy loading**
 - `type`: optional, **string** or **number**, help you categorize the type of static components, easy to manage and control manually
 - `scrollReset`: optional, **boolean**, by default, scroll position will be saved automatically, if you don't need this feature, please set to `false`.
