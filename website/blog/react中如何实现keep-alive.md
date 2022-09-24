@@ -124,7 +124,7 @@ will not have a very familiar feeling, if the `Offscreen` replaced by `div`, `vi
 
 Of course it's not that simple, otherwise there would be no need to develop a separate component, but this is really the way the author wanted the component to be used.
 
-! [example of the principle](. /assets/1.png)
+![example of the principle](./assets/1.png)
 
 Convert to code:
 
@@ -150,7 +150,7 @@ Then it's time for the core extensions, which need to address the consistency of
 
 For performance reasons, the redux stores only the data mapping of the cache nodes, and after each cache node is loaded, a corresponding data node will be created synchronously. relationship with other nodes.
 
-! [context application](. /assets/3.png)
+![context application](./assets/3.png)
 
 Each layer just needs to get the id of the nearest `StillnessNodeContext` to build a mapping of nested component relationships,
 
@@ -162,7 +162,7 @@ So the focus of the work is as follows:
 
 ### 1. state data structure design
 
-! [state design](. /assets/2.png)
+![state design](./assets/2.png)
 
 Here the vNode is represented as :
 
@@ -191,7 +191,7 @@ max provides a way to control the cache automatically, when the user declares th
 
 Synchronization here means that when a parent node triggers a quiescent operation, it needs to notify all its children in real time. Thanks to the design of the data structure, when a node triggers a quiescent or unquiescent operation, all nodes that need to change their state can be calculated based on `uniqueId` and `parentId`.
 
-! [state synchronization](. /assets/4.png)
+![state synchronization](./assets/4.png)
 
 ### 3. Performance optimization
 
@@ -368,17 +368,17 @@ The following examples are only written by the author according to his own situa
 
 ### 1. first is a simple demo
 
-! [simple example](. /assets/5.gif)
+![simple example](./assets/5.gif)
 
 You can see the exact effect through [online demo](https://codesandbox.io/s/02-example-react-379q3k?from-embed).
 
 ### 2. Then comes the most common `react-router`, which is divided into v5 and v6 versions
 
-! [react-router v5](. /assets/6.gif)
+![react-router v5](./assets/6.gif)
 
 The main thing in `react-router-v5` is the customization of the `<Switch>` component, which achieves the effect of route caching, for more details, [you can refer to](https://leomyili.github.io/react-stillness-component/zh-CN/ docs/examples/react-router/v5), and debug it yourself
 
-! [react-router v6](. /assets/7.gif)
+![react-router v6](./assets/7.gif)
 
 `react-router-v6` version is much simpler, just need to customize the outlet, you can achieve the effect of caching, the source code [can refer to](https://codesandbox.io/s/04-example-react-routerv6-uuv2xc?from-embed), and debug yourself
 
@@ -427,7 +427,7 @@ Add `stillness:true` to the nodes that need to be cached
 
 Effect:
 
-! [umi demo](. /assets/8.gif)
+![umi demo](./assets/8.gif)
 
 The most important thing is to customize the `<Switch>` component, use the `modifyRendererPath` capability, redefine the new `renderer`, and then use the `react-route-v5` similar modification method, you can achieve the effect. The downside is that it needs to be synchronized and updated in time, for example, the new `react18` related capabilities, the author has not yet updated up.
 
@@ -497,7 +497,7 @@ const StillnessSwitch = (props) => {
 export default StillnessSwitch;
 ```
 
-! [nextjs demo](. /assets/9.gif)
+![nextjs demo](./assets/9.gif)
 
 [online address](https://codesandbox.io/s/06-example-nextjs-kwcu20?from-embed=&file=/pages/index.js), you can debug it yourself
 
