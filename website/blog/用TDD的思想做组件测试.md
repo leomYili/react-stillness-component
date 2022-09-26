@@ -388,6 +388,31 @@ By using `renderHooks()` and `act()`, you can simply test, and when the test dep
 
     可You can simply modify the configuration file, use `testRegex` for a file to test, of course, here the author only listed their own think more simple method, if there is a more simple method, welcome to propose 👏👏
 
+4. How to automate testing?
+
+    The automated process in the component repository is reflected in the push branch and the automated github release process
+
+    ```json
+    // package.json
+    "scripts": {
+      "test": "jest --projects ./packages/*/",
+      "test:coverage": "jest --coverage --projects ./packages/*/",
+      "precommit": "lint-staged",
+      "release": "bash ./scripts/release.sh",
+      "lint:staged": "lint-staged",
+      "ci": "run-s test:coverage vs git-is-clean",
+    },
+    "lint-staged": {
+      "*./packages/**/*.{js,ts,json,css,less,md}": [
+        "prettier --write",
+        "yarn lint"
+      ],
+      "*./packages/**/__tests__/**/?(*.)(spec|test).[jt]s?(x)": [
+        "yarn test"
+      ]
+    }
+    ```
+
 ## V. Summary
 
 This article summarizes how to think and organize the test code in the process of writing a `react` component, of course, in the actual production development stage, there is a certain amount of testing time is the most valuable, but also `TDD` test can be implemented on the basis of, if the `TDD` test to ensure the basic functionality, then `BDD` test is to expand the use of scenarios;
