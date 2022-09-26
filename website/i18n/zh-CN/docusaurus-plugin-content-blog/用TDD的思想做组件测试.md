@@ -388,6 +388,31 @@ describe('useOptionalFactory', () => {
 
     可以简单的修改配置文件,使用`testRegex`针对某一个文件进行测试,当然,这里作者只是列出了自身认为比较简单的方法,如果有更简单的方法,欢迎提出👏👏
 
+4. 如何自动测试?
+
+    组件库中的自动流程体现在推送分支和github的自动发版流程上
+
+    ```json
+    // package.json
+    "scripts": {
+      "test": "jest --projects ./packages/*/",
+      "test:coverage": "jest --coverage --projects ./packages/*/",
+      "precommit": "lint-staged",
+      "release": "bash ./scripts/release.sh",
+      "lint:staged": "lint-staged",
+      "ci": "run-s test:coverage vs git-is-clean",
+    },
+    "lint-staged": {
+      "*./packages/**/*.{js,ts,json,css,less,md}": [
+        "prettier --write",
+        "yarn lint"
+      ],
+      "*./packages/**/__tests__/**/?(*.)(spec|test).[jt]s?(x)": [
+        "yarn test"
+      ]
+    }
+    ```
+
 ## 五.总结
 
 本文总结了在编写一个 `react` 组件的过程中是如何思考以及组织测试代码的,当然,在实际的生产开发阶段,有一定的测试时间才是最宝贵的,也是 `TDD` 测试能推行的基础,如果说 `TDD` 测试保证了基础功能,那么 `BDD` 测试则扩展了使用场景;
