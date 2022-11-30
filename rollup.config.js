@@ -3,6 +3,7 @@ import babel from '@rollup/plugin-babel';
 import copy from 'rollup-plugin-copy';
 import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import { readdirSync, statSync } from 'fs';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -17,6 +18,13 @@ const tailPkgs = readdirSync(join(__dirname, 'packages')).filter(
 
 const extensions = ['.js', '.ts', '.tsx', '.json'];
 const isProd = process.env.NODE_ENV === 'production';
+
+function replaceNodeEnv(env) {
+	return replace({
+		values: { 'process.env.NODE_ENV': JSON.stringify(env) },
+		delimiters: ['', ''],
+	})
+}
 
 /**
  * 出口需要特殊处理
@@ -67,6 +75,7 @@ export default tailPkgs.map((pkgPath) => {
       commonjs({
         include: 'node_modules/**',
       }),
+      replaceNodeEnv('production'),
       babel({
         exclude: '**/node_modules/**',
         babelHelpers: 'runtime',
