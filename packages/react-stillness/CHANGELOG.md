@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.1](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.9.0...react-stillness-component@0.9.1) (2022-11-30)
+
+
+### Bug Fixes
+
+* clear redux error message ([7df939d](https://github.com/leomYili/react-stillness-component/commit/7df939d2c917504db037e9d071922cb0bed6b8cc)), closes [#42](https://github.com/leomYili/react-stillness-component/issues/42)
+
+
+
+
+
 # [0.9.0](https://github.com/leomYili/react-stillness-component/compare/react-stillness-component@0.8.4...react-stillness-component@0.9.0) (2022-09-24)
 
 
