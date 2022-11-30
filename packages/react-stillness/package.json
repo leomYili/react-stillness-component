@@ -14,7 +14,8 @@
   },
   "keywords": [
     "react-component",
-    "keep-alive"
+    "keep-alive",
+    "component"
   ],
   "author": "leomyili",
   "license": "MIT",
